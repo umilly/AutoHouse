@@ -1,0 +1,5 @@
+RelayControl/.vs
+RelayControl/*.suo
+*.dll
+*.exe
+*.pdb
