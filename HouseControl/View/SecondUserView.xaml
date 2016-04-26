@@ -1,0 +1,34 @@
+﻿<vmBase:CustomViewBase 
+    x:TypeArguments="viewModel:SecondRoleVM"
+    x:Class="View.SecondUserView"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:View"
+             xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
+             xmlns:vmBase="clr-namespace:VMBase;assembly=VMBase"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="220"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DataGrid ItemsSource="{Binding Mode=OneWay, 
+                                Path=ViewModel.Contents,
+                                RelativeSource={RelativeSource Mode=FindAncestor, 
+                                                AncestorType={x:Type local:SecondUserView}}}"
+                  Name="GridView" 
+                  HorizontalAlignment="Center" Height="220" Width="280" Grid.Row="0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Width="25" IsReadOnly="True" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Content" Width="100" IsReadOnly="True" Binding="{Binding Content}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button HorizontalAlignment="Center" Height="20" Width="100" Grid.Row="3" Click="LoadClick">Load</Button>
+    </Grid>
+</vmBase:CustomViewBase>

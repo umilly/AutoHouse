@@ -1,5 +1,4 @@
-RelayControl/.vs
-RelayControl/*.suo
-*.dll
-*.exe
-*.pdb
+HouseControl/.vs
+HouseControl/*.suo
+**/Debug
+**/bin

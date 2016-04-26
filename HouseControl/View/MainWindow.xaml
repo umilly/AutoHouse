@@ -1,0 +1,30 @@
+﻿<Window x:Class="WpfApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApplication"
+        xmlns:view="clr-namespace:View"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="700" Width="650"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        MaxWidth="650"
+        MaxHeight="700"
+        >
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto"></RowDefinition>
+        <RowDefinition></RowDefinition>
+      </Grid.RowDefinitions>
+        <Menu>
+          <MenuItem Header="File">
+            <MenuItem Header="Control" Click="ControlMenuClick"></MenuItem>
+            <MenuItem Header="Settings" Click="SettingsMenuClick"></MenuItem>
+            <MenuItem Header="Save" Click="SaveClick"></MenuItem>
+            <MenuItem Header="Load" Click="LoadClick"></MenuItem>
+            <MenuItem Header="Exit"></MenuItem>
+          </MenuItem>
+        </Menu>
+        <ContentControl HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Content="{Binding Path=CurrentContent}"></ContentControl>
+    </Grid>
+</Window>

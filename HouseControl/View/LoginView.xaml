@@ -1,0 +1,33 @@
+﻿<vmBase:CustomViewBase 
+    x:TypeArguments="viewModel:LoginViewModel"
+    x:Class="View.LoginView"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:View"
+             xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
+             xmlns:vmBase="clr-namespace:VMBase;assembly=VMBase"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="Auto"/>
+            
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBox HorizontalAlignment="Center" Height="20" Width="150" Grid.Row="1" Text="{Binding Mode=TwoWay, Path=ViewModel.Login, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:LoginView}}}"></TextBox>
+        <TextBox HorizontalAlignment="Center" Height="20" Width="150" Grid.Row="3" Text="{Binding Mode=TwoWay, Path=ViewModel.Pass, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:LoginView}}}"></TextBox>
+        <Button HorizontalAlignment="Center" Height="20" Width="60" Grid.Row="5" Click="LoginClick">Authorize</Button>
+    </Grid>
+</vmBase:CustomViewBase>
