@@ -1,6 +1,7 @@
 using Facade;
 using System;
 using System.Windows;
+using Common;
 using ViewModelBase;
 
 namespace VMBase

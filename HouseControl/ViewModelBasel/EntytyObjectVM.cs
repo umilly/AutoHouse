@@ -79,6 +79,7 @@ namespace ViewModelBase
             catch (DbEntityValidationException e)
             {
                 var newException = new FormattedDbEntityValidationException(e);
+                Use<ILog>().Log(LogCategory.Data,e.ToString() );
                 throw newException;
             }
         }

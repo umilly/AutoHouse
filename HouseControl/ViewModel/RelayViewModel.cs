@@ -89,12 +89,13 @@ public class RelayViewModel : ViewModelBase.ViewModelBase
             //"http://localhost:3000/status";
         try
         {
-            var request = WebRequest.Create(url);
-            request.Credentials = CredentialCache.DefaultCredentials;
-            var response = request.GetResponse();
-            res = ((HttpWebResponse) response).StatusDescription;
-            var reader = new StreamReader(response.GetResponseStream());
-            res = reader.ReadToEnd();
+            Use<INetworService>().SyncRequest(url);
+            //var request = WebRequest.Create(url);
+            //request.Credentials = CredentialCache.DefaultCredentials;
+            //var response = request.GetResponse();
+            //res = ((HttpWebResponse) response).StatusDescription;
+            //var reader = new StreamReader(response.GetResponseStream());
+            //res = reader.ReadToEnd();
         }
         finally
         {

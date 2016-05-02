@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using System.Threading.Tasks;
 
 namespace Facade
 {
@@ -57,6 +58,18 @@ namespace Facade
     public interface INetworService : IService
     {
         string Ping(string address);
+        string SyncRequest(string url);
+        Task<string> AsyncRequest(string url);
     }
 
+    public interface ILog:IService
+    {
+        void Log(LogCategory network, string message);
+    }
+
+    public enum LogCategory
+    {
+        Network,
+        Data
+    }
 }
