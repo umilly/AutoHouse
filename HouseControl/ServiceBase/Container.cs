@@ -1,10 +1,9 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
 using Facade;
-using ViewModelBase;
 using IServiceContainer = Facade.IServiceContainer;
 
 public class Container : IServiceContainer
@@ -15,9 +14,7 @@ public class Container : IServiceContainer
 
     public Container()
     {
-        RegisterType<IPool, VMFactory>();
-        RegisterType<INetworService, NetworService>();
-        _registredInstances[typeof (IServiceContainer)] = this;
+        _registredInstances[typeof(IServiceContainer)] = this;
         FillServiceFieldInfoIfNeed(typeof(Container));
     }
 
@@ -27,7 +24,7 @@ public class Container : IServiceContainer
         FillServiceFieldInfoIfNeed(typeof(TImplementation));
     }
 
-   
+
 
     public T Use<T>() where T : class
     {
@@ -67,18 +64,18 @@ public class Container : IServiceContainer
 
     private object CreateAndRegisterInternal(Type interfaceType, Type instanceType)
     {
-        // Инстанциируем
+        // РРЅСЃС‚Р°РЅС†РёРёСЂСѓРµРј
         object result = CreateInstance(instanceType);
 
-        // Сразу регистрируем (разруливаем циклические зависимости)
+        // РЎСЂР°Р·Сѓ СЂРµРіРёСЃС‚СЂРёСЂСѓРµРј (СЂР°Р·СЂСѓР»РёРІР°РµРј С†РёРєР»РёС‡РµСЃРєРёРµ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё)
         _registredInstances.Add(interfaceType, result);
 
-        // Заливаем сервисами
+        // Р—Р°Р»РёРІР°РµРј СЃРµСЂРІРёСЃР°РјРё
         FillServiceFieldInfoIfNeed(instanceType);
         FillServicesForCreated(result);
         FillServicesForExisted(instanceType, result);
 
-        // Выставляем контейнер
+        // Р’С‹СЃС‚Р°РІР»СЏРµРј РєРѕРЅС‚РµР№РЅРµСЂ
         var service = result as IService;
         if (service != null)
         {
@@ -141,17 +138,17 @@ public class Container : IServiceContainer
 
     private object ResolveInternal(Type interfaceType)
     {
-        // Сначала проверяем есть ли искомый объект
+        // РЎРЅР°С‡Р°Р»Р° РїСЂРѕРІРµСЂСЏРµРј РµСЃС‚СЊ Р»Рё РёСЃРєРѕРјС‹Р№ РѕР±СЉРµРєС‚
         if (_registredInstances.ContainsKey(interfaceType))
             return _registredInstances[interfaceType];
 
-        // И если нет, то проверяем нужно ли его создавать
+        // Р РµСЃР»Рё РЅРµС‚, С‚Рѕ РїСЂРѕРІРµСЂСЏРµРј РЅСѓР¶РЅРѕ Р»Рё РµРіРѕ СЃРѕР·РґР°РІР°С‚СЊ
         if (_registredTypes.ContainsKey(interfaceType))
         {
             Type instanceType = _registredTypes[interfaceType];
             return CreateAndRegisterInternal(interfaceType, instanceType);
         }
-        throw new ArgumentException(string.Format("service type not registred: {0}",interfaceType));
+        throw new ArgumentException(string.Format("service type not registred: {0}", interfaceType));
     }
 
     private void InternalUnregister(Type t, bool skipDispose = false)
@@ -171,11 +168,11 @@ public class Container : IServiceContainer
 
         _registredInstances.Remove(t);
 
-        
+
     }
 }
 
-internal class InjectAttribute:Attribute
+internal class InjectAttribute : Attribute
 {
 }
 

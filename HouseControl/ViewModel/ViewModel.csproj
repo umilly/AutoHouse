@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ViewModel</RootNamespace>
     <AssemblyName>ViewModel</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -70,6 +70,14 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{c9740e4f-63a1-4458-8902-a1117e87ae4b}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetworkService\NetworkService.csproj">
+      <Project>{3ff07a1e-6ffd-4658-b7e2-153097261089}</Project>
+      <Name>NetworkService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceBase\Common.csproj">
+      <Project>{7bcffefb-5d13-4325-9638-f98f8d2510b8}</Project>
+      <Name>Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\ViewModelBasel\ViewModelBase.csproj">
       <Project>{ed898011-a331-41bd-94e3-6ef4f9ef654f}</Project>

@@ -5,10 +5,10 @@ namespace Facade
 {
     public interface IViewModel
     {
-        int ID{get;}
+        int ID { get; }
         void OnCreate(int id);
     }
-    
+
 
     public interface IView
     {
@@ -20,17 +20,20 @@ namespace Facade
     {
 
     }
-    public interface IViewService:IService
+
+    public interface IViewService : IService
     {
-        T CreateView<T>(int id=0) where T : IView;
-        IView CreateView(Type type,int Id=0);
+        T CreateView<T>(int id = 0) where T : IView;
+        IView CreateView(Type type, int Id = 0);
         IView NextView { get; set; }
         void ShowMessage(string res);
     }
+
     public interface IService
     {
         void SetContainer(IServiceContainer container);
     }
+
     public interface IServiceContainer
     {
         void RegisterType<TInterface, TImplementation>();
@@ -45,8 +48,15 @@ namespace Facade
 
         void UnRegisterAll();
     }
+
     public interface IHaveID
     {
         int ID { get; }
     }
+
+    public interface INetworService : IService
+    {
+        string Ping(string address);
+    }
+
 }

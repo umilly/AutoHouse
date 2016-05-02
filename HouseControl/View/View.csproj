@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>View</RootNamespace>
     <AssemblyName>View</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -167,8 +167,12 @@
       <Project>{c9740e4f-63a1-4458-8902-a1117e87ae4b}</Project>
       <Name>Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServiceBase\Common.csproj">
+      <Project>{7bcffefb-5d13-4325-9638-f98f8d2510b8}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ViewModelBasel\ViewModelBase.csproj">
-      <Project>{ED898011-A331-41BD-94E3-6EF4F9EF654F}</Project>
+      <Project>{ed898011-a331-41bd-94e3-6ef4f9ef654f}</Project>
       <Name>ViewModelBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj">

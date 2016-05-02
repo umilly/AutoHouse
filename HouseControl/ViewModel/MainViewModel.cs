@@ -16,7 +16,8 @@ namespace ViewModel
     {
         public MainViewModel(IServiceContainer container) : base(container)
         {
-            
+            container.RegisterType<IPool, VMFactory>();
+            container.RegisterType<INetworService, NetworService>();
         }
 
         public override int ID
