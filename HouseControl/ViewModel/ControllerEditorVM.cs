@@ -18,6 +18,16 @@ namespace ViewModel
         public override int ID
         {
             get { return Model.Id; }
+            set
+            {
+                if(Model!=null&&Model.Id==value)
+                    return;
+                OnCreate(value);
+                OnPropertyChanged(()=>Name);
+                OnPropertyChanged(() => IP);
+                OnPropertyChanged(() => Port);
+                OnPropertyChanged(() => ID);
+            }
         }
 
         public string Name
@@ -47,9 +57,16 @@ namespace ViewModel
             return Context.Controllers.ToList();
         }
 
-        public void Find()
+        public async void Find()
         {
-            
+            var task = Use<INetworService>().AsyncRequest(string.Format("http://{0}:{1}", IP, Port));
+            await task;
+            ParseConrollerResult(task.Result);
+        }
+
+        private void ParseConrollerResult(string result)
+        {
+            var lines=result.Split('\r','\n');
         }
     }
 }

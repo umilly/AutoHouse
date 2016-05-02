@@ -42,7 +42,7 @@ namespace ViewModelBase
 
         public override void OnCreate(int id)
         {
-            if (id <= 0)
+            if (id < 0)
             {
                 Model = CreateNewEntity();
             }
@@ -75,6 +75,7 @@ namespace ViewModelBase
             try
             {
                 Context.SaveChanges();
+                OnPropertyChanged(()=>ID);
             }
             catch (DbEntityValidationException e)
             {

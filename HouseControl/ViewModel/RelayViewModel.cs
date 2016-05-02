@@ -166,5 +166,6 @@ public class RelayViewModel : ViewModelBase.ViewModelBase
     public override int ID
     {
         get { return RelayData.Number; }
+        set { }
     }
 }

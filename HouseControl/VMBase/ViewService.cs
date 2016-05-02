@@ -14,11 +14,11 @@ namespace VMBase
             
         }
 
-        public T CreateView<T>(int id=0) where T : IView
+        public T CreateView<T>(int id=-1) where T : IView
         {
             return (T)CreateView(typeof (T),id); 
         }
-        public IView CreateView(Type type,int Id=0) 
+        public IView CreateView(Type type,int Id=-1) 
         {
             var res = Activator.CreateInstance(type, this) as IView;
             res.ViewModel = Use<IPool>().GetOrCreateVM(res.VmType,Id);

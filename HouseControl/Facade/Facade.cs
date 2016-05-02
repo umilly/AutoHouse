@@ -24,7 +24,7 @@ namespace Facade
 
     public interface IViewService : IService
     {
-        T CreateView<T>(int id = 0) where T : IView;
+        T CreateView<T>(int id = -1) where T : IView;
         IView CreateView(Type type, int Id = 0);
         IView NextView { get; set; }
         void ShowMessage(string res);

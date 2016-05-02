@@ -23,6 +23,7 @@ namespace ViewModel
         public override int ID
         {
             get { return 1; }
+            set { }
         }
 
         public void InitSettings()

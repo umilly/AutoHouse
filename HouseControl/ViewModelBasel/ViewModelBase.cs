@@ -1,7 +1,9 @@
-﻿using Facade;
+﻿using System;
+using Facade;
 using System.ComponentModel;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Diagnostics.Eventing.Reader;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using ViewModelBase.Annotations;
 
@@ -9,7 +11,7 @@ namespace ViewModelBase
 {
     public abstract class ViewModelBase : IViewModel, INotifyPropertyChanged
     {
-        abstract public int ID { get; }
+        abstract public int ID { get; set; }
         public virtual void OnCreate(int id)
         {
             
@@ -29,6 +31,11 @@ namespace ViewModelBase
         
         public event PropertyChangedEventHandler PropertyChanged;
 
+        protected virtual void OnPropertyChanged<T>(Expression<Func<T>> expression)
+        {
+            var prop = expression.Body.ToString();
+            OnPropertyChanged(prop);
+        }
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
