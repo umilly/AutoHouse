@@ -6,6 +6,7 @@ namespace Facade
     public interface IViewModel
     {
         int ID{get;}
+        void OnCreate(int id);
     }
     
 
@@ -21,8 +22,8 @@ namespace Facade
     }
     public interface IViewService:IService
     {
-        T CreateView<T>(int id) where T : IView;
-        IView CreateView(Type type,int Id);
+        T CreateView<T>(int id=0) where T : IView;
+        IView CreateView(Type type,int Id=0);
         IView NextView { get; set; }
         void ShowMessage(string res);
     }
@@ -43,5 +44,9 @@ namespace Facade
         string GetServiceNames();
 
         void UnRegisterAll();
+    }
+    public interface IHaveID
+    {
+        int ID { get; }
     }
 }

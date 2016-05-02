@@ -13,6 +13,10 @@ namespace VMBase
             _viewService = viewService;
         }
 
+        public CustomViewBase()
+        {
+        }
+
         public T ViewModel { get; set; }
         IViewModel IView.ViewModel
         {

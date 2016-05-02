@@ -96,6 +96,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="ContolView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ControllerEritor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -114,6 +118,9 @@
     <Compile Include="BoolToColorConverter.cs" />
     <Compile Include="ContolView.xaml.cs">
       <DependentUpon>ContolView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ControllerEritor.xaml.cs">
+      <DependentUpon>ControllerEritor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -156,6 +163,10 @@
       <Project>{4a90dd13-26b3-4a89-9df0-0e5723ef392f}</Project>
       <Name>Facade</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{c9740e4f-63a1-4458-8902-a1117e87ae4b}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ViewModelBasel\ViewModelBase.csproj">
       <Project>{ED898011-A331-41BD-94E3-6EF4F9EF654F}</Project>
       <Name>ViewModelBase</Name>
@@ -180,6 +191,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

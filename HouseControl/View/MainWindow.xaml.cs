@@ -16,7 +16,7 @@ namespace WpfApplication
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private ContentControl _currentConent;
-        private IServiceContainer _container=new Container();
+        private readonly IServiceContainer _container=new Container();
         private MainViewModel MainVM { get; set; }
         public MainWindow()
         {
@@ -75,6 +75,17 @@ namespace WpfApplication
         private void LoadClick(object sender, RoutedEventArgs e)
         {
             MainVM.InitSettings();
+        }
+
+        private void ShowControllersClick(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void AddControllerClick(object sender, RoutedEventArgs e)
+        {
+            var controller = _container.Use<IViewService>().CreateView<ControllerEditorView>();
+            CurrentContent = controller;
         }
     }
 }

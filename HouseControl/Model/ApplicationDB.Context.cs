@@ -15,18 +15,19 @@ namespace Model
     
     public partial class Models : DbContext
     {
-        public Models()
-            : base("name=Models")
+        public Models(string cs)
+            : base(cs)
         {
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            throw new UnintentionalCodeFirstException();
+            
         }
     
         public virtual DbSet<Content> Contents { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Controller> Controllers { get; set; }
     }
 }

@@ -22,6 +22,7 @@ namespace ViewModelBase
             if (res == null)
             {
                 res = CreateVM(vmType);
+                res.OnCreate(id);
             }
             return res;
 

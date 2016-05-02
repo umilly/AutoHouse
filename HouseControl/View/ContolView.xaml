@@ -10,11 +10,11 @@
              xmlns:vmBase="clr-namespace:VMBase;assembly=VMBase"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:global="clr-namespace:;assembly=ViewModel"
-             xmlns:global1="clr-namespace:"
+             xmlns:viewTools="clr-namespace:ViewTools"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
   <UserControl.Resources>
-    <global1:BoolToColorConverter x:Key="ColorConverter"/>
+    <viewTools:BoolToColorConverter x:Key="ColorConverter"/>
   </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>

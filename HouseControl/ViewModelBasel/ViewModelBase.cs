@@ -1,8 +1,8 @@
 ﻿using Facade;
-using System;
 using System.ComponentModel;
+using System.Data.Entity.Core.Objects.DataClasses;
+using System.Diagnostics.Eventing.Reader;
 using System.Runtime.CompilerServices;
-using Model;
 using ViewModelBase.Annotations;
 
 namespace ViewModelBase
@@ -10,6 +10,10 @@ namespace ViewModelBase
     public abstract class ViewModelBase : IViewModel, INotifyPropertyChanged
     {
         abstract public int ID { get; }
+        public virtual void OnCreate(int id)
+        {
+            
+        }
 
         private IServiceContainer _container { get; set; }
         public ViewModelBase(IServiceContainer container)
@@ -22,8 +26,7 @@ namespace ViewModelBase
             return _container.Use<T>();
         }
        
-        public Models Context { get; private set; }
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -33,4 +36,6 @@ namespace ViewModelBase
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
+  
 }

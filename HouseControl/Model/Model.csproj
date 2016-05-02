@@ -85,6 +85,10 @@
     <Compile Include="Content.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controller.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
@@ -125,11 +129,18 @@
       <DependentUpon>ApplicationDB.edmx</DependentUpon>
       <LastGenOutput>ApplicationDB.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="ApplicationDB.edmx.sql" />
     <Content Include="ApplicationDB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ApplicationDB.edmx</DependentUpon>
       <LastGenOutput>ApplicationDB.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Facade\Facade.csproj">
+      <Project>{4a90dd13-26b3-4a89-9df0-0e5723ef392f}</Project>
+      <Name>Facade</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
