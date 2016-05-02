@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Common;
 using Facade;
 using Model;
 using ViewModelBase;
@@ -18,6 +19,7 @@ namespace ViewModel
         {
             container.RegisterType<IPool, VMFactory>();
             container.RegisterType<INetworService, NetworService>();
+            container.RegisterType<ILog, EventLogger>();
         }
 
         public override int ID

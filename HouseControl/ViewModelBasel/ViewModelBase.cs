@@ -33,8 +33,8 @@ namespace ViewModelBase
 
         protected virtual void OnPropertyChanged<T>(Expression<Func<T>> expression)
         {
-            var prop = expression.Body.ToString();
-            OnPropertyChanged(prop);
+            var prop = (expression.Body);//; as MemberExpression
+            OnPropertyChanged(prop.ToString());
         }
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

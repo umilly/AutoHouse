@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Core.EntityClient;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace ViewModelBase
     {
         private static readonly Dictionary<Type, object> _setsByType = new Dictionary<Type, object>();
         private static readonly Dictionary<Type, Func<T>> _createByType = new Dictionary<Type, Func<T>>();
+        private static readonly Dictionary<Type, Func<int,T>> _findByType = new Dictionary<Type, Func<int,T>>();
         private static Models DB;
 
         static EntytyObjectVM()
@@ -55,14 +57,17 @@ namespace ViewModelBase
 
         private T GetEntity(int id)
         {
-            var set = FindTableSet();
-            return (set as IQueryable<T>).FirstOrDefault(a => a.ID == id);
+            if (!_findByType.ContainsKey(typeof(T)))
+                FillDelegates();
+            
+            return _findByType[typeof(T)](id);
         }
 
         private T CreateNewEntity()
         {
             if (!_createByType.ContainsKey(typeof (T)))
-                FillCreationDelegate();
+                FillDelegates();
+
             return _createByType[typeof (T)]();
         }
 
@@ -85,16 +90,22 @@ namespace ViewModelBase
             }
         }
 
-        private void FillCreationDelegate()
+        private void FillDelegates()
         {
             var set = FindTableSet();
             var createMethod = set.GetType().GetMember("Create").First() as MethodInfo;
+            var findMethod = set.GetType().GetMember("Find").First() as MethodInfo;
             var addMethod = set.GetType().GetMember("Add").First() as MethodInfo;
             _createByType[typeof (T)] = () =>
             {
                 var res = (T) createMethod.Invoke(set, null);
                 addMethod.Invoke(set, new object[] {res});
                 return res;
+            };
+            _findByType[typeof (T)] = (id) =>
+            {
+                var res = findMethod.Invoke(set, new object[] {new object[]{ id }});
+                return res as T ;
             };
         }
 
