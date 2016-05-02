@@ -21,5 +21,10 @@ namespace View
             var controllers=ViewModel.GetControllers();
             ViewModel.SaveDB();
         }
+
+        private void FindClick(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Find();
+        }
     }
 }

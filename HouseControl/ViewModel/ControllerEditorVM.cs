@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Facade;
 using Model;
+using ViewModelBase;
 
 namespace ViewModel
 {
@@ -44,6 +45,11 @@ namespace ViewModel
         public IEnumerable<Controller> GetControllers()
         {
             return Context.Controllers.ToList();
+        }
+
+        public void Find()
+        {
+            
         }
     }
 }

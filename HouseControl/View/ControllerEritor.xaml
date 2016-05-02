@@ -41,7 +41,8 @@
         <TextBox Grid.Row="5" Grid.Column="3" Text="{Binding Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:ControllerEditorView}, Path=ViewModel.IP}" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
         <Label Grid.Row="7" Grid.Column="1" Content="Port" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         <xctk:DecimalUpDown Grid.Row="7" Grid.Column="3"  Maximum="65535" Minimum="3000" Value="{Binding Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:ControllerEditorView}, Path=ViewModel.Port}" HorizontalAlignment="Stretch" VerticalAlignment="Center"></xctk:DecimalUpDown>
-         <Button Grid.Row="9" Grid.ColumnSpan="5" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveClick"> Save </Button>   
+         <Button Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Click="FindClick"> Find children </Button>
+         <Button Grid.Row="9" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveClick">Save</Button>
         </Grid>
     </Border>
 </vmBase:CustomViewBase>
