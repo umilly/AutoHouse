@@ -93,6 +93,9 @@
     <Compile Include="Role.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Sensor.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>

@@ -23,9 +23,7 @@ namespace ViewModelBase
         {
             try
             {
-                var cs =
-                    @"Data Source=UMILLY;Initial Catalog=house;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-                DB = new Models(cs);
+                DB = new Models("vlad");
             }
             catch (Exception e)
             {
@@ -44,14 +42,13 @@ namespace ViewModelBase
 
         public override void OnCreate(int id)
         {
-            if (id < 0)
+            
+            var res= GetEntity(id);
+            if(res==null)
             {
-                Model = CreateNewEntity();
+                res = CreateNewEntity();
             }
-            else
-            {
-                Model = GetEntity(id);
-            }
+            Model = res;
             base.OnCreate(id);
         }
 

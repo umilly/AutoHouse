@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/01/2016 23:58:48
+-- Date Created: 05/03/2016 14:49:30
 -- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -20,6 +20,9 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_Users_Role]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Users] DROP CONSTRAINT [FK_Users_Role];
 GO
+IF OBJECT_ID(N'[dbo].[FK_SensorController]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Sensors] DROP CONSTRAINT [FK_SensorController];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -33,6 +36,12 @@ IF OBJECT_ID(N'[dbo].[Roles]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Users]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Users];
+GO
+IF OBJECT_ID(N'[dbo].[Controllers]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Controllers];
+GO
+IF OBJECT_ID(N'[dbo].[Sensors]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Sensors];
 GO
 
 -- --------------------------------------------------
@@ -71,6 +80,14 @@ CREATE TABLE [dbo].[Controllers] (
 );
 GO
 
+-- Creating table 'Sensors'
+CREATE TABLE [dbo].[Sensors] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [ControllerId] int  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -99,6 +116,12 @@ ADD CONSTRAINT [PK_Controllers]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
+-- Creating primary key on [Id] in table 'Sensors'
+ALTER TABLE [dbo].[Sensors]
+ADD CONSTRAINT [PK_Sensors]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
@@ -116,6 +139,21 @@ GO
 CREATE INDEX [IX_FK_Users_Role]
 ON [dbo].[Users]
     ([role]);
+GO
+
+-- Creating foreign key on [ControllerId] in table 'Sensors'
+ALTER TABLE [dbo].[Sensors]
+ADD CONSTRAINT [FK_SensorController]
+    FOREIGN KEY ([ControllerId])
+    REFERENCES [dbo].[Controllers]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SensorController'
+CREATE INDEX [IX_FK_SensorController]
+ON [dbo].[Sensors]
+    ([ControllerId]);
 GO
 
 -- --------------------------------------------------
