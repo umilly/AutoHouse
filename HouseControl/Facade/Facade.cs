@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using System.Threading.Tasks;
 
 namespace Facade
@@ -55,14 +54,14 @@ namespace Facade
         int ID { get; }
     }
 
-    public interface INetworService : IService
+    public interface INetworkService : IService
     {
         string Ping(string address);
         string SyncRequest(string url);
         Task<string> AsyncRequest(string url);
     }
 
-    public interface ILog:IService
+    public interface ILog : IService
     {
         void Log(LogCategory network, string message);
     }

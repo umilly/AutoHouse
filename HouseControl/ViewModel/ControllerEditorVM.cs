@@ -59,7 +59,7 @@ namespace ViewModel
 
         public async void Find()
         {
-            var task = Use<INetworService>().AsyncRequest(string.Format("http://{0}:{1}", IP, Port));
+            var task = Use<INetworkService>().AsyncRequest(string.Format("http://{0}:{1}", IP, Port));
             await task;
             ParseConrollerResult(task.Result);
         }

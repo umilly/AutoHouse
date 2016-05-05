@@ -89,7 +89,7 @@ public class RelayViewModel : ViewModelBase.ViewModelBase
             //"http://localhost:3000/status";
         try
         {
-            Use<INetworService>().SyncRequest(url);
+            Use<INetworkService>().SyncRequest(url);
             //var request = WebRequest.Create(url);
             //request.Credentials = CredentialCache.DefaultCredentials;
             //var response = request.GetResponse();
@@ -117,7 +117,7 @@ public class RelayViewModel : ViewModelBase.ViewModelBase
 
     public void UpdateIsAvailable()
     {
-        IsAvailable  = Use<INetworService>().Ping(Address);
+        IsAvailable  = Use<INetworkService>().Ping(Address);
     }
 
     public string Address
