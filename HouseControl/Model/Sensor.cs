@@ -19,12 +19,14 @@ namespace Model
         {
             this.Id = 0;
             this.ControllerId = 0;
+            this.ContollerSlot = 0;
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public int ControllerId { get; set; }
         public int SensorTypeId { get; set; }
+        public int ContollerSlot { get; set; }
     
         public virtual Controller Controller { get; set; }
         public virtual SensorType SensorType { get; set; }

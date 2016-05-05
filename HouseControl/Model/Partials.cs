@@ -77,6 +77,10 @@ namespace Model
             {
                 _context = context;
                 RegiterUpdate(Guid.Parse("6DA1FC41-A02D-40EC-82AF-7489C8E62CE4"),@"",FillSencorTypeDict);
+                RegiterUpdate(Guid.Parse("610174A4-E6C0-4F3A-AD7C-A3069A57EF85"), @"
+ALTER TABLE [dbo].[Sensors]
+ADD [ContollerSlot] int  NOT NULL
+");
             }
 
             private void FillSencorTypeDict()
@@ -188,7 +192,7 @@ namespace Model
                 });
             }
 
-            private void RegiterUpdate(Guid guid, string sql, Action fillData)
+            private void RegiterUpdate(Guid guid, string sql, Action fillData=null)
             {
                 _updates.Add(new Update() {ID = guid,Order = _updates.Count,SqlScript = sql,FillData = fillData});
             }

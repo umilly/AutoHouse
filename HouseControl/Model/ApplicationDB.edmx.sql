@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/05/2016 11:14:15
+-- Date Created: 05/05/2016 11:55:17
 -- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -94,7 +94,8 @@ CREATE TABLE [dbo].[Sensors] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [ControllerId] int  NOT NULL,
-    [SensorTypeId] int  NOT NULL
+    [SensorTypeId] int  NOT NULL,
+    [ContollerSlot] int  NOT NULL
 );
 GO
 

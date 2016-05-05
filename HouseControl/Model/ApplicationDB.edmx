@@ -66,6 +66,7 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ControllerId" Type="int" Nullable="false" DefaultValue="0" />
     <Property Name="SensorTypeId" Type="int" Nullable="false" />
+    <Property Name="ContollerSlot" Type="int" Nullable="false" DefaultValue="0" />
   </EntityType>
   <EntityType Name="SensorTypes">
     <Key>
@@ -202,6 +203,7 @@
           <Property Name="ControllerId" Type="Int32" Nullable="false" DefaultValue="0" />
           <NavigationProperty Name="SensorType" Relationship="ApplicationModel.SensorTypeSensor" FromRole="Sensor" ToRole="SensorType" />
           <Property Name="SensorTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ContollerSlot" Type="Int32" Nullable="false" DefaultValue="0" />
         </EntityType>
         <Association Name="SensorController">
           <End Type="ApplicationModel.Sensor" Role="Sensor" Multiplicity="*" />
@@ -294,6 +296,7 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="ControllerId" ColumnName="ControllerId" />
           <ScalarProperty Name="SensorTypeId" ColumnName="SensorTypeId" />
+          <ScalarProperty Name="ContollerSlot" ColumnName="ContollerSlot" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
