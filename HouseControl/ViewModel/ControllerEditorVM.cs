@@ -68,19 +68,25 @@ namespace ViewModel
         private void ParseConrollerResult(string result)
         {
             Regex ex=new Regex("");
-            var lines=result.Split(new[] { '\r','\n'},StringSplitOptions.RemoveEmptyEntries);
+            var lines=result.Split(new[] {"<br>", "\r","\n"},StringSplitOptions.RemoveEmptyEntries);
+            int num = 0;
             foreach (var line in lines)
             {
-                var type = sensorTypes.FirstOrDefault(a => line.StartsWith(a.Key));
+                var type= Context.SensorTypes.FirstOrDefault(a => line.Contains(a.Key));
+                if (type != null)
+                {
+                    var sensor = Context.Sensors.Create();
+                    sensor.SensorType = type;
+                    sensor.ContollerSlot =int.Parse(line.Split('_').First());
+                    sensor.Controller = Model;
+                    sensor.Name = "Датчик " + ++num;
+                    Context.Sensors.Add(sensor);
+                }
             }
-            
-        }
-        private static List<SensorType>  sensorTypes=new List<SensorType>();
+            Context.SaveChanges();
 
-        private void FillSensors()
-        {
-            sensorTypes.Add(new SensorType());
         }
+        
     }
     
 }
