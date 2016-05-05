@@ -12,20 +12,23 @@ namespace Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Controller
+    public partial class Sensor
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Controller()
+        public Sensor()
         {
-            this.Sensors = new HashSet<Sensor>();
+            this.Id = 0;
+            this.ControllerId = 0;
+            this.ContollerSlot = 0;
         }
     
         public int Id { get; set; }
-        public string IP { get; set; }
-        public int Port { get; set; }
         public string Name { get; set; }
+        public int ControllerId { get; set; }
+        public int SensorTypeId { get; set; }
+        public int ContollerSlot { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sensor> Sensors { get; set; }
+        public virtual Controller Controller { get; set; }
+        public virtual SensorType SensorType { get; set; }
     }
 }

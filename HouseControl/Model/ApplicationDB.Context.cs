@@ -15,19 +15,22 @@ namespace Model
     
     public partial class Models : DbContext
     {
-        public Models(string cs)
-            : base(cs)
+        public Models()
+            : base("name=Models")
         {
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            
+            throw new UnintentionalCodeFirstException();
         }
     
         public virtual DbSet<Content> Contents { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Controller> Controllers { get; set; }
+        public virtual DbSet<Sensor> Sensors { get; set; }
+        public virtual DbSet<SensorType> SensorTypes { get; set; }
+        public virtual DbSet<DBVersion> DBVersions { get; set; }
     }
 }

@@ -9,7 +9,12 @@
         <EntityTypeShape EntityType="ApplicationModel.Role" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ApplicationModel.User" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
         <AssociationConnector Association="ApplicationModel.FK_Users_Role" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="ApplicationModel.Controller" Width="1.5" PointX="3.25" PointY="3.75" />
+        <EntityTypeShape EntityType="ApplicationModel.Controller" Width="1.5" PointX="3.625" PointY="3.5" />
+        <EntityTypeShape EntityType="ApplicationModel.Sensor" Width="1.5" PointX="6.125" PointY="3.625" />
+        <AssociationConnector Association="ApplicationModel.SensorController" />
+        <EntityTypeShape EntityType="ApplicationModel.SensorType" Width="1.5" PointX="8.25" PointY="3.75" />
+        <AssociationConnector Association="ApplicationModel.SensorTypeSensor" />
+        <EntityTypeShape EntityType="ApplicationModel.DBVersion" Width="1.5" PointX="11.625" PointY="2.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

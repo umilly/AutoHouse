@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Facade;
 using Model;
@@ -66,7 +67,25 @@ namespace ViewModel
 
         private void ParseConrollerResult(string result)
         {
-            var lines=result.Split('\r','\n');
+            Regex ex=new Regex("");
+            var lines=result.Split(new[] { '\r','\n'},StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
+            {
+                var type = sensorTypes.FirstOrDefault(a => line.StartsWith(a.Key));
+            }
+            
+        }
+        private static List<SensorType>  sensorTypes=new List<SensorType>();
+
+        private void FillSensors()
+        {
+            sensorTypes.Add(new SensorType());
         }
     }
+    
+}
+
+public class SensorType
+{
+    public string Key { get; set; }
 }
