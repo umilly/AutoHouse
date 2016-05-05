@@ -12,21 +12,9 @@ namespace Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Sensor
+    public partial class DBVersion
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Sensor()
-        {
-            this.Id = 0;
-            this.ControllerId = 0;
-        }
-    
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int ControllerId { get; set; }
-        public int SensorTypeId { get; set; }
-    
-        public virtual Controller Controller { get; set; }
-        public virtual SensorType SensorType { get; set; }
+        public System.Guid Version { get; set; }
     }
 }

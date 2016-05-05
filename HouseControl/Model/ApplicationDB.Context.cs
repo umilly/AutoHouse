@@ -30,5 +30,7 @@ namespace Model
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Controller> Controllers { get; set; }
         public virtual DbSet<Sensor> Sensors { get; set; }
+        public virtual DbSet<SensorType> SensorTypes { get; set; }
+        public virtual DbSet<DBVersion> DBVersions { get; set; }
     }
 }

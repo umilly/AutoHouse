@@ -12,21 +12,23 @@ namespace Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Sensor
+    public partial class SensorType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Sensor()
+        public SensorType()
         {
-            this.Id = 0;
-            this.ControllerId = 0;
+            this.MinValue = 0;
+            this.MaxValue = 0;
+            this.Sensors = new HashSet<Sensor>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public int ControllerId { get; set; }
-        public int SensorTypeId { get; set; }
+        public string Key { get; set; }
+        public int MinValue { get; set; }
+        public int MaxValue { get; set; }
     
-        public virtual Controller Controller { get; set; }
-        public virtual SensorType SensorType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sensor> Sensors { get; set; }
     }
 }

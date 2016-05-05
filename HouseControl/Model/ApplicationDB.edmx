@@ -11,6 +11,8 @@
     <EntitySet Name="Users" EntityType="ApplicationModel.Store.Users" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Controllers" EntityType="ApplicationModel.Store.Controllers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Sensors" EntityType="ApplicationModel.Store.Sensors" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SensorTypes" EntityType="ApplicationModel.Store.SensorTypes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DBVersions" EntityType="ApplicationModel.Store.DBVersions" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_Users_Role" Association="ApplicationModel.Store.FK_Users_Role">
       <End Role="Role" EntitySet="Roles" />
       <End Role="Users" EntitySet="Users" />
@@ -18,6 +20,10 @@
     <AssociationSet Name="SensorController" Association="ApplicationModel.Store.SensorController">
       <End Role="Sensor" EntitySet="Sensors" />
       <End Role="Controller" EntitySet="Controllers" />
+    </AssociationSet>
+    <AssociationSet Name="SensorTypeSensor" Association="ApplicationModel.Store.SensorTypeSensor">
+      <End Role="SensorType" EntitySet="SensorTypes" />
+      <End Role="Sensor" EntitySet="Sensors" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Contents">
@@ -59,6 +65,24 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" DefaultValue="0" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ControllerId" Type="int" Nullable="false" DefaultValue="0" />
+    <Property Name="SensorTypeId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SensorTypes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MinValue" Type="int" Nullable="false" DefaultValue="0" />
+    <Property Name="MaxValue" Type="int" Nullable="false" DefaultValue="0" />
+  </EntityType>
+  <EntityType Name="DBVersions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Version" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <Association Name="FK_Users_Role">
     <End Role="Role" Type="ApplicationModel.Store.Roles" Multiplicity="0..1" />
@@ -81,6 +105,18 @@
       </Principal>
       <Dependent Role="Sensor">
         <PropertyRef Name="ControllerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SensorTypeSensor">
+    <End Role="SensorType" Type="ApplicationModel.Store.SensorTypes" Multiplicity="1" />
+    <End Role="Sensor" Type="ApplicationModel.Store.Sensors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SensorType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Sensor">
+        <PropertyRef Name="SensorTypeId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -139,6 +175,12 @@
             <End Role="Sensor" EntitySet="Sensors" />
             <End Role="Controller" EntitySet="Controllers" />
           </AssociationSet>
+          <EntitySet Name="SensorTypes" EntityType="ApplicationModel.SensorType" />
+          <AssociationSet Name="SensorTypeSensor" Association="ApplicationModel.SensorTypeSensor">
+            <End Role="SensorType" EntitySet="SensorTypes" />
+            <End Role="Sensor" EntitySet="Sensors" />
+          </AssociationSet>
+          <EntitySet Name="DBVersions" EntityType="ApplicationModel.DBVersion" />
         </EntityContainer>
         <EntityType Name="Controller">
           <Key>
@@ -158,6 +200,8 @@
           <Property Name="Name" Type="String" Nullable="false" />
           <NavigationProperty Name="Controller" Relationship="ApplicationModel.SensorController" FromRole="Sensor" ToRole="Controller" />
           <Property Name="ControllerId" Type="Int32" Nullable="false" DefaultValue="0" />
+          <NavigationProperty Name="SensorType" Relationship="ApplicationModel.SensorTypeSensor" FromRole="Sensor" ToRole="SensorType" />
+          <Property Name="SensorTypeId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="SensorController">
           <End Type="ApplicationModel.Sensor" Role="Sensor" Multiplicity="*" />
@@ -171,6 +215,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SensorType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Key" Type="String" Nullable="false" />
+          <Property Name="MinValue" Type="Int32" Nullable="false" DefaultValue="0" />
+          <Property Name="MaxValue" Type="Int32" Nullable="false" DefaultValue="0" />
+          <NavigationProperty Name="Sensors" Relationship="ApplicationModel.SensorTypeSensor" FromRole="SensorType" ToRole="Sensor" />
+        </EntityType>
+        <Association Name="SensorTypeSensor">
+          <End Type="ApplicationModel.SensorType" Role="SensorType" Multiplicity="1" />
+          <End Type="ApplicationModel.Sensor" Role="Sensor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SensorType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sensor">
+              <PropertyRef Name="SensorTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DBVersion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Version" Type="Guid" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -219,6 +293,26 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="ControllerId" ColumnName="ControllerId" />
+          <ScalarProperty Name="SensorTypeId" ColumnName="SensorTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SensorTypes">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.SensorType)">
+        <MappingFragment StoreEntitySet="SensorTypes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="MinValue" ColumnName="MinValue" />
+          <ScalarProperty Name="MaxValue" ColumnName="MaxValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DBVersions">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.DBVersion)">
+        <MappingFragment StoreEntitySet="DBVersions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
