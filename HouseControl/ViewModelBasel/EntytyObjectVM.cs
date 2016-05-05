@@ -14,9 +14,6 @@ namespace ViewModelBase
 {
     public abstract class EntytyObjectVM<T> : ViewModelBase where T : class, IHaveID
     {
-        private static readonly Dictionary<Type, object> _setsByType = new Dictionary<Type, object>();
-        private static readonly Dictionary<Type, Func<T>> _createByType = new Dictionary<Type, Func<T>>();
-        private static readonly Dictionary<Type, Func<int,T>> _findByType = new Dictionary<Type, Func<int,T>>();
         private static Models DB;
 
         static EntytyObjectVM()
@@ -54,18 +51,12 @@ namespace ViewModelBase
 
         private T GetEntity(int id)
         {
-            if (!_findByType.ContainsKey(typeof(T)))
-                FillDelegates();
-            
-            return _findByType[typeof(T)](id);
+            return Context.Set<T>().Find(id);
         }
 
         private T CreateNewEntity()
         {
-            if (!_createByType.ContainsKey(typeof (T)))
-                FillDelegates();
-
-            return _createByType[typeof (T)]();
+            return  Context.Set<T>().Create();
         }
 
         protected abstract bool Validate();
@@ -76,6 +67,8 @@ namespace ViewModelBase
                 return;
             try
             {
+                if (!Context.Set<T>().Contains(Model))
+                    Context.Set<T>().Add(Model);
                 Context.SaveChanges();
                 OnPropertyChanged(()=>ID);
             }
@@ -86,45 +79,6 @@ namespace ViewModelBase
                 throw newException;
             }
         }
-
-        private void FillDelegates()
-        {
-            var set = FindTableSet();
-            var createMethod = set.GetType().GetMember("Create").First() as MethodInfo;
-            var findMethod = set.GetType().GetMember("Find").First() as MethodInfo;
-            var addMethod = set.GetType().GetMember("Add").First() as MethodInfo;
-            _createByType[typeof (T)] = () =>
-            {
-                var res = (T) createMethod.Invoke(set, null);
-                addMethod.Invoke(set, new object[] {res});
-                return res;
-            };
-            _findByType[typeof (T)] = (id) =>
-            {
-                var res = findMethod.Invoke(set, new object[] {new object[]{ id }});
-                return res as T ;
-            };
-        }
-
-        private object FindTableSet()
-        {
-            if (_setsByType.ContainsKey(typeof (T)))
-                return _setsByType[typeof (T)];
-
-            var member = Context.GetType().GetMembers().First(a =>
-            {
-                if (!(a is PropertyInfo))
-                    return false;
-                var prop = (a as PropertyInfo);
-                if (!prop.PropertyType.GenericTypeArguments.Any())
-                    return false;
-                return prop.PropertyType.GenericTypeArguments[0] == typeof (T);
-            }) as PropertyInfo;
-            var set = member.GetValue(Context);
-            _setsByType[typeof (T)] = set;
-            return set;
-        }
-
         public Models Context { get; }
 
     }
