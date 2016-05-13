@@ -20,12 +20,29 @@ namespace ViewModel
             container.RegisterType<IPool, VMFactory>();
             container.RegisterType<INetworkService, NetworkService>();
             container.RegisterType<ILog, EventLogger>();
+            PreparePool();
+        }
+
+        private void PreparePool()
+        {
+            var types = GetType().Assembly.GetTypes().Where(type => typeof (IEntytyObjectVM).IsAssignableFrom(type));
+            Use<IPool>().FillPool(types.ToArray());
         }
 
         public override int ID
         {
             get { return 1; }
             set { }
+        }
+
+        public ControllerVM GetOrCreateControllerVm()
+        {
+            var controller =  Use<IPool>().GetViewModels<ControllerVM>().FirstOrDefault();
+            if (controller == null)
+            {
+                controller = Use<IPool>().CreateDBObject<ControllerVM>();
+            }
+            return controller;
         }
 
         public void InitSettings()

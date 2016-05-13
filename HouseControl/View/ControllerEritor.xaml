@@ -1,5 +1,5 @@
 ﻿<vmBase:CustomViewBase 
-    x:TypeArguments="viewModel:ControllerEditorVM"
+    x:TypeArguments="viewModel:ControllerVM"
     x:Class="View.ControllerEditorView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

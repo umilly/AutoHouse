@@ -18,6 +18,19 @@ namespace VMBase
         {
             return (T)CreateView(typeof (T),id); 
         }
+
+        private IView CreateView(Type type, IViewModel viewModel)
+        {
+            var res = Activator.CreateInstance(type, this) as IView;
+            res.ViewModel = viewModel;
+            return res;
+        }
+
+        public T CreateView<T>(IViewModel viewModel)  where  T:IView
+        {
+            return (T)CreateView(typeof (T), viewModel) ;
+        }
+
         public IView CreateView(Type type,int Id=-1) 
         {
             var res = Activator.CreateInstance(type, this) as IView;

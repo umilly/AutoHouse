@@ -27,6 +27,7 @@ namespace Facade
         IView CreateView(Type type, int Id = 0);
         IView NextView { get; set; }
         void ShowMessage(string res);
+        T CreateView<T>(IViewModel viewModel) where T : IView; 
     }
 
     public interface IService
@@ -70,5 +71,10 @@ namespace Facade
     {
         Network,
         Data
+    }
+
+    public interface IEntytyObjectVM:IViewModel
+    {
+        Type EntityType { get; }
     }
 }

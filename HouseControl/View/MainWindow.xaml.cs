@@ -84,7 +84,8 @@ namespace WpfApplication
 
         private void AddControllerClick(object sender, RoutedEventArgs e)
         {
-            var controller = _container.Use<IViewService>().CreateView<ControllerEditorView>();
+            
+            var controller = _container.Use<IViewService>().CreateView<ControllerEditorView>(MainVM.GetOrCreateControllerVm());
             CurrentContent = controller;
         }
     }

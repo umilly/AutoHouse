@@ -12,51 +12,19 @@ using Model;
 
 namespace ViewModelBase
 {
-    public abstract class EntytyObjectVM<T> : ViewModelBase where T : class, IHaveID
+    public abstract class EntytyObjectVM<T> : ViewModelBase, IEntytyObjectVM where T : class, IHaveID
     {
-        private static Models DB;
-
-        static EntytyObjectVM()
+        public Type EntityType
         {
-            try
-            {
-                DB = new Models("vlad");
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
-
+            get { return typeof (T); } 
         }
 
         protected T Model { get; private set; }
 
-        public EntytyObjectVM(IServiceContainer container) : base(container)
+        public EntytyObjectVM(IServiceContainer container,Models dataBase,T model) : base(container)
         {
-            Context = DB;
-        }
-
-        public override void OnCreate(int id)
-        {
-            
-            var res= GetEntity(id);
-            if(res==null)
-            {
-                res = CreateNewEntity();
-            }
-            Model = res;
-            base.OnCreate(id);
-        }
-
-        private T GetEntity(int id)
-        {
-            return Context.Set<T>().Find(id);
-        }
-
-        private T CreateNewEntity()
-        {
-            return  Context.Set<T>().Create();
+            Context = dataBase;
+            Model = model;
         }
 
         protected abstract bool Validate();

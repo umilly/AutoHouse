@@ -99,6 +99,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DeviceTree.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ControllerEritor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -118,6 +122,9 @@
     <Compile Include="BoolToColorConverter.cs" />
     <Compile Include="ContolView.xaml.cs">
       <DependentUpon>ContolView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceTree.xaml.cs">
+      <DependentUpon>DeviceTree.xaml</DependentUpon>
     </Compile>
     <Compile Include="ControllerEritor.xaml.cs">
       <DependentUpon>ControllerEritor.xaml</DependentUpon>
