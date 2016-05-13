@@ -60,8 +60,10 @@
     <Compile Include="ConrolPanelVM.cs" />
     <Compile Include="RelayData.cs" />
     <Compile Include="RelayViewModel.cs" />
+    <Compile Include="SensorViewModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsVM.cs" />
+    <Compile Include="TimerService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Facade\Facade.csproj">

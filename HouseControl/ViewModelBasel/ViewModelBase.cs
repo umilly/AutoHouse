@@ -33,7 +33,7 @@ namespace ViewModelBase
 
         protected virtual void OnPropertyChanged<T>(Expression<Func<T>> expression)
         {
-            var prop = ((expression.Body) as System.Linq.Expressions.MemberExpression).Member.Name;
+            var prop = ((expression.Body) as MemberExpression).Member.Name;
             OnPropertyChanged(prop);
         }
         [NotifyPropertyChangedInvocator]

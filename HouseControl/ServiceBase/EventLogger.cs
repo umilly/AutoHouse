@@ -9,11 +9,12 @@ namespace Common
 {
     public class EventLogger:ServiceBase,ILog
     {
-        public void Log(LogCategory network, string message)
+        public void Log(LogCategory network, string message,bool showMessageBox=false)
         {
             var show= $"[{network}] [{DateTime.Now.ToLongDateString()}]:'{message}'";
             Console.WriteLine(show);
-            //Use<IViewService>().ShowMessage(show);
+            if(showMessageBox)
+                Use<IViewService>().ShowMessage(show);
         }
     }
 }

@@ -15,6 +15,8 @@ namespace ViewModelBase
         void FillPool(Type[] types);
         IEntytyObjectVM GetDBVM(Type type, int id);
         IEntytyObjectVM CreateDBObject(Type type);
-        T CreateDBObject<T>();
+        T CreateDBObject<T>() where T : IEntytyObjectVM;
+        T GetDBVM<T>(int id) where T:IEntytyObjectVM;
+        void RemoveVM(Type type, int i);
     }
 }

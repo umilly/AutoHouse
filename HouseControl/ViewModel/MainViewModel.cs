@@ -20,7 +20,15 @@ namespace ViewModel
             container.RegisterType<IPool, VMFactory>();
             container.RegisterType<INetworkService, NetworkService>();
             container.RegisterType<ILog, EventLogger>();
+            container.RegisterType<ITimerSerivce, TimerService>();
             PreparePool();
+            Use<ITimerSerivce>().Subsctibe(this, UpdateControllers, 500,true);
+        }
+
+        private void UpdateControllers()
+        {
+            Use<IPool>().GetViewModels<ControllerVM>().ForEach(a=>a.Update());
+            Use<IPool>().GetViewModels<SensorViewModel>().ForEach(a => a.UpdateValue());
         }
 
         private void PreparePool()
@@ -34,6 +42,8 @@ namespace ViewModel
             get { return 1; }
             set { }
         }
+
+        public ITreeNode[] Devices => Use<IPool>().GetViewModels<ControllerVM>().ToArray();
 
         public ControllerVM GetOrCreateControllerVm()
         {

@@ -16,15 +16,32 @@ namespace View
             InitializeComponent();
         }
 
+        public int ID
+        {
+            get
+            {
+                return ViewModel.ID;
+            }
+            set
+            {
+                _viewService.ResetVM(this,value);
+            }
+        }
+
         private void SaveClick(object sender, RoutedEventArgs e)
         {
-            var controllers=ViewModel.GetControllers();
             ViewModel.SaveDB();
         }
 
         private void FindClick(object sender, RoutedEventArgs e)
         {
-            ViewModel.Find();
+            ViewModel.FindSensors();
+        }
+
+        private void DeleteClick(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Delete();
+            _viewService.ResetVM(this,0);
         }
     }
 }

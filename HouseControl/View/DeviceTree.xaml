@@ -14,7 +14,7 @@
              DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
     >
     <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Black" BorderThickness="2">
-        <Grid>
+        <ScrollViewer MaxHeight="400" VerticalScrollBarVisibility="Auto">
             <TreeView Name="DeviceTreeView" Margin="5" ItemsSource="{Binding ViewModel.Devices}">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
@@ -30,6 +30,6 @@
                 </TreeView.ItemTemplate>
             </TreeView>
 
-        </Grid>
+        </ScrollViewer>
     </Border>
 </vmBase:CustomViewBase>

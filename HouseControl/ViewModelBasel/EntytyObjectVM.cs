@@ -19,6 +19,8 @@ namespace ViewModelBase
             get { return typeof (T); } 
         }
 
+        public bool SavedInContext { get; set; }
+        
         protected T Model { get; private set; }
 
         public EntytyObjectVM(IServiceContainer container,Models dataBase,T model) : base(container)
@@ -27,7 +29,13 @@ namespace ViewModelBase
             Model = model;
         }
 
-        protected abstract bool Validate();
+        public override int ID
+        {
+            get { return Model.ID; }
+            set{}
+        }
+
+        public abstract bool Validate();
 
         public void SaveDB()
         {
@@ -35,9 +43,10 @@ namespace ViewModelBase
                 return;
             try
             {
-                if (!Context.Set<T>().Contains(Model))
-                    Context.Set<T>().Add(Model);
+                //if (!Context.Set<T>().Contains(Model))
+                //    Context.Set<T>().Add(Model);
                 Context.SaveChanges();
+                SavedInContext = true;
                 OnPropertyChanged(()=>ID);
             }
             catch (DbEntityValidationException e)
@@ -46,6 +55,18 @@ namespace ViewModelBase
                 Use<ILog>().Log(LogCategory.Data,e.ToString() );
                 throw newException;
             }
+        }
+
+        public void Delete()
+        {
+            OnDelete();
+            Context.Set<T>().Remove(Model);
+            Use<IPool>().RemoveVM(GetType(), ID);
+        }
+
+        protected virtual void OnDelete()
+        {
+            
         }
         public Models Context { get; }
 
