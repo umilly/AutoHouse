@@ -10,13 +10,13 @@ namespace ViewModel
 {
     public class DeviceTreeVM:ViewModelBase.ViewModelBase
     {
-        private ITreeNode[] _devices;
+        private IDeviceTreeNode[] _devices;
 
         public DeviceTreeVM(IServiceContainer container) : base(container)
         {
         }
 
-        public ITreeNode[] Devices
+        public IDeviceTreeNode[] Devices
         {
             get { return _devices; }
             set
@@ -31,12 +31,13 @@ namespace ViewModel
 
 
 
-    public interface ITreeNode
+    public interface IDeviceTreeNode
     {
-        ITreeNode Parent { get; }
-        IEnumerable<ITreeNode> Children { get; }
+        IDeviceTreeNode Parent { get; }
+        IEnumerable<IDeviceTreeNode> Children { get; }
         string Name { get; }
         string Value { get; }
+        bool IsConnected { get; }
     }
 }
 

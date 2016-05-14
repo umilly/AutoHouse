@@ -10,9 +10,10 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ControllerVM:EntytyObjectVM<Controller>,ITreeNode
+    public class ControllerVM:EntytyObjectVM<Controller>,IDeviceTreeNode
     {
         private readonly Dictionary<int, string> _values=new Dictionary<int, string>();
+        private bool _isConnected;
         private static Dictionary<string, SensorType> _cahedTypes;
         public ControllerVM(IServiceContainer container,Models dataBase,Controller controller) : base(container,dataBase,controller)
         {
@@ -28,9 +29,9 @@ namespace ViewModel
             }
         }
 
-        public ITreeNode Parent { get; }
+        public IDeviceTreeNode Parent { get; }
 
-        public IEnumerable<ITreeNode> Children
+        public IEnumerable<IDeviceTreeNode> Children
         {
             get { return Use<IPool>().GetViewModels<SensorViewModel>().Where(a => a.Parent == this); }
         }
@@ -44,6 +45,16 @@ namespace ViewModel
         }
 
         public string Value { get; }
+
+        public bool IsConnected
+        {
+            get { return _isConnected; }
+            private set
+            {
+                _isConnected = value; 
+                OnPropertyChanged();
+            }
+        }
 
         public string IP
         {
@@ -83,6 +94,12 @@ namespace ViewModel
 
         private void ParseSensorsValues(string result)
         {
+            if (string.IsNullOrEmpty(result))
+            {
+                IsConnected = false;
+                return;
+            }
+            IsConnected = true;
             fillSensorTypes();
             var lines = result.Split(new[] { "<br>", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < lines.Count(); i++)

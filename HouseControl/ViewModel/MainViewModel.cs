@@ -43,7 +43,7 @@ namespace ViewModel
             set { }
         }
 
-        public ITreeNode[] Devices => Use<IPool>().GetViewModels<ControllerVM>().ToArray();
+        public IDeviceTreeNode[] Devices => Use<IPool>().GetViewModels<ControllerVM>().ToArray();
 
         public ControllerVM GetOrCreateControllerVm()
         {

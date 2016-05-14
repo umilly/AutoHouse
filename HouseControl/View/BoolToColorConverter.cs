@@ -9,12 +9,12 @@ namespace ViewTools
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var param = bool.Parse(parameter.ToString());
+            var param = parameter!=null&& bool.Parse(parameter.ToString());
             var val = value as bool?;
             if (!val.HasValue)
                 return new SolidColorBrush(Colors.Gray);
             if (val.Value ^ param)
-                return new SolidColorBrush(Colors.DarkOliveGreen);
+                return new SolidColorBrush(Colors.Transparent);
             else
                 return new SolidColorBrush(Colors.LightCoral);
 

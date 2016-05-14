@@ -4,7 +4,7 @@ using Model;
 using ViewModel;
 using ViewModelBase;
 
-public class SensorViewModel : EntytyObjectVM<Sensor>, ITreeNode
+public class SensorViewModel : EntytyObjectVM<Sensor>, IDeviceTreeNode
 {
     public SensorViewModel(IServiceContainer container, Models dataBase, Sensor model)
         : base(container, dataBase, model)
@@ -20,11 +20,11 @@ public class SensorViewModel : EntytyObjectVM<Sensor>, ITreeNode
             ;
     }
 
-    public ITreeNode Parent => _parent;
+    public IDeviceTreeNode Parent => _parent;
 
     private ControllerVM _parent => Use<IPool>().GetDBVM<ControllerVM>(Model.ControllerId);
 
-    public IEnumerable<ITreeNode> Children { get; }
+    public IEnumerable<IDeviceTreeNode> Children { get; }
 
     public string Name
     {
@@ -32,6 +32,7 @@ public class SensorViewModel : EntytyObjectVM<Sensor>, ITreeNode
     }
 
     public string Value => _parent.Values.ContainsKey(Model.ContollerSlot) ? _parent.Values[Model.ContollerSlot] : "-";
+    public bool IsConnected => true;
 
     public void Init(SensorType st, int slotNum, Controller controller, string name)
     {
