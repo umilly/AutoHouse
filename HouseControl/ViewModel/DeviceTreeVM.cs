@@ -10,31 +10,34 @@ namespace ViewModel
 {
     public class DeviceTreeVM:ViewModelBase.ViewModelBase
     {
+        private IDeviceTreeNode[] _devices;
+
         public DeviceTreeVM(IServiceContainer container) : base(container)
         {
         }
 
-        public ITreeNode[] Devices { get; set; }
-        public override void OnCreate(int id)
+        public IDeviceTreeNode[] Devices
         {
-            base.OnCreate(id);
-            var allDevs = Use<IPool>().GetViewModels<IDevice>();
-
+            get { return _devices; }
+            set
+            {
+                _devices = value;
+                OnPropertyChanged();
+            }
         }
 
         public override int ID { get; set; }
     }
 
-    public interface IDevice:IViewModel
-    {
-    }
 
-    public interface ITreeNode
+
+    public interface IDeviceTreeNode
     {
-        ITreeNode Parent { get; }
-        ITreeNode Children { get; }
+        IDeviceTreeNode Parent { get; }
+        IEnumerable<IDeviceTreeNode> Children { get; }
         string Name { get; }
         string Value { get; }
+        bool IsConnected { get; }
     }
 }
 

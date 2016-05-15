@@ -23,9 +23,29 @@ namespace VMBase
         {
             var res = Activator.CreateInstance(type, this) as IView;
             res.ViewModel = viewModel;
+            NextView = res;
             return res;
         }
 
+        public void ResetVM(IView view, int id)
+        {
+            if (typeof (IEntytyObjectVM).IsAssignableFrom(view.VmType))
+            {
+                var oldVM = (view.ViewModel as IEntytyObjectVM);
+                if (!oldVM.SavedInContext)
+                    return;
+                if (!oldVM.Validate())
+                    return;
+                oldVM.SaveDB();
+
+                var vm = Use<IPool>().GetDBVM(view.VmType, id) ?? Use<IPool>().CreateDBObject(view.VmType);
+                view.ViewModel = vm;
+            }
+            else
+            {
+                view.ViewModel = Use<IPool>().GetOrCreateVM(view.VmType, id);
+            }
+        }
         public T CreateView<T>(IViewModel viewModel)  where  T:IView
         {
             return (T)CreateView(typeof (T), viewModel) ;
@@ -35,12 +55,23 @@ namespace VMBase
         {
             var res = Activator.CreateInstance(type, this) as IView;
             res.ViewModel = Use<IPool>().GetOrCreateVM(res.VmType,Id);
+            NextView = res;
             return res;
         }
         public IView NextView { get; set; }
         public void ShowMessage(string res)
         {
             MessageBox.Show(res);
+        }
+
+        public void CloseView(IView view)
+        {
+            if (typeof (IEntytyObjectVM).IsAssignableFrom(view.VmType))
+            {
+                var oldVM = (view.ViewModel as IEntytyObjectVM);
+                if (!oldVM.SavedInContext)
+                    oldVM.Delete();
+            }
         }
     }
 

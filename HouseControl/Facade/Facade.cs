@@ -14,6 +14,7 @@ namespace Facade
     {
         IViewModel ViewModel { get; set; }
         Type VmType { get; }
+        void OnClose();
     }
 
     public interface IWrapper
@@ -64,7 +65,7 @@ namespace Facade
 
     public interface ILog : IService
     {
-        void Log(LogCategory network, string message);
+        void Log(LogCategory network, string message,bool showMesageBox=false);
     }
 
     public enum LogCategory
@@ -76,5 +77,13 @@ namespace Facade
     public interface IEntytyObjectVM:IViewModel
     {
         Type EntityType { get; }
+        bool SavedInContext { get; set; }
+        bool Validate();
+        void SaveDB();
+        void Delete();
+    }
+    public interface ITimerSerivce:IService {
+        void Subsctibe(object key, Action action,int waitMilliSeconds,bool repeat=false);
+        void UnSubsctibe(object key);
     }
 }

@@ -43,6 +43,12 @@ namespace ViewModelBase
             var res = _pool[type].FirstOrDefault(a => a.ID == id);
             return res as IEntytyObjectVM;
         }
+
+        public T GetDBVM<T>(int id) where T : IEntytyObjectVM
+        {
+            return (T) GetDBVM(typeof (T), id);
+        }
+
         public IEntytyObjectVM CreateDBObject(Type type)
         {
             if (!_pool.ContainsKey(type))
@@ -54,7 +60,7 @@ namespace ViewModelBase
             return res;
         }
 
-        public T CreateDBObject<T>()
+        public T CreateDBObject<T>() where T:IEntytyObjectVM
         {
             return (T) CreateDBObject(typeof (T));
         }
@@ -81,19 +87,25 @@ namespace ViewModelBase
         private void AddEntityFromDB(Type dbVmType, object model)
         {
             var res = (IEntytyObjectVM)Activator.CreateInstance(dbVmType, Container, DB, model);
+            res.SavedInContext = true;
             _pool[dbVmType].Add(res);
         }
 
         public void RemoveVM<T>(int i)
         {
-            if (!_pool.ContainsKey(typeof (T)))
+            RemoveVM(typeof(T),i);
+        }
+
+        public void RemoveVM(Type type, int i)
+        {
+            if (!_pool.ContainsKey(type))
             {
                 return;
             }
-            var toRemove = _pool[typeof (T)].FirstOrDefault(a => a.ID == i);
-            if(toRemove==null)
+            var toRemove = _pool[type].FirstOrDefault(a => a.ID == i);
+            if (toRemove == null)
                 return;
-            _pool[typeof (T)].Remove(toRemove);
+            _pool[type].Remove(toRemove);
         }
 
         public T GetOrCreateVM<T>(int number) where T:class,IViewModel

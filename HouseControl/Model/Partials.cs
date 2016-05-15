@@ -17,6 +17,13 @@ namespace Model
             get { return this.Id; }
         }
     }
+    public partial class Sensor : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
 
     public partial class Models
     {

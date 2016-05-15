@@ -43,7 +43,7 @@ namespace ViewModelBase
             catch (Exception e)
             {
                 res = e.ToString();
-                throw e;
+                return string.Empty;
             }
             finally
             {
@@ -68,11 +68,12 @@ namespace ViewModelBase
             catch (Exception e)
             {
                 res = e.ToString();
-                throw e;
+                return string.Empty;
+                //throw e;
             }
             finally
             {
-                Use<ILog>().Log(LogCategory.Network, string.Format("url:{0} \r\n response:\r\n {1}", url, res));
+                Use<ILog>().Log(LogCategory.Network, $"url:{url} \r\n response:\r\n {res}");
             }
             return res;
         }

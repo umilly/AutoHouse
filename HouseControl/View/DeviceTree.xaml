@@ -9,16 +9,19 @@
              xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
              xmlns:vmBase="clr-namespace:VMBase;assembly=VMBase"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:viewTools="clr-namespace:ViewTools"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" 
-             DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-    >
+             DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <UserControl.Resources>
+        <viewTools:BoolToColorConverter x:Key="ColorConverter"/>
+    </UserControl.Resources>
     <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Black" BorderThickness="2">
-        <Grid>
+        <ScrollViewer MaxHeight="400" VerticalScrollBarVisibility="Auto">
             <TreeView Name="DeviceTreeView" Margin="5" ItemsSource="{Binding ViewModel.Devices}">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
-                        <Grid>
+                        <Grid Background="{Binding Path=IsConnected, Converter={StaticResource ColorConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="100"/>
@@ -30,6 +33,6 @@
                 </TreeView.ItemTemplate>
             </TreeView>
 
-        </Grid>
+        </ScrollViewer>
     </Border>
 </vmBase:CustomViewBase>

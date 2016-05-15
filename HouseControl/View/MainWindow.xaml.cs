@@ -31,13 +31,17 @@ namespace WpfApplication
 
         private void OpenControlView()
         {
-            var control = _container.Use<IViewService>().CreateView<ContolView>(1);
-            control.ViewModel.FillRelays();
-            CurrentContent = control;
+            var control = _container.Use<IViewService>().CreateView<DeviceTree>(1);
+            OnNextView(null,null);
+            control.ViewModel.Devices = MainVM.Devices;
         }
 
         private void OnNextView(object sender, ExecutedRoutedEventArgs executedRoutedEventArgs)
         {
+            if ((CurrentContent != null) && (CurrentContent is IView))
+            {
+                (CurrentContent as IView).OnClose();
+            }
             CurrentContent = _container.Use<IViewService>().NextView as ContentControl;
         }
 
@@ -58,8 +62,8 @@ namespace WpfApplication
 
         private void SettingsMenuClick(object sender, RoutedEventArgs e)
         {
-            var settings = _container.Use<IViewService>().CreateView<SettingsView>(1);
-            CurrentContent = settings;
+            _container.Use<IViewService>().CreateView<SettingsView>(1);
+            OnNextView(null, null);
         }
 
         private void ControlMenuClick(object sender, RoutedEventArgs e)
@@ -85,8 +89,8 @@ namespace WpfApplication
         private void AddControllerClick(object sender, RoutedEventArgs e)
         {
             
-            var controller = _container.Use<IViewService>().CreateView<ControllerEditorView>(MainVM.GetOrCreateControllerVm());
-            CurrentContent = controller;
+            _container.Use<IViewService>().CreateView<ControllerEditorView>(MainVM.GetOrCreateControllerVm());
+            OnNextView(null, null);
         }
     }
 }
