@@ -80,7 +80,7 @@ namespace ViewModel
 
         public IEnumerable<Controller> GetControllers()
         {
-            return Context.Controllers.ToList();
+            return Context.Devices.OfType<Controller>().ToList();
         }
 
         private string Url => $"http://{IP}:{Port}";

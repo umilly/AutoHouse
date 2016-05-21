@@ -12,18 +12,19 @@ namespace Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Controller : Device
+    public partial class Device
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Controller()
+        public Device()
         {
-            this.Sensors = new HashSet<Sensor>();
+            this.Name = "";
+            this.Commands = new HashSet<Command>();
         }
     
-        public string IP { get; set; }
-        public int Port { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sensor> Sensors { get; set; }
+        public virtual ICollection<Command> Commands { get; set; }
     }
 }

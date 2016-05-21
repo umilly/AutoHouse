@@ -22,7 +22,7 @@ public class SensorViewModel : EntytyObjectVM<Sensor>, IDeviceTreeNode
 
     public IDeviceTreeNode Parent => _parent;
 
-    private ControllerVM _parent => Use<IPool>().GetDBVM<ControllerVM>(Model.ControllerId);
+    private ControllerVM _parent => Use<IPool>().GetDBVM<ControllerVM>(Model.Controller.ID);
 
     public IEnumerable<IDeviceTreeNode> Children { get; }
 

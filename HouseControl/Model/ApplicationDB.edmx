@@ -170,53 +170,58 @@
             <End Role="Role" EntitySet="Roles" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
-          <EntitySet Name="Controllers" EntityType="ApplicationModel.Controller" />
-          <EntitySet Name="Sensors" EntityType="ApplicationModel.Sensor" />
-          <AssociationSet Name="SensorController" Association="ApplicationModel.SensorController">
-            <End Role="Sensor" EntitySet="Sensors" />
-            <End Role="Controller" EntitySet="Controllers" />
-          </AssociationSet>
           <EntitySet Name="SensorTypes" EntityType="ApplicationModel.SensorType" />
+          <EntitySet Name="DBVersions" EntityType="ApplicationModel.DBVersion" />
+          <EntitySet Name="Modes" EntityType="ApplicationModel.Mode" />
+          <EntitySet Name="Scenarios" EntityType="ApplicationModel.Scenario" />
+          <EntitySet Name="Zones" EntityType="ApplicationModel.Zone" />
+          <EntitySet Name="Reactions" EntityType="ApplicationModel.Reaction" />
+          <EntitySet Name="Conditions" EntityType="ApplicationModel.Condition" />
+          <EntitySet Name="ConditionTypes" EntityType="ApplicationModel.ConditionType" />
+          <AssociationSet Name="ConditionTypeCondition" Association="ApplicationModel.ConditionTypeCondition">
+            <End Role="ConditionType" EntitySet="ConditionTypes" />
+            <End Role="Condition" EntitySet="Conditions" />
+          </AssociationSet>
+          <AssociationSet Name="ReactionCondition" Association="ApplicationModel.ReactionCondition">
+            <End Role="Reaction" EntitySet="Reactions" />
+            <End Role="Condition" EntitySet="Conditions" />
+          </AssociationSet>
+          <EntitySet Name="Commands" EntityType="ApplicationModel.Command" />
+          <EntitySet Name="Devices" EntityType="ApplicationModel.Device" />
+          <AssociationSet Name="CommandDevice" Association="ApplicationModel.CommandDevice">
+            <End Role="Command" EntitySet="Commands" />
+            <End Role="Device" EntitySet="Devices" />
+          </AssociationSet>
+          <EntitySet Name="Parametеr" EntityType="ApplicationModel.Parametеr" />
+          <AssociationSet Name="ParametеrCommand" Association="ApplicationModel.ParametеrCommand">
+            <End Role="Parametеr" EntitySet="Parametеr" />
+            <End Role="Command" EntitySet="Commands" />
+          </AssociationSet>
+          <EntitySet Name="ParameterTypes" EntityType="ApplicationModel.ParameterType" />
+          <AssociationSet Name="ParameterTypeParametеr" Association="ApplicationModel.ParameterTypeParametеr">
+            <End Role="ParameterType" EntitySet="ParameterTypes" />
+            <End Role="Parametеr" EntitySet="Parametеr" />
+          </AssociationSet>
           <AssociationSet Name="SensorTypeSensor" Association="ApplicationModel.SensorTypeSensor">
             <End Role="SensorType" EntitySet="SensorTypes" />
-            <End Role="Sensor" EntitySet="Sensors" />
+            <End Role="Sensor" EntitySet="Devices" />
           </AssociationSet>
-          <EntitySet Name="DBVersions" EntityType="ApplicationModel.DBVersion" />
+          <AssociationSet Name="SensorController" Association="ApplicationModel.SensorController">
+            <End Role="Sensor" EntitySet="Devices" />
+            <End Role="Controller" EntitySet="Devices" />
+          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Controller">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <EntityType Name="Controller" BaseType="ApplicationModel.Device">
           <Property Name="IP" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="Port" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Sensors" Relationship="ApplicationModel.SensorController" FromRole="Controller" ToRole="Sensor" />
         </EntityType>
-        <EntityType Name="Sensor">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" DefaultValue="0" />
-          <Property Name="Name" Type="String" Nullable="false" />
-          <NavigationProperty Name="Controller" Relationship="ApplicationModel.SensorController" FromRole="Sensor" ToRole="Controller" />
-          <Property Name="ControllerId" Type="Int32" Nullable="false" DefaultValue="0" />
+        <EntityType Name="Sensor" BaseType="ApplicationModel.Device">
+          <Property Name="ContollerSlot" Type="Int32" Nullable="false" DefaultValue="0" />
           <NavigationProperty Name="SensorType" Relationship="ApplicationModel.SensorTypeSensor" FromRole="Sensor" ToRole="SensorType" />
           <Property Name="SensorTypeId" Type="Int32" Nullable="false" />
-          <Property Name="ContollerSlot" Type="Int32" Nullable="false" DefaultValue="0" />
+          <NavigationProperty Name="Controller" Relationship="ApplicationModel.SensorController" FromRole="Sensor" ToRole="Controller" />
         </EntityType>
-        <Association Name="SensorController">
-          <End Type="ApplicationModel.Sensor" Role="Sensor" Multiplicity="*" />
-          <End Type="ApplicationModel.Controller" Role="Controller" Multiplicity="1" />
-          <ReferentialConstraint>
-            <Principal Role="Controller">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Sensor">
-              <PropertyRef Name="ControllerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="SensorType">
           <Key>
             <PropertyRef Name="Id" />
@@ -228,6 +233,144 @@
           <Property Name="MaxValue" Type="Int32" Nullable="false" DefaultValue="0" />
           <NavigationProperty Name="Sensors" Relationship="ApplicationModel.SensorTypeSensor" FromRole="SensorType" ToRole="Sensor" />
         </EntityType>
+        <EntityType Name="DBVersion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Version" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Mode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
+          <Property Name="Description" Type="String" Nullable="false" DefaultValue="" />
+        </EntityType>
+        <EntityType Name="Scenario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
+          <Property Name="Description" Type="String" Nullable="false" DefaultValue="" />
+        </EntityType>
+        <EntityType Name="Zone">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
+          <Property Name="Description" Type="String" Nullable="false" DefaultValue="" />
+        </EntityType>
+        <EntityType Name="Reaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
+          <NavigationProperty Name="Conditions" Relationship="ApplicationModel.ReactionCondition" FromRole="Reaction" ToRole="Condition" />
+        </EntityType>
+        <EntityType Name="Condition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="ConditionType" Relationship="ApplicationModel.ConditionTypeCondition" FromRole="Condition" ToRole="ConditionType" />
+          <Property Name="ConditionTypeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Reaction" Relationship="ApplicationModel.ReactionCondition" FromRole="Condition" ToRole="Reaction" />
+          <Property Name="ReactionId" Type="Int32" Nullable="true" />
+        </EntityType>
+        <EntityType Name="ConditionType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Value" Type="String" Nullable="false" />
+          <NavigationProperty Name="Conditions" Relationship="ApplicationModel.ConditionTypeCondition" FromRole="ConditionType" ToRole="Condition" />
+        </EntityType>
+        <Association Name="ConditionTypeCondition">
+          <End Type="ApplicationModel.ConditionType" Role="ConditionType" Multiplicity="1" />
+          <End Type="ApplicationModel.Condition" Role="Condition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConditionType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Condition">
+              <PropertyRef Name="ConditionTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ReactionCondition">
+          <End Type="ApplicationModel.Reaction" Role="Reaction" Multiplicity="0..1" />
+          <End Type="ApplicationModel.Condition" Role="Condition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reaction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Condition">
+              <PropertyRef Name="ReactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Command">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
+          <NavigationProperty Name="Device" Relationship="ApplicationModel.CommandDevice" FromRole="Command" ToRole="Device" />
+          <NavigationProperty Name="Parametеr" Relationship="ApplicationModel.ParametеrCommand" FromRole="Command" ToRole="Parametеr" />
+        </EntityType>
+        <EntityType Name="Device">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
+          <NavigationProperty Name="Commands" Relationship="ApplicationModel.CommandDevice" FromRole="Device" ToRole="Command" />
+        </EntityType>
+        <Association Name="CommandDevice">
+          <End Type="ApplicationModel.Command" Role="Command" Multiplicity="*" />
+          <End Type="ApplicationModel.Device" Role="Device" Multiplicity="1" />
+        </Association>
+        <EntityType Name="Parametеr">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
+          <Property Name="Value" Type="String" Nullable="false" />
+          <NavigationProperty Name="Command" Relationship="ApplicationModel.ParametеrCommand" FromRole="Parametеr" ToRole="Command" />
+          <NavigationProperty Name="ParameterType" Relationship="ApplicationModel.ParameterTypeParametеr" FromRole="Parametеr" ToRole="ParameterType" />
+          <Property Name="ParameterTypeId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="ParametеrCommand">
+          <End Type="ApplicationModel.Parametеr" Role="Parametеr" Multiplicity="*" />
+          <End Type="ApplicationModel.Command" Role="Command" Multiplicity="1" />
+        </Association>
+        <EntityType Name="ParameterType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="ParameterTypeParametеr">
+          <End Type="ApplicationModel.ParameterType" Role="ParameterType" Multiplicity="1" />
+          <End Type="ApplicationModel.Parametеr" Role="Parametеr" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParameterType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Parametеr">
+              <PropertyRef Name="ParameterTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="SensorTypeSensor">
           <End Type="ApplicationModel.SensorType" Role="SensorType" Multiplicity="1" />
           <End Type="ApplicationModel.Sensor" Role="Sensor" Multiplicity="*" />
@@ -240,13 +383,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="DBVersion">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Version" Type="Guid" Nullable="false" />
-        </EntityType>
+        <Association Name="SensorController">
+          <End Type="ApplicationModel.Sensor" Role="Sensor" Multiplicity="*" />
+          <End Type="ApplicationModel.Controller" Role="Controller" Multiplicity="1" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -279,27 +419,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Controllers">
-      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.Controller)">
-        <MappingFragment StoreEntitySet="Controllers">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="IP" ColumnName="IP" />
-          <ScalarProperty Name="Port" ColumnName="Port" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Sensors">
-      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.Sensor)">
-        <MappingFragment StoreEntitySet="Sensors">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="ControllerId" ColumnName="ControllerId" />
-          <ScalarProperty Name="SensorTypeId" ColumnName="SensorTypeId" />
-          <ScalarProperty Name="ContollerSlot" ColumnName="ContollerSlot" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="SensorTypes">
       <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.SensorType)">
         <MappingFragment StoreEntitySet="SensorTypes">
@@ -319,6 +438,20 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+          <EntitySetMapping Name="Devices">
+            <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.Sensor)" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+              <MappingFragment StoreEntitySet="Sensors">
+                <ScalarProperty Name="ContollerSlot" ColumnName="ContollerSlot" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.Controller)" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+              <MappingFragment StoreEntitySet="Controllers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="Port" ColumnName="Port" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

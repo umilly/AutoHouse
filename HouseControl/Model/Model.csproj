@@ -82,6 +82,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ApplicationDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Command.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Condition.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConditionType.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Content.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
@@ -91,9 +100,27 @@
     <Compile Include="DBVersion.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Device.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Mode.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParameterType.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Parametеr.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Partials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reaction.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Role.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Scenario.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Sensor.cs">
@@ -103,6 +130,9 @@
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Zone.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
   </ItemGroup>

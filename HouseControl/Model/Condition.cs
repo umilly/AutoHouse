@@ -12,18 +12,14 @@ namespace Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Sensor : Device
+    public partial class Condition
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Sensor()
-        {
-            this.ContollerSlot = 0;
-        }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int ConditionTypeId { get; set; }
+        public Nullable<int> ReactionId { get; set; }
     
-        public int ContollerSlot { get; set; }
-        public int SensorTypeId { get; set; }
-    
-        public virtual SensorType SensorType { get; set; }
-        public virtual Controller Controller { get; set; }
+        public virtual ConditionType ConditionType { get; set; }
+        public virtual Reaction Reaction { get; set; }
     }
 }

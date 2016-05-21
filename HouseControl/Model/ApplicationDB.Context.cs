@@ -28,9 +28,17 @@ namespace Model
         public virtual DbSet<Content> Contents { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Controller> Controllers { get; set; }
-        public virtual DbSet<Sensor> Sensors { get; set; }
         public virtual DbSet<SensorType> SensorTypes { get; set; }
         public virtual DbSet<DBVersion> DBVersions { get; set; }
+        public virtual DbSet<Mode> Modes { get; set; }
+        public virtual DbSet<Scenario> Scenarios { get; set; }
+        public virtual DbSet<Zone> Zones { get; set; }
+        public virtual DbSet<Reaction> Reactions { get; set; }
+        public virtual DbSet<Condition> Conditions { get; set; }
+        public virtual DbSet<ConditionType> ConditionTypes { get; set; }
+        public virtual DbSet<Command> Commands { get; set; }
+        public virtual DbSet<Device> Devices { get; set; }
+        public virtual DbSet<Parametеr> Parametеr { get; set; }
+        public virtual DbSet<ParameterType> ParameterTypes { get; set; }
     }
 }
