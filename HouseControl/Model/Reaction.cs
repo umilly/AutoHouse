@@ -19,12 +19,17 @@ namespace Model
         {
             this.Name = "";
             this.Conditions = new HashSet<Condition>();
+            this.Commands = new HashSet<Command>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
+        public int ScenarioId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Condition> Conditions { get; set; }
+        public virtual Scenario Scenario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Command> Commands { get; set; }
     }
 }

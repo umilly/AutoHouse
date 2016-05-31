@@ -23,9 +23,12 @@ namespace Model
     
         public int Id { get; set; }
         public string Name { get; set; }
+        public int ScenarioId { get; set; }
+        public int ReactionId { get; set; }
     
         public virtual Device Device { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Parametеr> Parametеr { get; set; }
+        public virtual Reaction Reaction { get; set; }
     }
 }

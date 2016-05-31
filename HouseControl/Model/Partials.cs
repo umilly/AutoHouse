@@ -24,6 +24,57 @@ namespace Model
             get { return this.Id; }
         }
     }
+    public partial class Mode : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
+    public partial class Scenario : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
+
+    public partial class Reaction : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
+
+    public partial class Condition : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
+    public partial class Parametеr : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
+    public partial class ConditionType : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
+    public partial class Command : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
 
     public partial class Models
     {

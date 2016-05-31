@@ -19,10 +19,15 @@ namespace Model
         {
             this.Name = "";
             this.Description = "";
+            this.Reactions = new HashSet<Reaction>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+    
+        public virtual Mode Mode { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reaction> Reactions { get; set; }
     }
 }
