@@ -1,4 +1,6 @@
-﻿using Facade;
+﻿using System.Collections.Generic;
+using Facade;
+using ViewModelBase;
 
 namespace ViewModel
 {
@@ -12,6 +14,11 @@ namespace ViewModel
         {
             get { return 1; }
             set { }
+        }
+
+        public IEnumerable<IDeviceTreeNode> Reactions
+        {
+            get { yield return Use<IPool>().GetOrCreateVM<SystemViewModel>(-1); }
         }
     }
 }

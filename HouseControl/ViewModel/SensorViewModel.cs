@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Facade;
 using Model;
 using ViewModel;
@@ -9,6 +10,7 @@ public class SensorViewModel : EntytyObjectVM<Sensor>, IDeviceTreeNode
     public SensorViewModel(IServiceContainer container, Models dataBase, Sensor model)
         : base(container, dataBase, model)
     {
+        Children = Enumerable.Empty<IDeviceTreeNode>();
     }
 
     public override bool Validate()
@@ -33,6 +35,7 @@ public class SensorViewModel : EntytyObjectVM<Sensor>, IDeviceTreeNode
 
     public string Value => (_parent!=null&&_parent.Values.ContainsKey(Model.ContollerSlot)) ? _parent.Values[Model.ContollerSlot] : "-";
     public bool IsConnected => true;
+    public IEnumerable<IContexMenuItem> ContextMenu { get; }
 
     public void Init(SensorType st, int slotNum, Controller controller, string name)
     {

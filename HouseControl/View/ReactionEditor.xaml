@@ -5,14 +5,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:View"
              xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
              xmlns:vmBase="clr-namespace:VMBase;assembly=VMBase"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             
              xmlns:viewTools="clr-namespace:ViewTools"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
   <UserControl.Resources>
     <viewTools:BoolToColorConverter x:Key="ColorConverter"/>
   </UserControl.Resources>
@@ -21,9 +19,39 @@
         <ColumnDefinition Width="*"></ColumnDefinition>
         <ColumnDefinition Width="*"></ColumnDefinition>
       </Grid.ColumnDefinitions>
-      <Label Grid.Row="1" Grid.Column="1">Управление: </Label>
-        <local:DeviceTree Grid.Column="0">
-123            
-        </local:DeviceTree>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0">Управление: </Label>
+        <ScrollViewer Grid.Row="1" Grid.Column="0" MaxHeight="400" VerticalScrollBarVisibility="Auto" Height="300">
+            <TreeView Name="DeviceTreeView" Margin="5" ItemsSource="{Binding ViewModel.Reactions}">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
+                        <Grid Background="{Binding Path=IsConnected, Converter={StaticResource ColorConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.ContextMenu>
+                                <ContextMenu ItemsSource="{Binding ContextMenu}">
+                                    <ContextMenu.ItemTemplate>
+                                        <DataTemplate DataType="viewModel:IContexMenuItem">
+                                            <MenuItem Header="{Binding Text}" Command="{Binding Todo}"/>
+                                        </DataTemplate>
+                                    </ContextMenu.ItemTemplate>
+                                </ContextMenu>
+                            </Grid.ContextMenu>
+                            <TextBlock Grid.Column="0" Text="{Binding Path=Name}">
+                            </TextBlock>
+                            <TextBlock Grid.Column="1" Text="{Binding Path=Value}"/>
+                        </Grid>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </ScrollViewer>
+        <ScrollViewer Grid.Row="1" Grid.Column="1" MaxHeight="400" VerticalScrollBarVisibility="Auto" Width="400" Height="400">
+            
+        </ScrollViewer>
     </Grid>
 </vmBase:CustomViewBase>

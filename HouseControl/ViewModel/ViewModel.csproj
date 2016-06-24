@@ -70,6 +70,7 @@
     <Compile Include="SensorViewModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsVM.cs" />
+    <Compile Include="SystemViewModel.cs" />
     <Compile Include="TimerService.cs" />
   </ItemGroup>
   <ItemGroup>

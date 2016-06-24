@@ -95,7 +95,7 @@ namespace WpfApplication
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            _container.Use<IViewService>().CreateView<ReactionEditor>(MainVM.GetOrCreateControllerVm());
+            _container.Use<IViewService>().CreateView<ReactionEditor>();
             OnNextView(null, null);
         }
     }

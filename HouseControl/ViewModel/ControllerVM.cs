@@ -56,6 +56,8 @@ namespace ViewModel
             }
         }
 
+        public IEnumerable<IContexMenuItem> ContextMenu { get; }
+
         public string IP
         {
             get { return Model.IP; }

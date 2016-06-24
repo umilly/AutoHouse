@@ -20,7 +20,7 @@ namespace ViewModelBase
         }
 
         public bool SavedInContext { get; set; }
-        
+
         protected T Model { get; private set; }
 
         public EntytyObjectVM(IServiceContainer container,Models dataBase,T model) : base(container)

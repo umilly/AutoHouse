@@ -138,17 +138,20 @@ public class Container : IServiceContainer
 
     private object ResolveInternal(Type interfaceType)
     {
-        // Сначала проверяем есть ли искомый объект
-        if (_registredInstances.ContainsKey(interfaceType))
-            return _registredInstances[interfaceType];
-
-        // И если нет, то проверяем нужно ли его создавать
-        if (_registredTypes.ContainsKey(interfaceType))
+        lock (this)
         {
-            Type instanceType = _registredTypes[interfaceType];
-            return CreateAndRegisterInternal(interfaceType, instanceType);
+            // Сначала проверяем есть ли искомый объект
+            if (_registredInstances.ContainsKey(interfaceType))
+                return _registredInstances[interfaceType];
+
+            // И если нет, то проверяем нужно ли его создавать
+            if (_registredTypes.ContainsKey(interfaceType))
+            {
+                Type instanceType = _registredTypes[interfaceType];
+                return CreateAndRegisterInternal(interfaceType, instanceType);
+            }
+            throw new ArgumentException(string.Format("service type not registred: {0}", interfaceType));
         }
-        throw new ArgumentException(string.Format("service type not registred: {0}", interfaceType));
     }
 
     private void InternalUnregister(Type t, bool skipDispose = false)

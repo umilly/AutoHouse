@@ -116,6 +116,7 @@ public class CommandHandler : ICommand
 
     public void Execute(object parameter)
     {
-        _action(bool.Parse(parameter.ToString()));
+        var papram = parameter == null || bool.Parse(parameter.ToString());
+        _action(papram);
     }
 }
