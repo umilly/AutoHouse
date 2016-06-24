@@ -27,6 +27,7 @@
             <MenuItem Header="Controllers" Click="ShowControllersClick">
                 <MenuItem Header="Add new" HorizontalAlignment="Left" Width="139.333333333333" Click="AddControllerClick"/>
             </MenuItem>
+            <MenuItem Header="Reactions" Click="MenuItem_Click"/>
         </Menu>
         <ContentControl HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Content="{Binding Path=CurrentContent}"></ContentControl>
     </Grid>

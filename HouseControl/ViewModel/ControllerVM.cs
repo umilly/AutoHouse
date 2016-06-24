@@ -85,6 +85,11 @@ namespace ViewModel
 
         private string Url => $"http://{IP}:{Port}";
 
+        public string MessageFind
+        {
+            get { return $"Найдено {Model.Sensors.Count} сенсоров"; }
+        }
+
         public async void Update()
         {
             var task = Use<INetworkService>().AsyncRequest(Url);

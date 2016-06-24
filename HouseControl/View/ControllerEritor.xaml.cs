@@ -31,11 +31,13 @@ namespace View
         private void SaveClick(object sender, RoutedEventArgs e)
         {
             ViewModel.SaveDB();
+            MessageBox.Show("Устройвтва сохранены в базе");
         }
 
         private void FindClick(object sender, RoutedEventArgs e)
         {
             ViewModel.FindSensors();
+            MessageBox.Show(ViewModel.MessageFind);
         }
 
         private void DeleteClick(object sender, RoutedEventArgs e)

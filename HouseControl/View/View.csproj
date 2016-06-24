@@ -107,6 +107,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ReactionEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -128,6 +132,9 @@
     </Compile>
     <Compile Include="ControllerEritor.xaml.cs">
       <DependentUpon>ControllerEritor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ReactionEditor.xaml.cs">
+      <DependentUpon>ReactionEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
