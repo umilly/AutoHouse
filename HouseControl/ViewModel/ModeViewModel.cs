@@ -5,67 +5,71 @@ using Model;
 using ViewModel;
 using ViewModelBase;
 
-public class ModeViewModel : LinkedObjectVM<Mode>
+namespace ViewModel
 {
-    private readonly List<IContexMenuItem> _contextMenu;
-
-    public ModeViewModel(IServiceContainer container, Models dataBase, Mode model) : base(container, dataBase, model)
+    public class ModeViewModel : LinkedObjectVM<Mode>
     {
-        _contextMenu = base.ContextMenu;
-        _contextMenu.Add(new CustomContextMenuItem("Добавить сценарий", new CommandHandler(AddScenario)));
-    }
+        private readonly List<IContexMenuItem> _contextMenu;
 
-    public override ITreeNode Parent => Use<IPool>().GetOrCreateVM<SystemViewModel>(-1);
-
-    public override IEnumerable<ITreeNode> Children => Scenarios;
-
-    public override string Name
-    {
-        get { return Model.Name; }
-        set
+        public ModeViewModel(IServiceContainer container, Models dataBase, Mode model)
+            : base(container, dataBase, model)
         {
-            Model.Name = value;
-            OnPropertyChanged();
+            _contextMenu = base.ContextMenu;
+            _contextMenu.Add(new CustomContextMenuItem("Добавить сценарий", new CommandHandler(AddScenario)));
         }
-    }
 
-    public override string Value
-    {
-        get { return string.Empty; }
-        set {  }
-    }
+        public override ITreeNode Parent => Use<IPool>().GetOrCreateVM<SystemViewModel>(-1);
 
-    public override bool IsConnected
-    {
-        get { return true; }
-        set {  }
-    }
+        public override IEnumerable<ITreeNode> Children => Scenarios;
 
-    private void AddScenario(bool obj)
-    {
-        var newScenario= Use<IPool>().CreateDBObject<ScenarioViewModel>();
-        newScenario.Name = "Сценарий";
-        newScenario.LinkTo(Model);
-        OnPropertyChanged(()=>Children);
-    }
-
-    public string Description
-    {
-        get { return Model.Description; }
-        set
+        public override string Name
         {
-            Model.Description = value;
-            OnPropertyChanged();
+            get { return Model.Name; }
+            set
+            {
+                Model.Name = value;
+                OnPropertyChanged();
+            }
         }
-    }
 
-    public IEnumerable<ScenarioViewModel> Scenarios
-    {
-        get { return Model.Scenarios.Select(a => Use<IPool>().GetDBVM<ScenarioViewModel>(a.ID)); }
-    }
+        public override string Value
+        {
+            get { return string.Empty; }
+            set { }
+        }
 
-    public override bool Validate()
-    {
-        return !string.IsNullOrEmpty(Model.Name) && !string.IsNullOrEmpty(Model.Description);
+        public override bool IsConnected
+        {
+            get { return true; }
+            set { }
+        }
+
+        private void AddScenario(bool obj)
+        {
+            var newScenario = Use<IPool>().CreateDBObject<ScenarioViewModel>();
+            newScenario.Name = "Сценарий";
+            newScenario.LinkTo(Model);
+            OnPropertyChanged(() => Children);
+        }
+
+        public string Description
+        {
+            get { return Model.Description; }
+            set
+            {
+                Model.Description = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<ScenarioViewModel> Scenarios
+        {
+            get { return Model.Scenarios.Select(a => Use<IPool>().GetDBVM<ScenarioViewModel>(a.ID)); }
+        }
+
+        public override bool Validate()
+        {
+            return !string.IsNullOrEmpty(Model.Name) && !string.IsNullOrEmpty(Model.Description);
+        }
     }
 }

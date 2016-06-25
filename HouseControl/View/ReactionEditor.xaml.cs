@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 using Facade;
 using ViewModel;
 using VMBase;
@@ -14,6 +16,16 @@ namespace View
         public ReactionEditor(ViewService viewService) : base(viewService)
         {
             InitializeComponent();
+            DeviceTreeView.SelectedItemChanged+=DeviceTreeViewOnSelectedItemChanged;
         }
+
+        private void DeviceTreeViewOnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> routedPropertyChangedEventArgs)
+        {
+            var value=DeviceTreeView.SelectedValue;
+            Editor= _viewService.CreateView(value as IViewModel);
+            OnPropertyChanged(()=>Editor);
+        }
+
+        public IView Editor { get; set; }
     }
 }

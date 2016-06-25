@@ -29,7 +29,8 @@ namespace Facade
         IView CreateView(Type type, int Id = 0);
         IView NextView { get; set; }
         void ShowMessage(string res);
-        T CreateView<T>(IViewModel viewModel) where T : IView; 
+        T CreateView<T>(IViewModel viewModel) where T : IView;
+        void FillTypes(Type[] types);
     }
 
     public interface IService

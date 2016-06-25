@@ -29,6 +29,6 @@
             </MenuItem>
             <MenuItem Header="Reactions" Click="MenuItem_Click"/>
         </Menu>
-        <ContentControl HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Content="{Binding Path=CurrentContent}"></ContentControl>
+        <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Content="{Binding Path=CurrentContent}"></ContentControl>
     </Grid>
 </Window>

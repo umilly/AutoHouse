@@ -1,5 +1,7 @@
 using Facade;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using Common;
 using ViewModelBase;
@@ -13,7 +15,18 @@ namespace VMBase
         {
             
         }
-
+        private static Dictionary<Type,Type> _vmToViewMap=new Dictionary<Type, Type>();
+        public void FillTypes(Type[] types)
+        {
+            foreach (var type in types)
+            {
+                if(type.IsAbstract)
+                    continue;
+                var baseType = type.BaseType;
+                if (baseType.IsGenericType)
+                    _vmToViewMap[baseType.GetGenericArguments().First()] = type;
+            }
+        }
         public T CreateView<T>(int id=-1) where T : IView
         {
             return (T)CreateView(typeof (T),id); 
@@ -72,6 +85,13 @@ namespace VMBase
                 if (!oldVM.SavedInContext)
                     oldVM.Delete();
             }
+        }
+
+        public IView CreateView(IViewModel viewModel)
+        {
+            if (!_vmToViewMap.ContainsKey(viewModel.GetType()))
+                return null;
+            return CreateView(_vmToViewMap[viewModel.GetType()], viewModel);
         }
     }
 

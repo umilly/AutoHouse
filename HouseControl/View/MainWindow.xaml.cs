@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,6 +22,8 @@ namespace WpfApplication
         public MainWindow()
         {
             _container.RegisterType<IViewService,ViewService>();
+            var types = GetType().Assembly.GetTypes().Where(type => typeof(IView).IsAssignableFrom(type));
+            _container.Use<IViewService>().FillTypes(types.ToArray());
             MainVM = new MainViewModel(_container);
             MainVM.InitSettings();
             InitializeComponent();
