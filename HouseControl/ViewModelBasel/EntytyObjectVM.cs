@@ -6,7 +6,6 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Windows.Input;
 using Facade;
 using Model;
 
@@ -41,32 +40,19 @@ namespace ViewModelBase
         {
             if (!Validate())
                 return;
-            try
-            {
-                //if (!Context.Set<T>().Contains(Model))
-                //    Context.Set<T>().Add(Model);
-                Context.SaveChanges();
-                SavedInContext = true;
-                OnPropertyChanged(()=>ID);
-            }
-            catch (DbEntityValidationException e)
-            {
-                var newException = new FormattedDbEntityValidationException(e);
-                Use<ILog>().Log(LogCategory.Data,e.ToString() );
-                throw newException;
-            }
+            Use<IPool>().SaveDB();
+            SavedInContext = true;
+            OnPropertyChanged(() => ID);
         }
 
-        public void Delete()
+        public virtual void Delete()
         {
-            OnDelete();
-            Context.Set<T>().Remove(Model);
+            var model = Context.Entry(Model as T);
+            if (model.State!=EntityState.Deleted
+                && model.State != EntityState.Detached)
+                Context.Set<T>().Remove(Model);
             Use<IPool>().RemoveVM(GetType(), ID);
-        }
-
-        protected virtual void OnDelete()
-        {
-            
+        
         }
         public Models Context { get; }
 
@@ -113,6 +99,42 @@ namespace ViewModelBase
 
                 return base.Message;
             }
+        }
+    }
+    public abstract class LinkedObjectVM<T> : EntytyObjectVM<T>, ITreeNode where T : class, IHaveID
+    {
+        protected readonly List<IContexMenuItem> _contextMenu;
+
+        public LinkedObjectVM(IServiceContainer container, Models dataBase, T model) : base(container, dataBase, model)
+        {
+            _contextMenu=new List<IContexMenuItem>();
+            _contextMenu.Add(new CustomContextMenuItem("Удалить", new CommandHandler(Delete)));
+        }
+
+        private void Delete(bool obj)
+        {
+            Delete();
+        }
+
+        public abstract ITreeNode Parent { get; }
+        public abstract IEnumerable<ITreeNode> Children { get; }
+        public abstract string Name { get;  set; }
+        public abstract string Value { get; set; }
+        public abstract bool IsConnected { get; set; }
+
+        public List<IContexMenuItem> ContextMenu => _contextMenu;
+
+        public void OnChildDelete(ITreeNode node)
+        {
+            OnPropertyChanged(()=>Children);
+        }
+
+        public override void Delete()
+        {
+            var p = Parent;
+            Children?.OfType<IEntytyObjectVM>().ForEach(a => a.Delete());
+            base.Delete();
+            p?.OnChildDelete(this);
         }
     }
 }

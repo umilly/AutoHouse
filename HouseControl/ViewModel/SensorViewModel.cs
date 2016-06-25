@@ -5,12 +5,12 @@ using Model;
 using ViewModel;
 using ViewModelBase;
 
-public class SensorViewModel : EntytyObjectVM<Sensor>, IDeviceTreeNode
+public class SensorViewModel : LinkedObjectVM<Sensor>, ITreeNode
 {
     public SensorViewModel(IServiceContainer container, Models dataBase, Sensor model)
         : base(container, dataBase, model)
     {
-        Children = Enumerable.Empty<IDeviceTreeNode>();
+        Children = Enumerable.Empty<ITreeNode>();
     }
 
     public override bool Validate()
@@ -22,20 +22,34 @@ public class SensorViewModel : EntytyObjectVM<Sensor>, IDeviceTreeNode
             ;
     }
 
-    public IDeviceTreeNode Parent => _parent;
+    public override ITreeNode Parent => Use<IPool>().GetDBVM<ControllerVM>(Model.Controller.ID);
 
-    private ControllerVM _parent => Use<IPool>().GetDBVM<ControllerVM>(Model.Controller.ID);
+    
+    public override IEnumerable<ITreeNode> Children { get; }
 
-    public IEnumerable<IDeviceTreeNode> Children { get; }
-
-    public string Name
+    public override string Name
     {
         get { return Model.Name; }
+        set { Model.Name = value; }
     }
 
-    public string Value => (_parent!=null&&_parent.Values.ContainsKey(Model.ContollerSlot)) ? _parent.Values[Model.ContollerSlot] : "-";
-    public bool IsConnected => true;
-    public IEnumerable<IContexMenuItem> ContextMenu { get; }
+    public override string Value
+    {
+        get
+        {
+            var p = Parent as ControllerVM;
+            return (p != null && p.Values.ContainsKey(Model.ContollerSlot))
+                ? p.Values[Model.ContollerSlot]
+                : "-";
+        }
+        set { }
+    }
+
+    public override bool IsConnected
+    {
+        get { return Parent != null && (Parent as ControllerVM).Values.ContainsKey(Model.ContollerSlot); }
+        set {  }
+    }
 
     public void Init(SensorType st, int slotNum, Controller controller, string name)
     {

@@ -43,7 +43,7 @@ namespace ViewModel
             set { }
         }
 
-        public IDeviceTreeNode[] Devices => Use<IPool>().GetViewModels<ControllerVM>().ToArray();
+        public ITreeNode[] Devices => Use<IPool>().GetViewModels<ControllerVM>().ToArray();
 
         public ControllerVM GetOrCreateControllerVm()
         {
@@ -75,14 +75,15 @@ namespace ViewModel
 
         public void SaveSettings()
         {
-            var serializer = new DataContractJsonSerializer(typeof(Settings));
-            File.Delete("settings.ini");
-            var settings = Use<IPool>().GetOrCreateVM<SettingsVM>(1);
-            var serSets = new Settings() {Relays = settings.Relays.Select(a=>a.RelayData).ToList(),Count = settings.RelayCount,IsDebug = settings.IsDebug};
-            var fileStream = new FileStream("settings.ini", FileMode.CreateNew);
-            serializer.WriteObject(fileStream, serSets);
-            fileStream.Close();
-            fileStream.Dispose();
+            Use<IPool>().SaveDB();
+            //var serializer = new DataContractJsonSerializer(typeof(Settings));
+            //File.Delete("settings.ini");
+            //var settings = Use<IPool>().GetOrCreateVM<SettingsVM>(1);
+            //var serSets = new Settings() {Relays = settings.Relays.Select(a=>a.RelayData).ToList(),Count = settings.RelayCount,IsDebug = settings.IsDebug};
+            //var fileStream = new FileStream("settings.ini", FileMode.CreateNew);
+            //serializer.WriteObject(fileStream, serSets);
+            //fileStream.Close();
+            //fileStream.Dispose();
         }
     }
 

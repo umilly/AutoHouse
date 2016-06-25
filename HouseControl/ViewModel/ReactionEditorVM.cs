@@ -16,7 +16,7 @@ namespace ViewModel
             set { }
         }
 
-        public IEnumerable<IDeviceTreeNode> Reactions
+        public IEnumerable<ITreeNode> Reactions
         {
             get { yield return Use<IPool>().GetOrCreateVM<SystemViewModel>(-1); }
         }

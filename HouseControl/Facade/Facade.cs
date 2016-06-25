@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Facade
 {
     public interface IViewModel
     {
         int ID { get; }
-        void OnCreate(int id);
     }
 
 
@@ -85,5 +86,22 @@ namespace Facade
     public interface ITimerSerivce:IService {
         void Subsctibe(object key, Action action,int waitMilliSeconds,bool repeat=false);
         void UnSubsctibe(object key);
+    }
+
+    public interface ITreeNode : IViewModel
+    {
+        ITreeNode Parent { get; }
+        IEnumerable<ITreeNode> Children { get; }
+        string Name { get; }
+        string Value { get; }
+        bool IsConnected { get; }
+        List<IContexMenuItem> ContextMenu { get; }
+        void OnChildDelete(ITreeNode node);
+    }
+
+    public interface IContexMenuItem
+    {
+        string Text { get; }
+        ICommand Todo { get; }
     }
 }

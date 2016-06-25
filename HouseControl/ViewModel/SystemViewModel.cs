@@ -5,10 +5,13 @@ using Facade;
 using ViewModel;
 using ViewModelBase;
 
-public class SystemViewModel : ViewModelBase.ViewModelBase, IDeviceTreeNode
+public class SystemViewModel : ViewModelBase.ViewModelBase, ITreeNode
 {
+    List<IContexMenuItem> _contextMenu=new List<IContexMenuItem>();
+
     public SystemViewModel(IServiceContainer container) : base(container)
     {
+        _contextMenu.Add(new CustomContextMenuItem("Добавить режим", new CommandHandler(AddMode)));
     }
 
     public override int ID
@@ -17,9 +20,9 @@ public class SystemViewModel : ViewModelBase.ViewModelBase, IDeviceTreeNode
         set { }
     }
 
-    public IDeviceTreeNode Parent => null;
+    public ITreeNode Parent => null;
 
-    public IEnumerable<IDeviceTreeNode> Children => Use<IPool>().GetViewModels<ModeViewModel>();
+    public IEnumerable<ITreeNode> Children => Use<IPool>().GetViewModels<ModeViewModel>();
 
     public string Name => "Вся система";
 
@@ -27,9 +30,11 @@ public class SystemViewModel : ViewModelBase.ViewModelBase, IDeviceTreeNode
 
     public bool IsConnected => true;
 
-    public IEnumerable<IContexMenuItem> ContextMenu
+    public List<IContexMenuItem> ContextMenu => _contextMenu;
+
+    public void OnChildDelete(ITreeNode scenarioViewModel)
     {
-        get { yield return new CustomContextMenuItem("Добавить режим", new CommandHandler(AddMode)); }
+        OnPropertyChanged(() => Children);
     }
 
     private void AddMode(bool obj)

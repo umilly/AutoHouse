@@ -1,21 +1,25 @@
+using System.Collections.Generic;
 using Facade;
 using Model;
 using ViewModelBase;
 
-public class CommandViewModel : EntytyObjectVM<Command>
+public class CommandViewModel : LinkedObjectVM<Command>
 {
     public CommandViewModel(IServiceContainer container, Models dataBase, Command model) : base(container, dataBase, model)
     {
     }
-    public ReactionViewModel Reaction
-    {
-        get { return Use<IPool>().GetDBVM<ReactionViewModel>(Model.ReactionId); }
-    }
+    public ReactionViewModel Reaction => Use<IPool>().GetDBVM<ReactionViewModel>(Model.ReactionId);
+
+    public override ITreeNode Parent => Reaction;
+    public override IEnumerable<ITreeNode> Children { get; }
+    public override string Value { get; set; }
+    public override bool IsConnected { get; set; }
+
     public override bool Validate()
     {
         return !string.IsNullOrEmpty(Model.Name) && Reaction != null;
     }
-    public string Name
+    public override string Name
     {
         get { return Model.Name; }
         set

@@ -5,38 +5,44 @@ using Model;
 using ViewModel;
 using ViewModelBase;
 
-public class ScenarioViewModel : EntytyObjectVM<Scenario>,IDeviceTreeNode
+public class ScenarioViewModel : LinkedObjectVM<Scenario>,ITreeNode
 {
     public ScenarioViewModel(IServiceContainer container, Models dataBase, Scenario model) : base(container, dataBase, model)
     {
-        Children = Enumerable.Empty<IDeviceTreeNode>();
+        _contextMenu.Add(new CustomContextMenuItem("Добавить реакцию", new CommandHandler(AddReaction)));
+
+
     }
 
-    public IDeviceTreeNode Parent
-    {
-        get { return Use<IPool>().GetDBVM<ModeViewModel>(Model.Mode.ID); }
-        set { Model.Mode.Id = (value as ModeViewModel).ID; }
-    }
+    public override ITreeNode Parent => Model.Mode==null?null: Use<IPool>().GetDBVM<ModeViewModel>(Model.Mode.ID);
 
-    public IEnumerable<IDeviceTreeNode> Children { get; }
+    public override IEnumerable<ITreeNode> Children => Use<IPool>().GetViewModels<ReactionViewModel>().Where(a=>a.Scenario==this);
 
-    public string Value
+    public override string Value
     {
         get { return string.Empty; }
+        set {  }
     }
 
-    public bool IsConnected
+    public override bool IsConnected
     {
         get { return true; }
+        set {  }
     }
 
-    public IEnumerable<IContexMenuItem> ContextMenu { get; }
+    private void AddReaction(bool obj)
+    {
+        var newReaction= Use<IPool>().CreateDBObject<ReactionViewModel>();
+        newReaction.Name = "Реакция";
+        newReaction.Link(Model);
+        OnPropertyChanged(()=>Children);
+    }
 
     public override bool Validate()
     {
         return !string.IsNullOrEmpty(Model.Name) && !string.IsNullOrEmpty(Model.Description);
     }
-    public string Name
+    public override string Name
     {
         get { return Model.Name; }
         set

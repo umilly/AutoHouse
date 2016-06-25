@@ -5,20 +5,21 @@ using Model;
 using ViewModel;
 using ViewModelBase;
 
-public class ModeViewModel : EntytyObjectVM<Mode>,IDeviceTreeNode
+public class ModeViewModel : LinkedObjectVM<Mode>
 {
+    private readonly List<IContexMenuItem> _contextMenu;
+
     public ModeViewModel(IServiceContainer container, Models dataBase, Mode model) : base(container, dataBase, model)
     {
+        _contextMenu = base.ContextMenu;
+        _contextMenu.Add(new CustomContextMenuItem("Добавить сценарий", new CommandHandler(AddScenario)));
     }
 
-    public IDeviceTreeNode Parent { get; }
+    public override ITreeNode Parent => Use<IPool>().GetOrCreateVM<SystemViewModel>(-1);
 
-    public IEnumerable<IDeviceTreeNode> Children
-    {
-        get { return Scenarios; } 
-    }
+    public override IEnumerable<ITreeNode> Children => Scenarios;
 
-    public string Name
+    public override string Name
     {
         get { return Model.Name; }
         set
@@ -28,31 +29,16 @@ public class ModeViewModel : EntytyObjectVM<Mode>,IDeviceTreeNode
         }
     }
 
-    public string Value
+    public override string Value
     {
         get { return string.Empty; }
+        set {  }
     }
 
-    public bool IsConnected { get { return true; } }
-
-    public IEnumerable<IContexMenuItem> ContextMenu
+    public override bool IsConnected
     {
-        get
-        {
-            yield return new CustomContextMenuItem("Добавить сценарий",new CommandHandler(AddScenario));
-            yield return new CustomContextMenuItem("Удалить", new CommandHandler(DeleteMode));
-        }
-    }
-
-    private void DeleteMode(bool obj)
-    {
-        Delete();
-    }
-
-    protected override void OnDelete()
-    {
-        Children.Cast<IEntytyObjectVM>().ForEach(a=>a.Delete());
-        base.OnDelete();
+        get { return true; }
+        set {  }
     }
 
     private void AddScenario(bool obj)

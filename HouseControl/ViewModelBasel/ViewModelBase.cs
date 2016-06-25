@@ -12,10 +12,7 @@ namespace ViewModelBase
     public abstract class ViewModelBase : IViewModel, INotifyPropertyChanged
     {
         abstract public int ID { get; set; }
-        public virtual void OnCreate(int id)
-        {
-            
-        }
+        
 
         private IServiceContainer _container { get; set; }
         public ViewModelBase(IServiceContainer container)

@@ -18,5 +18,6 @@ namespace ViewModelBase
         T CreateDBObject<T>() where T : IEntytyObjectVM;
         T GetDBVM<T>(int id) where T:IEntytyObjectVM;
         void RemoveVM(Type type, int i);
+        void SaveDB();
     }
 }

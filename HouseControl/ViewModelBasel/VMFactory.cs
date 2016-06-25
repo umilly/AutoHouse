@@ -3,8 +3,10 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Contexts;
 using Common;
 
 namespace ViewModelBase
@@ -27,12 +29,7 @@ namespace ViewModelBase
             {
                 _pool[vmType] = new List<IViewModel>();
             }
-            var res = _pool[vmType].FirstOrDefault(a => a.ID == id);
-            if (res == null)
-            {
-                res = CreateVM(vmType);
-                res.OnCreate(id);
-            }
+            var res = _pool[vmType].FirstOrDefault(a => a.ID == id) ?? CreateVM(vmType);
             return res;
         }
 
@@ -106,6 +103,23 @@ namespace ViewModelBase
             if (toRemove == null)
                 return;
             _pool[type].Remove(toRemove);
+        }
+
+        public void SaveDB()
+        {
+            try
+            {
+                //if (!Context.Set<T>().Contains(Model))
+                //    Context.Set<T>().Add(Model);
+                DB.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                var newException = new FormattedDbEntityValidationException(e);
+                Use<ILog>().Log(LogCategory.Data, e.ToString());
+                throw newException;
+            }
+
         }
 
         public T GetOrCreateVM<T>(int number) where T:class,IViewModel

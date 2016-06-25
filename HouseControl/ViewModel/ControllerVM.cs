@@ -10,54 +10,51 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ControllerVM:EntytyObjectVM<Controller>,IDeviceTreeNode
+    public class ControllerVM:LinkedObjectVM<Controller>
     {
         private readonly Dictionary<int, string> _values=new Dictionary<int, string>();
         private bool _isConnected;
         private static Dictionary<string, SensorType> _cahedTypes;
         public ControllerVM(IServiceContainer container,Models dataBase,Controller controller) : base(container,dataBase,controller)
         {
-           
+            fillSensorTypes();
         }
-
+        
         private void fillSensorTypes()
         {
-            if (_cahedTypes == null && Context != null)
-            {
-                _cahedTypes = new Dictionary<string, SensorType>();
-                Context.SensorTypes.ForEach(a => _cahedTypes[a.Key] = a);
-            }
+            if (_cahedTypes != null || Context == null)
+                return;
+            _cahedTypes = new Dictionary<string, SensorType>();
+            Context.SensorTypes.ForEach(a => _cahedTypes[a.Key] = a);
         }
 
-        public IDeviceTreeNode Parent { get; }
+        public override ITreeNode Parent { get; }
 
-        public IEnumerable<IDeviceTreeNode> Children
+        public override IEnumerable<ITreeNode> Children
         {
             get { return Use<IPool>().GetViewModels<SensorViewModel>().Where(a => a.Parent == this); }
         }
 
         public Dictionary<int, string> Values => _values;
 
-        public string Name
+        public override string Name
         {
             get { return Model.Name; }
             set { Model.Name=value; }
         }
 
-        public string Value { get; }
+        public override string Value { get; set; }
 
-        public bool IsConnected
+        public override bool IsConnected
         {
             get { return _isConnected; }
-            private set
+            set
             {
                 _isConnected = value; 
                 OnPropertyChanged();
             }
         }
-
-        public IEnumerable<IContexMenuItem> ContextMenu { get; }
-
+        
         public string IP
         {
             get { return Model.IP; }
@@ -72,12 +69,6 @@ namespace ViewModel
         public override bool Validate()
         {
             return IP != null && Name != null;
-        }
-
-        protected override void OnDelete()
-        {
-            Children.Cast<IEntytyObjectVM>().ToList().ForEach(a=>a.Delete());
-            base.OnDelete();
         }
 
         public IEnumerable<Controller> GetControllers()
@@ -107,7 +98,6 @@ namespace ViewModel
                 return;
             }
             IsConnected = true;
-            fillSensorTypes();
             var lines = result.Split(new[] { "<br>", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < lines.Count(); i++)
             {
@@ -134,7 +124,6 @@ namespace ViewModel
 
         private void ParseConrollerSensors(string result)
         {
-            fillSensorTypes();
             var lines=result.Split(new[] {"<br>", "\r","\n"},StringSplitOptions.RemoveEmptyEntries);
             int num = 0;
             foreach (var line in lines)

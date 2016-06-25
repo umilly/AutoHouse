@@ -8,6 +8,7 @@
              xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
              xmlns:vmBase="clr-namespace:VMBase;assembly=VMBase"
              xmlns:viewTools="clr-namespace:ViewTools"
+             xmlns:facade="clr-namespace:Facade;assembly=Facade"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
@@ -36,7 +37,7 @@
                             <Grid.ContextMenu>
                                 <ContextMenu ItemsSource="{Binding ContextMenu}">
                                     <ContextMenu.ItemTemplate>
-                                        <DataTemplate DataType="viewModel:IContexMenuItem">
+                                        <DataTemplate DataType="facade:IContexMenuItem">
                                             <MenuItem Header="{Binding Text}" Command="{Binding Todo}"/>
                                         </DataTemplate>
                                     </ContextMenu.ItemTemplate>
