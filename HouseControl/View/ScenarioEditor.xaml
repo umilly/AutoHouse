@@ -1,6 +1,6 @@
 ﻿<vmBase:CustomViewBase 
-    x:TypeArguments="viewModel:ModeViewModel"
-    x:Class="View.ModeEditor"
+    x:TypeArguments="viewModel:ScenarioViewModel"
+    x:Class="View.ScenarioEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -32,8 +32,8 @@
                 <ColumnDefinition Width="100"></ColumnDefinition>
                 <ColumnDefinition Width="20"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="1" Grid.Column="1" Content="Настройки режима:" HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.ColumnSpan="3"/>
-            <Label Grid.Row="3" Grid.Column="1" Content="Имя режима" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Label Grid.Row="1" Grid.Column="1" Content="Настройки сценария:" HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.ColumnSpan="3"/>
+            <Label Grid.Row="3" Grid.Column="1" Content="Имя сценария" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Mode=TwoWay, Path=ViewModel.Name }" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
             <Label Grid.Row="5" Grid.Column="1" Content="Описание" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <TextBox Grid.Row="5" Grid.Column="3" Text="{Binding Mode=TwoWay, Path=ViewModel.Description}" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>

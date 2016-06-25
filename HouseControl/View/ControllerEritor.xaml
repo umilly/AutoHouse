@@ -33,8 +33,7 @@
                 <ColumnDefinition Width="100"></ColumnDefinition>
                 <ColumnDefinition Width="20"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="1" Grid.Column="1" Content="ID" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-            <xctk:DecimalUpDown Grid.Row="1" Grid.Column="3"  Maximum="65535" Minimum="-1" Value="{Binding Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:ControllerEditorView}, Path=ID}" HorizontalAlignment="Stretch" VerticalAlignment="Center"></xctk:DecimalUpDown>
+            <Label Grid.Row="1" Grid.Column="1" Content="Параметры контроллера" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="3"/>
             <Label Grid.Row="3" Grid.Column="1" Content="Name" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:ControllerEditorView}, Path=ViewModel.Name }" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
             <Label Grid.Row="5" Grid.Column="1" Content="IP" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
@@ -42,7 +41,6 @@
             <Label Grid.Row="7" Grid.Column="1" Content="Port" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <xctk:DecimalUpDown Grid.Row="7" Grid.Column="3"  Maximum="65535" Minimum="3000" Value="{Binding Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:ControllerEditorView}, Path=ViewModel.Port}" HorizontalAlignment="Stretch" VerticalAlignment="Center"></xctk:DecimalUpDown>
             <Button Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Click="FindClick">Find sensors</Button>
-            <Button Grid.Row="9" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveClick">Save</Button>
             <Button Grid.Row="9" Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center" Click="DeleteClick">X</Button>
         </Grid>
     </Border>

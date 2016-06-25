@@ -15,28 +15,9 @@ namespace View
         {
             InitializeComponent();
         }
-
-        public int ID
+        private async void FindClick(object sender, RoutedEventArgs e)
         {
-            get
-            {
-                return ViewModel.ID;
-            }
-            set
-            {
-                _viewService.ResetVM(this,value);
-            }
-        }
-
-        private void SaveClick(object sender, RoutedEventArgs e)
-        {
-            ViewModel.SaveDB();
-            MessageBox.Show("Устройвтва сохранены в базе");
-        }
-
-        private void FindClick(object sender, RoutedEventArgs e)
-        {
-            ViewModel.FindSensors();
+            await ViewModel.FindSensors();
             MessageBox.Show(ViewModel.MessageFind);
         }
 

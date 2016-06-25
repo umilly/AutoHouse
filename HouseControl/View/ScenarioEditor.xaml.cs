@@ -9,9 +9,9 @@ namespace View
     /// <summary>
     /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class ReactionEditor
+    public partial class ScenarioEditor
     {
-        public ReactionEditor(ViewService viewService) : base(viewService)
+        public ScenarioEditor(ViewService viewService) : base(viewService)
         {
             InitializeComponent();
         }

@@ -114,12 +114,13 @@ namespace ViewModel
             }
         }
 
-        public async void FindSensors()
+        public async Task FindSensors()
         {
             var task = Use<INetworkService>().AsyncRequest(Url);
             await task;
             ParseConrollerSensors(task.Result);
             ParseSensorsValues(task.Result);
+            OnPropertyChanged(()=>Children);
         }
 
         private void ParseConrollerSensors(string result)

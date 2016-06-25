@@ -99,6 +99,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ReactionEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ScenarioEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ModeEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -111,7 +119,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ReactionEditor.xaml">
+    <Page Include="ReactionNavigationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -131,6 +139,12 @@
     <Compile Include="ContolView.xaml.cs">
       <DependentUpon>ContolView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ReactionEditor.xaml.cs">
+      <DependentUpon>ReactionEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScenarioEditor.xaml.cs">
+      <DependentUpon>ScenarioEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ModeEditor.xaml.cs">
       <DependentUpon>ModeEditor.xaml</DependentUpon>
     </Compile>
@@ -140,8 +154,8 @@
     <Compile Include="ControllerEritor.xaml.cs">
       <DependentUpon>ControllerEritor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ReactionEditor.xaml.cs">
-      <DependentUpon>ReactionEditor.xaml</DependentUpon>
+    <Compile Include="ReactionNavigationView.xaml.cs">
+      <DependentUpon>ReactionNavigationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>

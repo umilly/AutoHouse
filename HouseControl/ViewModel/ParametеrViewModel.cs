@@ -3,32 +3,38 @@ using Facade;
 using Model;
 using ViewModelBase;
 
-public class ParametårViewModel : LinkedObjectVM<Parametår>
+namespace ViewModel
 {
-    public ParametårViewModel(IServiceContainer container, Models dataBase, Parametår model) : base(container, dataBase, model)
+    public class ParametårViewModel : LinkedObjectVM<Parametår>
     {
-    }
-    public CommandViewModel Command
-    {
-        get { return Use<IPool>().GetDBVM<CommandViewModel>(Model.Command.ID); }
-    }
-
-    public override ITreeNode Parent { get; }
-    public override IEnumerable<ITreeNode> Children { get; }
-    public override string Value { get; set; }
-    public override bool IsConnected { get; set; }
-
-    public override bool Validate()
-    {
-        return !string.IsNullOrEmpty(Model.Name) && Command != null;
-    }
-    public override string Name
-    {
-        get { return Model.Name; }
-        set
+        public ParametårViewModel(IServiceContainer container, Models dataBase, Parametår model)
+            : base(container, dataBase, model)
         {
-            Model.Name = value;
-            OnPropertyChanged();
+        }
+
+        public CommandViewModel Command
+        {
+            get { return Use<IPool>().GetDBVM<CommandViewModel>(Model.Command.ID); }
+        }
+
+        public override ITreeNode Parent { get; }
+        public override IEnumerable<ITreeNode> Children { get; }
+        public override string Value { get; set; }
+        public override bool IsConnected { get; set; }
+
+        public override bool Validate()
+        {
+            return !string.IsNullOrEmpty(Model.Name) && Command != null;
+        }
+
+        public override string Name
+        {
+            get { return Model.Name; }
+            set
+            {
+                Model.Name = value;
+                OnPropertyChanged();
+            }
         }
     }
 }
