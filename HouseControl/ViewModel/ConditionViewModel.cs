@@ -13,7 +13,7 @@ namespace ViewModel
         }
 
         public ReactionViewModel Reaction
-            => Model.ReactionId.HasValue ? Use<IPool>().GetDBVM<ReactionViewModel>(Model.ReactionId.Value) : null;
+            => Model.Reaction!=null ? Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction.ID) : null;
 
         public override ITreeNode Parent => Reaction;
 
@@ -34,6 +34,11 @@ namespace ViewModel
                 Model.Name = value;
                 OnPropertyChanged();
             }
+        }
+
+        public void LinkTo(Reaction model)
+        {
+            Model.Reaction = model;
         }
     }
 }

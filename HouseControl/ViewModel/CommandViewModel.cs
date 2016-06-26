@@ -11,9 +11,10 @@ namespace ViewModel
         public CommandViewModel(IServiceContainer container, Models dataBase, Command model)
             : base(container, dataBase, model)
         {
+            
         }
 
-        public ReactionViewModel Reaction => Use<IPool>().GetDBVM<ReactionViewModel>(Model.ReactionId);
+        public ReactionViewModel Reaction => Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction.ID);
 
         public override ITreeNode Parent => Reaction;
         public override IEnumerable<ITreeNode> Children { get; }
@@ -33,6 +34,11 @@ namespace ViewModel
                 Model.Name = value;
                 OnPropertyChanged();
             }
+        }
+
+        public void LinkTo(Reaction model)
+        {
+            Model.Reaction = model;
         }
     }
 }

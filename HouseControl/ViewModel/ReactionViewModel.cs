@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Facade;
 using Model;
 using ViewModel;
@@ -11,6 +13,24 @@ namespace ViewModel
         public ReactionViewModel(IServiceContainer container, Models dataBase, Reaction model)
             : base(container, dataBase, model)
         {
+            _contextMenu.Add(new CustomContextMenuItem("Добавить условие",new CommandHandler(AddCondition)));
+            _contextMenu.Add(new CustomContextMenuItem("Добавить команду", new CommandHandler(AddCommand)));
+        }
+
+        private void AddCommand(bool obj)
+        {
+            var command = Use<IPool>().CreateDBObject<CommandViewModel>();
+            command.LinkTo(Model);
+            command.Name = "Команда";
+            OnPropertyChanged(() => Children);
+        }
+
+        private void AddCondition(bool b)
+        {
+            var condition = Use<IPool>().CreateDBObject<ConditionViewModel>();
+            condition.LinkTo(Model);
+            condition.Name = "Условие";
+            OnPropertyChanged(() => Children);
         }
 
         public ScenarioViewModel Scenario
@@ -33,7 +53,18 @@ namespace ViewModel
             }
         }
         public override ITreeNode Parent => Scenario;
-        public override IEnumerable<ITreeNode> Children { get; }
+
+        public override IEnumerable<ITreeNode> Children
+        {
+            get
+            {
+                return
+                    Use<IPool>()
+                        .GetViewModels<ConditionViewModel>().Where(a=>a.Parent==this)
+                        .Cast<ITreeNode>()
+                        .Union(Use<IPool>().GetViewModels<CommandViewModel>().Where(a => a.Parent == this));
+            } 
+        }
 
         public override string Value
         {

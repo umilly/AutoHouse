@@ -47,11 +47,11 @@ namespace ViewModel
 
         public ControllerVM GetOrCreateControllerVm()
         {
-            var controller =  Use<IPool>().GetViewModels<ControllerVM>().FirstOrDefault();
-            if (controller == null)
-            {
-                controller = Use<IPool>().CreateDBObject<ControllerVM>();
-            }
+            //var controller =  Use<IPool>().GetViewModels<ControllerVM>().FirstOrDefault();
+            //if (controller == null)
+            //{
+            var controller = Use<IPool>().CreateDBObject<ControllerVM>();
+            //}
             return controller;
         }
 
