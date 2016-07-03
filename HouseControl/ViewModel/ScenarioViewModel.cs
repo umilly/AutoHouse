@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Facade;
 using Model;
@@ -7,17 +8,12 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-
-
-
     public class ScenarioViewModel : LinkedObjectVM<Scenario>, ITreeNode
     {
         public ScenarioViewModel(IServiceContainer container, Models dataBase, Scenario model)
             : base(container, dataBase, model)
         {
             _contextMenu.Add(new CustomContextMenuItem("Добавить реакцию", new CommandHandler(AddReaction)));
-
-
         }
 
         public override ITreeNode Parent
@@ -61,6 +57,8 @@ namespace ViewModel
             }
         }
 
+        public IEnumerable<ZoneForScenario>  Zones => Use<IPool>().GetViewModels<ZoneViewModel>().Select(a=>new ZoneForScenario(this,a));
+
         public string Description
         {
             get { return Model.Description; }
@@ -76,5 +74,41 @@ namespace ViewModel
             Model.Mode = mode;
             mode.Scenarios.Add(Model);
         }
+
+        public bool HaveZone(ZoneViewModel zone)
+        {
+            return zone.IsLinkedWithScenario(Model);
+        }
+
+        public void LinkZone(ZoneViewModel zone, bool value)
+        {
+            zone.LinkWithScenario(Model, value);
+            SaveDB();
+        }
     }
+}
+
+public class ZoneForScenario:INotifyPropertyChanged
+{
+    public ScenarioViewModel Scenario { get; set; }
+    public ZoneViewModel Zone { get; set; }
+
+    public ZoneForScenario(ScenarioViewModel scenario, ZoneViewModel zone)
+    {
+        Scenario = scenario;
+        Zone = zone;
+    }
+    public string Name => Zone.Name;
+
+    public bool IsLinked
+    {
+        get {return  Scenario.HaveZone(Zone); }
+        set
+        {
+            Scenario.LinkZone(Zone, value);
+            PropertyChanged?.Invoke(this,new PropertyChangedEventArgs("IsLinked"));
+        }
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
 }

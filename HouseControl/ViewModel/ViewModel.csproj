@@ -74,6 +74,7 @@
     <Compile Include="SettingsVM.cs" />
     <Compile Include="SystemViewModel.cs" />
     <Compile Include="TimerService.cs" />
+    <Compile Include="ZoneViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Facade\Facade.csproj">

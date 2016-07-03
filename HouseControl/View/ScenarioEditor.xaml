@@ -31,12 +31,23 @@
                 <ColumnDefinition Width="10"></ColumnDefinition>
                 <ColumnDefinition Width="100"></ColumnDefinition>
                 <ColumnDefinition Width="20"></ColumnDefinition>
+                
             </Grid.ColumnDefinitions>
             <Label Grid.Row="1" Grid.Column="1" Content="Настройки сценария:" HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.ColumnSpan="3"/>
             <Label Grid.Row="3" Grid.Column="1" Content="Имя сценария" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Mode=TwoWay, Path=ViewModel.Name }" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
             <Label Grid.Row="5" Grid.Column="1" Content="Описание" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <TextBox Grid.Row="5" Grid.Column="3" Text="{Binding Mode=TwoWay, Path=ViewModel.Description}" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
+            <ItemsControl Grid.Row="7" Grid.Column="3" Grid.RowSpan="3"
+                ItemsSource="{Binding ViewModel.Zones}" IsTabStop="False">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox
+                Content="{Binding Name}"
+                IsChecked="{Binding IsLinked, Mode=TwoWay}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
     </Border>
 </vmBase:CustomViewBase>

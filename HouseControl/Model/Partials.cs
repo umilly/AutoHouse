@@ -17,6 +17,13 @@ namespace Model
             get { return this.Id; }
         }
     }
+    public partial class Zone : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
     public partial class Sensor : IHaveID
     {
         public int ID
@@ -141,6 +148,17 @@ namespace Model
 ALTER TABLE [dbo].[Sensors]
 ADD [ContollerSlot] int  NOT NULL
 ");
+                RegiterUpdate(Guid.Parse("E00785CC-F6D3-4A28-AA04-8B601AAD9015"), @"", FillZone);
+            }
+
+            private void FillZone()
+            {
+                _context.Zones.Add(new Zone()
+                {
+                    Id = 1,
+                    Name = "Глобальная зона",
+                    Description = "Это зона включет общие параметры и устройства"
+                });
             }
 
             private void FillSencorTypeDict()
@@ -283,17 +301,12 @@ ADD [ContollerSlot] int  NOT NULL
                     if (!string.IsNullOrEmpty(script.SqlScript))
                     {
                         _context.Database.ExecuteSqlCommand(script.SqlScript);
-                        _context.DBVersions.Single().Version = script.ID;
-                        _context.SaveChanges();
                     }
-                    if (script.FillData == null)
-                    {
-                        continue;
-                    }
-                    script.FillData();
+                    script.FillData?.Invoke();
+                    _context.DBVersions.Single().Version = script.ID;
                     _context.SaveChanges();
                 }
-                
+
             }
 
             private Guid GetLastUpdateId()
