@@ -17,14 +17,13 @@ namespace View
         }
         private async void FindClick(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(ViewModel.IP)|| ViewModel.Port<=0)
+            {
+                MessageBox.Show("Укажите IP и порт");
+                return;
+            }
             await ViewModel.FindSensors();
             MessageBox.Show(ViewModel.MessageFind);
-        }
-
-        private void DeleteClick(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Delete();
-            //_viewService.ResetVM(this,0);
         }
     }
 }

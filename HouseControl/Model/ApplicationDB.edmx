@@ -23,6 +23,7 @@
     <EntitySet Name="ParameterTypes" EntityType="ApplicationModel.Store.ParameterTypes" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_Sensor" EntityType="ApplicationModel.Store.Devices_Sensor" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_Controller" EntityType="ApplicationModel.Store.Devices_Controller" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ZoneScenario" EntityType="ApplicationModel.Store.ZoneScenario" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_Users_Role" Association="ApplicationModel.Store.FK_Users_Role">
       <End Role="Role" EntitySet="Roles" />
       <End Role="Users" EntitySet="Users" />
@@ -66,6 +67,14 @@
     <AssociationSet Name="ReactionCommand" Association="ApplicationModel.Store.ReactionCommand">
       <End Role="Reaction" EntitySet="Reactions" />
       <End Role="Command" EntitySet="Commands" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ZoneScenario_Zone" Association="ApplicationModel.Store.FK_ZoneScenario_Zone">
+      <End Role="Zone" EntitySet="Zones" />
+      <End Role="ZoneScenario" EntitySet="ZoneScenario" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ZoneScenario_Scenario" Association="ApplicationModel.Store.FK_ZoneScenario_Scenario">
+      <End Role="Scenario" EntitySet="Scenarios" />
+      <End Role="ZoneScenario" EntitySet="ZoneScenario" />
     </AssociationSet>
     <AssociationSet Name="FK_Sensor_inherits_Device" Association="ApplicationModel.Store.FK_Sensor_inherits_Device">
       <End Role="Device" EntitySet="Devices" />
@@ -217,6 +226,14 @@
     <Property Name="Port" Type="int" Nullable="false" />
     <Property Name="Id" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="ZoneScenario">
+    <Key>
+      <PropertyRef Name="Zones_Id" />
+      <PropertyRef Name="Scenarios_Id" />
+    </Key>
+    <Property Name="Zones_Id" Type="int" Nullable="false" />
+    <Property Name="Scenarios_Id" Type="int" Nullable="false" />
+  </EntityType>
   <Association Name="FK_Users_Role">
     <End Role="Role" Type="ApplicationModel.Store.Roles" Multiplicity="0..1" />
     <End Role="Users" Type="ApplicationModel.Store.Users" Multiplicity="*" />
@@ -349,6 +366,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_ZoneScenario_Zone">
+    <End Role="Zone" Type="ApplicationModel.Store.Zones" Multiplicity="1" />
+    <End Role="ZoneScenario" Type="ApplicationModel.Store.ZoneScenario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Zone">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ZoneScenario">
+        <PropertyRef Name="Zones_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ZoneScenario_Scenario">
+    <End Role="ZoneScenario" Type="ApplicationModel.Store.ZoneScenario" Multiplicity="*" />
+    <End Role="Scenario" Type="ApplicationModel.Store.Scenarios" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Scenario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ZoneScenario">
+        <PropertyRef Name="Scenarios_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Sensor_inherits_Device">
     <End Role="Device" Type="ApplicationModel.Store.Devices" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -478,6 +519,10 @@
             <End Role="Reaction" EntitySet="Reactions" />
             <End Role="Command" EntitySet="Commands" />
           </AssociationSet>
+          <AssociationSet Name="ZoneScenario" Association="ApplicationModel.ZoneScenario">
+            <End Role="Zone" EntitySet="Zones" />
+            <End Role="Scenario" EntitySet="Scenarios" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Controller" BaseType="ApplicationModel.Device">
           <Property Name="IP" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -526,6 +571,7 @@
           <Property Name="Description" Type="String" Nullable="false" DefaultValue="" />
           <NavigationProperty Name="Mode" Relationship="ApplicationModel.ScenarioMode" FromRole="Scenario" ToRole="Mode" />
           <NavigationProperty Name="Reactions" Relationship="ApplicationModel.ScenarioReaction" FromRole="Scenario" ToRole="Reaction" />
+          <NavigationProperty Name="Zones" Relationship="ApplicationModel.ZoneScenario" FromRole="Scenario" ToRole="Zone" />
         </EntityType>
         <EntityType Name="Zone">
           <Key>
@@ -534,6 +580,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
           <Property Name="Description" Type="String" Nullable="false" DefaultValue="" />
+          <NavigationProperty Name="Scenarios" Relationship="ApplicationModel.ZoneScenario" FromRole="Zone" ToRole="Scenario" />
         </EntityType>
         <EntityType Name="Reaction">
           <Key>
@@ -691,6 +738,10 @@
               <PropertyRef Name="ReactionId" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <Association Name="ZoneScenario">
+          <End Type="ApplicationModel.Zone" Role="Zone" Multiplicity="*" />
+          <End Type="ApplicationModel.Scenario" Role="Scenario" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -878,6 +929,14 @@
       </EndProperty>
       <EndProperty Name="Scenario">
         <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ZoneScenario" TypeName="ApplicationModel.ZoneScenario" StoreEntitySet="ZoneScenario">
+      <EndProperty Name="Zone">
+        <ScalarProperty Name="Id" ColumnName="Zones_Id" />
+      </EndProperty>
+      <EndProperty Name="Scenario">
+        <ScalarProperty Name="Id" ColumnName="Scenarios_Id" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>

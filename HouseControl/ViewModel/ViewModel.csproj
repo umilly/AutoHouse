@@ -55,6 +55,8 @@
     <Compile Include="CommandViewModel.cs" />
     <Compile Include="ConditionViewModel.cs" />
     <Compile Include="ControllerVM.cs" />
+    <Compile Include="DevicesEditorVM.cs" />
+    <Compile Include="DevicesViewModel.cs" />
     <Compile Include="DeviceTreeVM.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="ModeViewModel.cs" />

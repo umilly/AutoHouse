@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/31/2016 14:06:35
--- Generated from EDMX file: F:\work\autohouse\HouseControl\Model\ApplicationDB.edmx
+-- Date Created: 07/03/2016 19:46:24
+-- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -20,11 +20,41 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_Users_Role]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Users] DROP CONSTRAINT [FK_Users_Role];
 GO
-IF OBJECT_ID(N'[dbo].[FK_SensorController]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Sensors] DROP CONSTRAINT [FK_SensorController];
+IF OBJECT_ID(N'[dbo].[FK_ConditionTypeCondition]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Conditions] DROP CONSTRAINT [FK_ConditionTypeCondition];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ReactionCondition]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Conditions] DROP CONSTRAINT [FK_ReactionCondition];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CommandDevice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Commands] DROP CONSTRAINT [FK_CommandDevice];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ParametеrCommand]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parametеr] DROP CONSTRAINT [FK_ParametеrCommand];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ParameterTypeParametеr]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parametеr] DROP CONSTRAINT [FK_ParameterTypeParametеr];
 GO
 IF OBJECT_ID(N'[dbo].[FK_SensorTypeSensor]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Sensors] DROP CONSTRAINT [FK_SensorTypeSensor];
+    ALTER TABLE [dbo].[Devices_Sensor] DROP CONSTRAINT [FK_SensorTypeSensor];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SensorController]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Devices_Sensor] DROP CONSTRAINT [FK_SensorController];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ScenarioMode]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Scenarios] DROP CONSTRAINT [FK_ScenarioMode];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ScenarioReaction]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Reactions] DROP CONSTRAINT [FK_ScenarioReaction];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ReactionCommand]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Commands] DROP CONSTRAINT [FK_ReactionCommand];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Sensor_inherits_Device]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Devices_Sensor] DROP CONSTRAINT [FK_Sensor_inherits_Device];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Controller_inherits_Device]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Devices_Controller] DROP CONSTRAINT [FK_Controller_inherits_Device];
 GO
 
 -- --------------------------------------------------
@@ -40,17 +70,47 @@ GO
 IF OBJECT_ID(N'[dbo].[Users]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Users];
 GO
-IF OBJECT_ID(N'[dbo].[Controllers]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Controllers];
-GO
-IF OBJECT_ID(N'[dbo].[Sensors]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Sensors];
-GO
 IF OBJECT_ID(N'[dbo].[SensorTypes]', 'U') IS NOT NULL
     DROP TABLE [dbo].[SensorTypes];
 GO
 IF OBJECT_ID(N'[dbo].[DBVersions]', 'U') IS NOT NULL
     DROP TABLE [dbo].[DBVersions];
+GO
+IF OBJECT_ID(N'[dbo].[Modes]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Modes];
+GO
+IF OBJECT_ID(N'[dbo].[Scenarios]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Scenarios];
+GO
+IF OBJECT_ID(N'[dbo].[Zones]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Zones];
+GO
+IF OBJECT_ID(N'[dbo].[Reactions]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Reactions];
+GO
+IF OBJECT_ID(N'[dbo].[Conditions]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Conditions];
+GO
+IF OBJECT_ID(N'[dbo].[ConditionTypes]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ConditionTypes];
+GO
+IF OBJECT_ID(N'[dbo].[Commands]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Commands];
+GO
+IF OBJECT_ID(N'[dbo].[Devices]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Devices];
+GO
+IF OBJECT_ID(N'[dbo].[Parametеr]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Parametеr];
+GO
+IF OBJECT_ID(N'[dbo].[ParameterTypes]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ParameterTypes];
+GO
+IF OBJECT_ID(N'[dbo].[Devices_Sensor]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Devices_Sensor];
+GO
+IF OBJECT_ID(N'[dbo].[Devices_Controller]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Devices_Controller];
 GO
 
 -- --------------------------------------------------
@@ -198,6 +258,13 @@ CREATE TABLE [dbo].[Devices_Controller] (
 );
 GO
 
+-- Creating table 'ZoneScenario'
+CREATE TABLE [dbo].[ZoneScenario] (
+    [Zones_Id] int  NOT NULL,
+    [Scenarios_Id] int  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -302,6 +369,12 @@ GO
 ALTER TABLE [dbo].[Devices_Controller]
 ADD CONSTRAINT [PK_Devices_Controller]
     PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Zones_Id], [Scenarios_Id] in table 'ZoneScenario'
+ALTER TABLE [dbo].[ZoneScenario]
+ADD CONSTRAINT [PK_ZoneScenario]
+    PRIMARY KEY CLUSTERED ([Zones_Id], [Scenarios_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -471,6 +544,30 @@ GO
 CREATE INDEX [IX_FK_ReactionCommand]
 ON [dbo].[Commands]
     ([ReactionId]);
+GO
+
+-- Creating foreign key on [Zones_Id] in table 'ZoneScenario'
+ALTER TABLE [dbo].[ZoneScenario]
+ADD CONSTRAINT [FK_ZoneScenario_Zone]
+    FOREIGN KEY ([Zones_Id])
+    REFERENCES [dbo].[Zones]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Scenarios_Id] in table 'ZoneScenario'
+ALTER TABLE [dbo].[ZoneScenario]
+ADD CONSTRAINT [FK_ZoneScenario_Scenario]
+    FOREIGN KEY ([Scenarios_Id])
+    REFERENCES [dbo].[Scenarios]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ZoneScenario_Scenario'
+CREATE INDEX [IX_FK_ZoneScenario_Scenario]
+ON [dbo].[ZoneScenario]
+    ([Scenarios_Id]);
 GO
 
 -- Creating foreign key on [Id] in table 'Devices_Sensor'

@@ -20,6 +20,7 @@ namespace Model
             this.Name = "";
             this.Description = "";
             this.Reactions = new HashSet<Reaction>();
+            this.Zones = new HashSet<Zone>();
         }
     
         public int Id { get; set; }
@@ -29,5 +30,7 @@ namespace Model
         public virtual Mode Mode { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reaction> Reactions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Zone> Zones { get; set; }
     }
 }

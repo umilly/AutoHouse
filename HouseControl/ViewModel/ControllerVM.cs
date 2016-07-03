@@ -28,7 +28,7 @@ namespace ViewModel
             Context.SensorTypes.ForEach(a => _cahedTypes[a.Key] = a);
         }
 
-        public override ITreeNode Parent { get; }
+        public override ITreeNode Parent => Use<IPool>().GetViewModels<DevicesViewModel>().FirstOrDefault();
 
         public override IEnumerable<ITreeNode> Children
         {

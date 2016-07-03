@@ -7,7 +7,7 @@ using ViewModelBase;
 
 public class SystemViewModel : ViewModelBase.ViewModelBase, ITreeNode
 {
-    List<IContexMenuItem> _contextMenu=new List<IContexMenuItem>();
+    readonly List<IContexMenuItem> _contextMenu=new List<IContexMenuItem>();
 
     public SystemViewModel(IServiceContainer container) : base(container)
     {

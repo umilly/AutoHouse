@@ -39,6 +39,7 @@
           <ConnectorPoint PointX="5.875" PointY="5.389195531892284" />
           <ConnectorPoint PointX="8.375" PointY="5.389195531892284" />
         </AssociationConnector>
+        <AssociationConnector Association="ApplicationModel.ZoneScenario" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

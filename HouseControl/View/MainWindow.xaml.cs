@@ -84,19 +84,19 @@ namespace WpfApplication
             MainVM.InitSettings();
         }
 
-        private void ShowControllersClick(object sender, RoutedEventArgs e)
+        private void ShowDevicesClick(object sender, RoutedEventArgs e)
         {
-            
+            _container.Use<IViewService>().CreateView<DevicesNavigationView>();
+            OnNextView(null, null);
         }
 
         private void AddControllerClick(object sender, RoutedEventArgs e)
         {
             
-            _container.Use<IViewService>().CreateView<ControllerEditorView>(MainVM.GetOrCreateControllerVm());
-            OnNextView(null, null);
+            
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void ShowReactionsClick(object sender, RoutedEventArgs e)
         {
             _container.Use<IViewService>().CreateView<ReactionNavigationView>();
             OnNextView(null, null);

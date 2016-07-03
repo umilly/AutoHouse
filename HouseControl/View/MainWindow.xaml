@@ -24,10 +24,9 @@
             <MenuItem Header="Load" Click="LoadClick"></MenuItem>
             <MenuItem Header="Exit"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Controllers" Click="ShowControllersClick">
-                <MenuItem Header="Add new" HorizontalAlignment="Left" Width="139.333333333333" Click="AddControllerClick"/>
+            <MenuItem Header="Устройства" Click="ShowDevicesClick">
             </MenuItem>
-            <MenuItem Header="Reactions" Click="MenuItem_Click"/>
+            <MenuItem Header="Реакции" Click="ShowReactionsClick"/>
         </Menu>
         <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Content="{Binding Path=CurrentContent}"></ContentControl>
     </Grid>
