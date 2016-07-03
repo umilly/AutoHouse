@@ -13,7 +13,7 @@ namespace ViewModel
         }
 
         public ReactionViewModel Reaction
-            => Model.Reaction!=null ? Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction.ID) : null;
+            => Model.Reaction!=null ? Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction) : null;
 
         public override ITreeNode Parent => Reaction;
 

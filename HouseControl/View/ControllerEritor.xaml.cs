@@ -24,7 +24,7 @@ namespace View
         private void DeleteClick(object sender, RoutedEventArgs e)
         {
             ViewModel.Delete();
-            _viewService.ResetVM(this,0);
+            //_viewService.ResetVM(this,0);
         }
     }
 }

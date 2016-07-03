@@ -14,7 +14,7 @@ namespace ViewModel
             
         }
 
-        public ReactionViewModel Reaction => Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction.ID);
+        public ReactionViewModel Reaction => Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction);
 
         public override ITreeNode Parent => Reaction;
         public override IEnumerable<ITreeNode> Children { get; }

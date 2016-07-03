@@ -35,7 +35,7 @@ namespace ViewModel
 
         public ScenarioViewModel Scenario
         {
-            get { return Use<IPool>().GetDBVM<ScenarioViewModel>(Model.ScenarioId); }
+            get { return Use<IPool>().GetDBVM<ScenarioViewModel>(Model.Scenario); }
         }
 
         public override bool Validate()

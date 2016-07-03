@@ -13,10 +13,11 @@ namespace ViewModelBase
         IViewModel GetOrCreateVM(Type vmType, int id);
         void RemoveVM<T>(int i);
         void FillPool(Type[] types);
-        IEntytyObjectVM GetDBVM(Type type, int id);
+        IEntytyObjectVM GetDBVM(Type type, IHaveID id);
         IEntytyObjectVM CreateDBObject(Type type);
         T CreateDBObject<T>() where T : IEntytyObjectVM;
-        T GetDBVM<T>(int id) where T:IEntytyObjectVM;
+        T GetDBVM<T>(IHaveID model) where T : IEntytyObjectVM;
+        T GetDBVM<T>(int id) where T : class,IEntytyObjectVM;
         void RemoveVM(Type type, int i);
         void SaveDB();
     }

@@ -54,6 +54,12 @@ namespace ViewModelBase
             Use<IPool>().RemoveVM(GetType(), ID);
         
         }
+
+        public bool CompareModel(IHaveID id)
+        {
+            return Model == id;
+        }
+
         public Models Context { get; }
 
     }

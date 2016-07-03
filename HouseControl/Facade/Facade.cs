@@ -83,6 +83,7 @@ namespace Facade
         bool Validate();
         void SaveDB();
         void Delete();
+        bool CompareModel(IHaveID id);
     }
     public interface ITimerSerivce:IService {
         void Subsctibe(object key, Action action,int waitMilliSeconds,bool repeat=false);

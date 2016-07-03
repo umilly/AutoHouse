@@ -22,7 +22,7 @@ public class SensorViewModel : LinkedObjectVM<Sensor>, ITreeNode
             ;
     }
 
-    public override ITreeNode Parent => Use<IPool>().GetDBVM<ControllerVM>(Model.Controller.ID);
+    public override ITreeNode Parent => Use<IPool>().GetDBVM<ControllerVM>(Model.Controller);
 
     
     public override IEnumerable<ITreeNode> Children { get; }

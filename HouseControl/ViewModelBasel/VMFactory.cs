@@ -33,17 +33,25 @@ namespace ViewModelBase
             return res;
         }
 
-        public IEntytyObjectVM GetDBVM(Type type, int id)
+        public IEntytyObjectVM GetDBVM(Type type, IHaveID id)
         {
             if (!_pool.ContainsKey(type))
                 return null;
-            var res = _pool[type].FirstOrDefault(a => a.ID == id);
-            return res as IEntytyObjectVM;
+            var res = _pool[type].Cast<IEntytyObjectVM>().FirstOrDefault(a => a.CompareModel(id));
+            return res;
         }
 
-        public T GetDBVM<T>(int id) where T : IEntytyObjectVM
+        public T GetDBVM<T>(IHaveID id) where T : IEntytyObjectVM
         {
             return (T) GetDBVM(typeof (T), id);
+        }
+
+        public T GetDBVM<T>(int id) where T :class, IEntytyObjectVM 
+        {
+            if (!_pool.ContainsKey(typeof(T)))
+                return null;
+            var res = _pool[typeof(T)].Cast<IEntytyObjectVM>().FirstOrDefault(a => a.ID==id);
+            return res as T;
         }
 
         public IEntytyObjectVM CreateDBObject(Type type)

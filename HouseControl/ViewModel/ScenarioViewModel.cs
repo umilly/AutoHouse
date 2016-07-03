@@ -21,7 +21,7 @@ namespace ViewModel
         }
 
         public override ITreeNode Parent
-            => Model.Mode == null ? null : Use<IPool>().GetDBVM<ModeViewModel>(Model.Mode.ID);
+            => Model.Mode == null ? null : Use<IPool>().GetDBVM<ModeViewModel>(Model.Mode);
 
         public override IEnumerable<ITreeNode> Children
             => Use<IPool>().GetViewModels<ReactionViewModel>().Where(a => a.Scenario == this);

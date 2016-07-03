@@ -64,7 +64,7 @@ namespace ViewModel
 
         public IEnumerable<ScenarioViewModel> Scenarios
         {
-            get { return Model.Scenarios.Select(a => Use<IPool>().GetDBVM<ScenarioViewModel>(a.ID)); }
+            get { return Use<IPool>().GetViewModels<ScenarioViewModel>().Where(a=>a.Parent==this); }
         }
 
         public override bool Validate()

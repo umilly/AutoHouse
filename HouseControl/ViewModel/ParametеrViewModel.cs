@@ -14,7 +14,7 @@ namespace ViewModel
 
         public CommandViewModel Command
         {
-            get { return Use<IPool>().GetDBVM<CommandViewModel>(Model.Command.ID); }
+            get { return Use<IPool>().GetDBVM<CommandViewModel>(Model.Command); }
         }
 
         public override ITreeNode Parent { get; }
