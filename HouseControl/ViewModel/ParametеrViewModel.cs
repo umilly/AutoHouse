@@ -12,11 +12,6 @@ namespace ViewModel
         {
         }
 
-        public CommandViewModel Command
-        {
-            get { return Use<IPool>().GetDBVM<CommandViewModel>(Model.Command); }
-        }
-
         public override ITreeNode Parent { get; }
         public override IEnumerable<ITreeNode> Children { get; }
         public override string Value { get; set; }
@@ -24,7 +19,7 @@ namespace ViewModel
 
         public override bool Validate()
         {
-            return !string.IsNullOrEmpty(Model.Name) && Command != null;
+            return !string.IsNullOrEmpty(Model.Name);
         }
 
         public override string Name

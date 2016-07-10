@@ -97,6 +97,9 @@
     <Compile Include="Controller.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="CustomDevice.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBVersion.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity.Core.EntityClient;
+using System.Data.Entity.Core.Mapping;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Facade;
@@ -143,12 +146,28 @@ namespace Model
             public MigrationService(Models context)
             {
                 _context = context;
-                RegiterUpdate(Guid.Parse("6DA1FC41-A02D-40EC-82AF-7489C8E62CE4"),@"",FillSencorTypeDict);
-                RegiterUpdate(Guid.Parse("610174A4-E6C0-4F3A-AD7C-A3069A57EF85"), @"
-ALTER TABLE [dbo].[Sensors]
-ADD [ContollerSlot] int  NOT NULL
-");
+                RegiterUpdate(Guid.Parse("6DA1FC41-A02D-40EC-82AF-7489C8E62CE4"), @"", FillSencorTypeDict);
                 RegiterUpdate(Guid.Parse("E00785CC-F6D3-4A28-AA04-8B601AAD9015"), @"", FillZone);
+                RegiterUpdate(Guid.Parse("4501377E-791E-4827-B50A-0909A3CC4ED2"), @"", FillConditionTypes);
+                RegiterUpdate(Guid.Parse("4501377E-791E-4827-B50A-0909A3CC4ED2"), @"", FillParameterTypes);
+            }
+
+            private void FillParameterTypes()
+            {
+                _context.ParameterTypes.Add(new ParameterType() { Id = (int) ParameterTypeValue.Bool, Name = "bool"});
+                _context.ParameterTypes.Add(new ParameterType() { Id = (int)ParameterTypeValue.Int, Name = "Целое" });
+                _context.ParameterTypes.Add(new ParameterType() { Id = (int)ParameterTypeValue.String, Name = "Строка" });
+                _context.ParameterTypes.Add(new ParameterType() { Id = (int)ParameterTypeValue.Double, Name = "Десятичное" });
+            }
+
+            private void FillConditionTypes()
+            {
+                _context.ConditionTypes.Add(new ConditionType() { Id = (int) ConditionTypeValue.And, Name = "И"});
+                _context.ConditionTypes.Add(new ConditionType() { Id = (int)ConditionTypeValue.Or, Name = "ИЛИ" });
+                _context.ConditionTypes.Add(new ConditionType() { Id = (int)ConditionTypeValue.Equal, Name = "=" });
+                _context.ConditionTypes.Add(new ConditionType() { Id = (int)ConditionTypeValue.Less, Name = "<" });
+                _context.ConditionTypes.Add(new ConditionType() { Id = (int)ConditionTypeValue.More, Name = ">" });
+                _context.ConditionTypes.Add(new ConditionType() { Id = (int)ConditionTypeValue.NotEqual, Name = "<>" });
             }
 
             private void FillZone()
@@ -324,4 +343,44 @@ ADD [ContollerSlot] int  NOT NULL
         public Action FillData { get; set; }
     }
 
+    public enum ConditionTypeValue
+    {
+        And=1,
+        Or=2,
+        Less=3,
+        More=4,
+        Equal=5,
+        NotEqual=6
+    }
+    public enum ParameterTypeValue
+    {
+        [TypeAssociation(typeof(bool))]
+        Bool = 1,
+        [TypeAssociation(typeof(int))]
+        Int = 2,
+        [TypeAssociation(typeof(string))]
+        String = 3,
+        [TypeAssociation(typeof(double))]
+        Double = 4,
+    }
+
+    public class TypeAssociationAttribute : Attribute
+    {
+        private readonly Type _type;
+        private static readonly Dictionary<ParameterTypeValue,Type> TypeMap=new Dictionary<ParameterTypeValue, Type>();
+        public TypeAssociationAttribute(Type type)
+        {
+            _type = type;
+        }
+
+        public static Type GetType(ParameterTypeValue member)
+        {
+            if (TypeMap.ContainsKey(member))
+                return TypeMap[member];
+            var t = typeof (ParameterTypeValue);
+            var res = t.GetMembers(BindingFlags.Public | BindingFlags.Static).First(a => ((ParameterTypeValue)Enum.Parse(t, a.Name)).Equals(member));
+            TypeMap[member] = ((TypeAssociationAttribute)res.GetCustomAttributes(typeof(TypeAssociationAttribute), true).Single())._type;
+            return TypeMap[member];
+        }
+    }
 }

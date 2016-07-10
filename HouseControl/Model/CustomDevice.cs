@@ -12,23 +12,20 @@ namespace Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Command
+    public partial class CustomDevice : Device
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Command()
+        public CustomDevice()
         {
-            this.Name = "";
-            this.Parametеr = new HashSet<Parametеr>();
+            this.ParameterTypes = new HashSet<ParameterType>();
+            this.Commands = new HashSet<Command>();
         }
     
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int ScenarioId { get; set; }
-        public int ReactionId { get; set; }
     
-        public virtual Reaction Reaction { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Parametеr> Parametеr { get; set; }
-        public virtual CustomDevice CustomDevice { get; set; }
+        public virtual ICollection<ParameterType> ParameterTypes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Command> Commands { get; set; }
+        public virtual Controller Controller { get; set; }
     }
 }

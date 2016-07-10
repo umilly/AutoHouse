@@ -18,6 +18,7 @@ namespace Model
         public Controller()
         {
             this.Sensors = new HashSet<Sensor>();
+            this.CustomDevices = new HashSet<CustomDevice>();
         }
     
         public string IP { get; set; }
@@ -25,5 +26,7 @@ namespace Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sensor> Sensors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CustomDevice> CustomDevices { get; set; }
     }
 }

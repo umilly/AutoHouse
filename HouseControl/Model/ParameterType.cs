@@ -14,7 +14,16 @@ namespace Model
     
     public partial class ParameterType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParameterType()
+        {
+            this.CustomDevices = new HashSet<CustomDevice>();
+        }
+    
         public int Id { get; set; }
         public string Name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CustomDevice> CustomDevices { get; set; }
     }
 }

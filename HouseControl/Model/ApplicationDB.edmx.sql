@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 07/03/2016 19:46:24
+-- Date Created: 07/10/2016 11:41:19
 -- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -26,12 +26,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ReactionCondition]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Conditions] DROP CONSTRAINT [FK_ReactionCondition];
 GO
-IF OBJECT_ID(N'[dbo].[FK_CommandDevice]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Commands] DROP CONSTRAINT [FK_CommandDevice];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ParametеrCommand]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parametеr] DROP CONSTRAINT [FK_ParametеrCommand];
-GO
 IF OBJECT_ID(N'[dbo].[FK_ParameterTypeParametеr]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Parametеr] DROP CONSTRAINT [FK_ParameterTypeParametеr];
 GO
@@ -50,11 +44,44 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ReactionCommand]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Commands] DROP CONSTRAINT [FK_ReactionCommand];
 GO
+IF OBJECT_ID(N'[dbo].[FK_ZoneScenario_Zone]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ZoneScenario] DROP CONSTRAINT [FK_ZoneScenario_Zone];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ZoneScenario_Scenario]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ZoneScenario] DROP CONSTRAINT [FK_ZoneScenario_Scenario];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CustomDeviceParameterType_CustomDevice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CustomDeviceParameterType] DROP CONSTRAINT [FK_CustomDeviceParameterType_CustomDevice];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CustomDeviceParameterType_ParameterType]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CustomDeviceParameterType] DROP CONSTRAINT [FK_CustomDeviceParameterType_ParameterType];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CommandParametеr_Command]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CommandParametеr] DROP CONSTRAINT [FK_CommandParametеr_Command];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CommandParametеr_Parametеr]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CommandParametеr] DROP CONSTRAINT [FK_CommandParametеr_Parametеr];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CommandCustomDevice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Commands] DROP CONSTRAINT [FK_CommandCustomDevice];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ConditionParametеr_Condition]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ConditionParametеr] DROP CONSTRAINT [FK_ConditionParametеr_Condition];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ConditionParametеr_Parametеr]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ConditionParametеr] DROP CONSTRAINT [FK_ConditionParametеr_Parametеr];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ConditionCondition]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Conditions] DROP CONSTRAINT [FK_ConditionCondition];
+GO
 IF OBJECT_ID(N'[dbo].[FK_Sensor_inherits_Device]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Devices_Sensor] DROP CONSTRAINT [FK_Sensor_inherits_Device];
 GO
 IF OBJECT_ID(N'[dbo].[FK_Controller_inherits_Device]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Devices_Controller] DROP CONSTRAINT [FK_Controller_inherits_Device];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CustomDevice_inherits_Device]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Devices_CustomDevice] DROP CONSTRAINT [FK_CustomDevice_inherits_Device];
 GO
 
 -- --------------------------------------------------
@@ -111,6 +138,21 @@ IF OBJECT_ID(N'[dbo].[Devices_Sensor]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Devices_Controller]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Devices_Controller];
+GO
+IF OBJECT_ID(N'[dbo].[Devices_CustomDevice]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Devices_CustomDevice];
+GO
+IF OBJECT_ID(N'[dbo].[ZoneScenario]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ZoneScenario];
+GO
+IF OBJECT_ID(N'[dbo].[CustomDeviceParameterType]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CustomDeviceParameterType];
+GO
+IF OBJECT_ID(N'[dbo].[CommandParametеr]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CommandParametеr];
+GO
+IF OBJECT_ID(N'[dbo].[ConditionParametеr]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ConditionParametеr];
 GO
 
 -- --------------------------------------------------
@@ -195,15 +237,15 @@ CREATE TABLE [dbo].[Conditions] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [ConditionTypeId] int  NOT NULL,
-    [ReactionId] int  NULL
+    [ReactionId] int  NULL,
+    [ParentConditionId] int  NULL
 );
 GO
 
 -- Creating table 'ConditionTypes'
 CREATE TABLE [dbo].[ConditionTypes] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [Value] nvarchar(max)  NOT NULL
+    [Name] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -213,7 +255,7 @@ CREATE TABLE [dbo].[Commands] (
     [Name] nvarchar(max)  NOT NULL,
     [ScenarioId] int  NOT NULL,
     [ReactionId] int  NOT NULL,
-    [Device_Id] int  NOT NULL
+    [CustomDevice_Id] int  NOT NULL
 );
 GO
 
@@ -229,8 +271,7 @@ CREATE TABLE [dbo].[Parametеr] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [Value] nvarchar(max)  NOT NULL,
-    [ParameterTypeId] int  NOT NULL,
-    [Command_Id] int  NOT NULL
+    [ParameterTypeId] int  NOT NULL
 );
 GO
 
@@ -258,10 +299,38 @@ CREATE TABLE [dbo].[Devices_Controller] (
 );
 GO
 
+-- Creating table 'Devices_CustomDevice'
+CREATE TABLE [dbo].[Devices_CustomDevice] (
+    [Id] int  NOT NULL,
+    [Controller_Id] int  NOT NULL
+);
+GO
+
 -- Creating table 'ZoneScenario'
 CREATE TABLE [dbo].[ZoneScenario] (
     [Zones_Id] int  NOT NULL,
     [Scenarios_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'CustomDeviceParameterType'
+CREATE TABLE [dbo].[CustomDeviceParameterType] (
+    [CustomDevices_Id] int  NOT NULL,
+    [ParameterTypes_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'CommandParametеr'
+CREATE TABLE [dbo].[CommandParametеr] (
+    [Commands_Id] int  NOT NULL,
+    [Parametеr_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'ConditionParametеr'
+CREATE TABLE [dbo].[ConditionParametеr] (
+    [Conditions_Id] int  NOT NULL,
+    [Parametеr_Id] int  NOT NULL
 );
 GO
 
@@ -371,10 +440,34 @@ ADD CONSTRAINT [PK_Devices_Controller]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
+-- Creating primary key on [Id] in table 'Devices_CustomDevice'
+ALTER TABLE [dbo].[Devices_CustomDevice]
+ADD CONSTRAINT [PK_Devices_CustomDevice]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- Creating primary key on [Zones_Id], [Scenarios_Id] in table 'ZoneScenario'
 ALTER TABLE [dbo].[ZoneScenario]
 ADD CONSTRAINT [PK_ZoneScenario]
     PRIMARY KEY CLUSTERED ([Zones_Id], [Scenarios_Id] ASC);
+GO
+
+-- Creating primary key on [CustomDevices_Id], [ParameterTypes_Id] in table 'CustomDeviceParameterType'
+ALTER TABLE [dbo].[CustomDeviceParameterType]
+ADD CONSTRAINT [PK_CustomDeviceParameterType]
+    PRIMARY KEY CLUSTERED ([CustomDevices_Id], [ParameterTypes_Id] ASC);
+GO
+
+-- Creating primary key on [Commands_Id], [Parametеr_Id] in table 'CommandParametеr'
+ALTER TABLE [dbo].[CommandParametеr]
+ADD CONSTRAINT [PK_CommandParametеr]
+    PRIMARY KEY CLUSTERED ([Commands_Id], [Parametеr_Id] ASC);
+GO
+
+-- Creating primary key on [Conditions_Id], [Parametеr_Id] in table 'ConditionParametеr'
+ALTER TABLE [dbo].[ConditionParametеr]
+ADD CONSTRAINT [PK_ConditionParametеr]
+    PRIMARY KEY CLUSTERED ([Conditions_Id], [Parametеr_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -424,36 +517,6 @@ GO
 CREATE INDEX [IX_FK_ReactionCondition]
 ON [dbo].[Conditions]
     ([ReactionId]);
-GO
-
--- Creating foreign key on [Device_Id] in table 'Commands'
-ALTER TABLE [dbo].[Commands]
-ADD CONSTRAINT [FK_CommandDevice]
-    FOREIGN KEY ([Device_Id])
-    REFERENCES [dbo].[Devices]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_CommandDevice'
-CREATE INDEX [IX_FK_CommandDevice]
-ON [dbo].[Commands]
-    ([Device_Id]);
-GO
-
--- Creating foreign key on [Command_Id] in table 'Parametеr'
-ALTER TABLE [dbo].[Parametеr]
-ADD CONSTRAINT [FK_ParametеrCommand]
-    FOREIGN KEY ([Command_Id])
-    REFERENCES [dbo].[Commands]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ParametеrCommand'
-CREATE INDEX [IX_FK_ParametеrCommand]
-ON [dbo].[Parametеr]
-    ([Command_Id]);
 GO
 
 -- Creating foreign key on [ParameterTypeId] in table 'Parametеr'
@@ -570,6 +633,123 @@ ON [dbo].[ZoneScenario]
     ([Scenarios_Id]);
 GO
 
+-- Creating foreign key on [CustomDevices_Id] in table 'CustomDeviceParameterType'
+ALTER TABLE [dbo].[CustomDeviceParameterType]
+ADD CONSTRAINT [FK_CustomDeviceParameterType_CustomDevice]
+    FOREIGN KEY ([CustomDevices_Id])
+    REFERENCES [dbo].[Devices_CustomDevice]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [ParameterTypes_Id] in table 'CustomDeviceParameterType'
+ALTER TABLE [dbo].[CustomDeviceParameterType]
+ADD CONSTRAINT [FK_CustomDeviceParameterType_ParameterType]
+    FOREIGN KEY ([ParameterTypes_Id])
+    REFERENCES [dbo].[ParameterTypes]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CustomDeviceParameterType_ParameterType'
+CREATE INDEX [IX_FK_CustomDeviceParameterType_ParameterType]
+ON [dbo].[CustomDeviceParameterType]
+    ([ParameterTypes_Id]);
+GO
+
+-- Creating foreign key on [Commands_Id] in table 'CommandParametеr'
+ALTER TABLE [dbo].[CommandParametеr]
+ADD CONSTRAINT [FK_CommandParametеr_Command]
+    FOREIGN KEY ([Commands_Id])
+    REFERENCES [dbo].[Commands]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Parametеr_Id] in table 'CommandParametеr'
+ALTER TABLE [dbo].[CommandParametеr]
+ADD CONSTRAINT [FK_CommandParametеr_Parametеr]
+    FOREIGN KEY ([Parametеr_Id])
+    REFERENCES [dbo].[Parametеr]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CommandParametеr_Parametеr'
+CREATE INDEX [IX_FK_CommandParametеr_Parametеr]
+ON [dbo].[CommandParametеr]
+    ([Parametеr_Id]);
+GO
+
+-- Creating foreign key on [CustomDevice_Id] in table 'Commands'
+ALTER TABLE [dbo].[Commands]
+ADD CONSTRAINT [FK_CommandCustomDevice]
+    FOREIGN KEY ([CustomDevice_Id])
+    REFERENCES [dbo].[Devices_CustomDevice]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CommandCustomDevice'
+CREATE INDEX [IX_FK_CommandCustomDevice]
+ON [dbo].[Commands]
+    ([CustomDevice_Id]);
+GO
+
+-- Creating foreign key on [Conditions_Id] in table 'ConditionParametеr'
+ALTER TABLE [dbo].[ConditionParametеr]
+ADD CONSTRAINT [FK_ConditionParametеr_Condition]
+    FOREIGN KEY ([Conditions_Id])
+    REFERENCES [dbo].[Conditions]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Parametеr_Id] in table 'ConditionParametеr'
+ALTER TABLE [dbo].[ConditionParametеr]
+ADD CONSTRAINT [FK_ConditionParametеr_Parametеr]
+    FOREIGN KEY ([Parametеr_Id])
+    REFERENCES [dbo].[Parametеr]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConditionParametеr_Parametеr'
+CREATE INDEX [IX_FK_ConditionParametеr_Parametеr]
+ON [dbo].[ConditionParametеr]
+    ([Parametеr_Id]);
+GO
+
+-- Creating foreign key on [ParentConditionId] in table 'Conditions'
+ALTER TABLE [dbo].[Conditions]
+ADD CONSTRAINT [FK_ConditionCondition]
+    FOREIGN KEY ([ParentConditionId])
+    REFERENCES [dbo].[Conditions]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConditionCondition'
+CREATE INDEX [IX_FK_ConditionCondition]
+ON [dbo].[Conditions]
+    ([ParentConditionId]);
+GO
+
+-- Creating foreign key on [Controller_Id] in table 'Devices_CustomDevice'
+ALTER TABLE [dbo].[Devices_CustomDevice]
+ADD CONSTRAINT [FK_CustomDeviceController]
+    FOREIGN KEY ([Controller_Id])
+    REFERENCES [dbo].[Devices_Controller]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CustomDeviceController'
+CREATE INDEX [IX_FK_CustomDeviceController]
+ON [dbo].[Devices_CustomDevice]
+    ([Controller_Id]);
+GO
+
 -- Creating foreign key on [Id] in table 'Devices_Sensor'
 ALTER TABLE [dbo].[Devices_Sensor]
 ADD CONSTRAINT [FK_Sensor_inherits_Device]
@@ -582,6 +762,15 @@ GO
 -- Creating foreign key on [Id] in table 'Devices_Controller'
 ALTER TABLE [dbo].[Devices_Controller]
 ADD CONSTRAINT [FK_Controller_inherits_Device]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Devices]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Id] in table 'Devices_CustomDevice'
+ALTER TABLE [dbo].[Devices_CustomDevice]
+ADD CONSTRAINT [FK_CustomDevice_inherits_Device]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Devices]
         ([Id])

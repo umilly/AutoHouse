@@ -18,13 +18,9 @@ namespace Model
         public Device()
         {
             this.Name = "";
-            this.Commands = new HashSet<Command>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Command> Commands { get; set; }
     }
 }
