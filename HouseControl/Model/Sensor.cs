@@ -18,6 +18,7 @@ namespace Model
         public Sensor()
         {
             this.ContollerSlot = 0;
+            this.Conditions = new HashSet<Condition>();
         }
     
         public int ContollerSlot { get; set; }
@@ -25,5 +26,7 @@ namespace Model
     
         public virtual SensorType SensorType { get; set; }
         public virtual Controller Controller { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Condition> Conditions { get; set; }
     }
 }

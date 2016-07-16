@@ -102,6 +102,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ConditionEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ReactionEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -145,6 +149,9 @@
     <Compile Include="BoolToColorConverter.cs" />
     <Compile Include="ContolView.xaml.cs">
       <DependentUpon>ContolView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConditionEditor.xaml.cs">
+      <DependentUpon>ConditionEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="ReactionEditor.xaml.cs">
       <DependentUpon>ReactionEditor.xaml</DependentUpon>

@@ -17,7 +17,7 @@ namespace Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Condition()
         {
-            this.ParentCondidition = new HashSet<Condition>();
+            this.ChildConditions = new HashSet<Condition>();
         }
     
         public int Id { get; set; }
@@ -29,7 +29,10 @@ namespace Model
         public virtual ConditionType ConditionType { get; set; }
         public virtual Reaction Reaction { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Condition> ParentCondidition { get; set; }
-        public virtual Condition ChildConditions { get; set; }
+        public virtual ICollection<Condition> ChildConditions { get; set; }
+        public virtual Condition ParentCondition { get; set; }
+        public virtual Sensor Sensor { get; set; }
+        public virtual Parameter Parameter1 { get; set; }
+        public virtual Parameter Parameter2 { get; set; }
     }
 }

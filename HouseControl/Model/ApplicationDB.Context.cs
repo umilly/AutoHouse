@@ -38,7 +38,7 @@ namespace Model
         public virtual DbSet<ConditionType> ConditionTypes { get; set; }
         public virtual DbSet<Command> Commands { get; set; }
         public virtual DbSet<Device> Devices { get; set; }
-        public virtual DbSet<Parametеr> Parametеr { get; set; }
+        public virtual DbSet<Parameter> Parameter { get; set; }
         public virtual DbSet<ParameterType> ParameterTypes { get; set; }
     }
 }

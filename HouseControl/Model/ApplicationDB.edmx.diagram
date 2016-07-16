@@ -25,9 +25,9 @@
         <EntityTypeShape EntityType="ApplicationModel.Device" Width="1.5" PointX="3.125" PointY="3.375" />
         <InheritanceConnector EntityType="ApplicationModel.Sensor" />
         <InheritanceConnector EntityType="ApplicationModel.Controller" />
-        <EntityTypeShape EntityType="ApplicationModel.Parametеr" Width="1.5" PointX="12.125" PointY="3.375" />
+        <EntityTypeShape EntityType="ApplicationModel.Parameter" Width="1.5" PointX="12.125" PointY="3.375" />
         <EntityTypeShape EntityType="ApplicationModel.ParameterType" Width="1.5" PointX="12.125" PointY="0.875" />
-        <AssociationConnector Association="ApplicationModel.ParameterTypeParametеr" />
+        <AssociationConnector Association="ApplicationModel.ParameterTypeParameter" />
         <AssociationConnector Association="ApplicationModel.SensorTypeSensor" />
         <AssociationConnector Association="ApplicationModel.SensorController" />
         <AssociationConnector Association="ApplicationModel.ScenarioMode" />
@@ -38,16 +38,21 @@
         <EntityTypeShape EntityType="ApplicationModel.CustomDevice" Width="1.5" PointX="5.5" PointY="3.125" />
         <InheritanceConnector EntityType="ApplicationModel.CustomDevice" />
         <AssociationConnector Association="ApplicationModel.CustomDeviceParameterType" ManuallyRouted="true" >
-          <ConnectorPoint PointX="7" PointY="3.922841796875" />
-          <ConnectorPoint PointX="8.0725" PointY="3.922841796875" />
-          <ConnectorPoint PointX="8.0725" PointY="3.125" />
+          <ConnectorPoint PointX="7" PointY="3.7233793476562562" />
+          <ConnectorPoint PointX="7.635416666666667" PointY="3.7233793476562558" />
+          <ConnectorPoint PointX="7.802083333333333" PointY="3.7233793476562562" />
+          <ConnectorPoint PointX="9.5" PointY="3.7233793476562562" />
+          <ConnectorPoint PointX="9.5" PointY="3.125" />
           <ConnectorPoint PointX="12.468748" PointY="3.125" />
-          <ConnectorPoint PointX="12.468748" PointY="2.4706835937499996" />
+          <ConnectorPoint PointX="12.468748" PointY="2.47068359375" />
         </AssociationConnector>
-        <AssociationConnector Association="ApplicationModel.CommandParametеr" />
+        <AssociationConnector Association="ApplicationModel.CommandParameter" />
         <AssociationConnector Association="ApplicationModel.CommandCustomDevice" />
         <AssociationConnector Association="ApplicationModel.ConditionCondition" />
         <AssociationConnector Association="ApplicationModel.CustomDeviceController" />
+        <AssociationConnector Association="ApplicationModel.ConditionSensor" />
+        <AssociationConnector Association="ApplicationModel.ConditionParameter1" />
+        <AssociationConnector Association="ApplicationModel.ConditionParameter2" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

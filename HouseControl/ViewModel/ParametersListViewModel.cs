@@ -13,15 +13,15 @@ namespace ViewModel
         }
 
         public override int ID { get; set; }
-        private readonly Func<ParametårViewModel,bool> _filterCiteria = vm => true;
-        public IEnumerable<ParametårViewModel> Parameters
+        private readonly Func<ParameterViewModel,bool> _filterCiteria = vm => true;
+        public IEnumerable<ParameterViewModel> Parameters
         {
-            get { return Use<IPool>().GetViewModels<ParametårViewModel>().Where(a=>_filterCiteria(a)); }
+            get { return Use<IPool>().GetViewModels<ParameterViewModel>().Where(a=>_filterCiteria(a)); }
         }
 
         public void CreateParams()
         {
-            var newParam = Use<IPool>().CreateDBObject<ParametårViewModel>();
+            var newParam = Use<IPool>().CreateDBObject<ParameterViewModel>();
             newParam.Name = "Ïàðàìåòð" ;
             newParam.Value = "";
             newParam.ParamType = Use<IPool>().GetViewModels<ParameterTypeViewModel>().First();

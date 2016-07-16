@@ -17,7 +17,7 @@ namespace ViewModel
             return true;
         }
 
-        public void LinkParam(Parametår model)
+        public void LinkParam(Parameter model)
         {
             model.ParameterType = Model;
         }

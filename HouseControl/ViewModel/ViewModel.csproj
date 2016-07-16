@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandViewModel.cs" />
+    <Compile Include="ConditionTypeViewModel.cs" />
     <Compile Include="ConditionViewModel.cs" />
     <Compile Include="ControllerVM.cs" />
     <Compile Include="CustomDeviceViewModel.cs" />
@@ -62,7 +63,7 @@
     <Compile Include="MainViewModel.cs" />
     <Compile Include="ModeViewModel.cs" />
     <Compile Include="ParameterTypeViewModel.cs" />
-    <Compile Include="ParametеrViewModel.cs" />
+    <Compile Include="ParameterViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConrolPanelVM.cs" />

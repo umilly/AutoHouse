@@ -109,10 +109,10 @@
     <Compile Include="Mode.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="ParameterType.cs">
+    <Compile Include="Parameter.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Parametеr.cs">
+    <Compile Include="ParameterType.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Partials.cs" />

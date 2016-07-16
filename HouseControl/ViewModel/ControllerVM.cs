@@ -26,6 +26,7 @@ namespace ViewModel
             var newDev=Use<IPool>().CreateDBObject<CustomDeviceViewModel>();
             newDev.LinkTo(Model);
             newDev.Name = "Устройство";
+            OnPropertyChanged(()=>Children);
         }
 
         private void fillSensorTypes()
@@ -40,7 +41,10 @@ namespace ViewModel
 
         public override IEnumerable<ITreeNode> Children
         {
-            get { return Use<IPool>().GetViewModels<SensorViewModel>().Where(a => a.Parent == this); }
+            get { return Use<IPool>().GetViewModels<SensorViewModel>()
+                    .Cast<ITreeNode>()
+                    .Union(Use<IPool>().GetViewModels<CustomDeviceViewModel>())
+                    .Where(a => a.Parent == this); }
         }
 
         public Dictionary<int, string> Values => _values;

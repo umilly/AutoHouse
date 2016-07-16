@@ -18,7 +18,7 @@ namespace Model
         public Command()
         {
             this.Name = "";
-            this.Parametеr = new HashSet<Parametеr>();
+            this.Parameter = new HashSet<Parameter>();
         }
     
         public int Id { get; set; }
@@ -28,7 +28,7 @@ namespace Model
     
         public virtual Reaction Reaction { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Parametеr> Parametеr { get; set; }
+        public virtual ICollection<Parameter> Parameter { get; set; }
         public virtual CustomDevice CustomDevice { get; set; }
     }
 }

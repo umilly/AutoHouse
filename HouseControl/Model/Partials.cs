@@ -71,7 +71,7 @@ namespace Model
             get { return this.Id; }
         }
     }
-    public partial class Parametеr : IHaveID
+    public partial class Parameter : IHaveID
     {
         public int ID
         {

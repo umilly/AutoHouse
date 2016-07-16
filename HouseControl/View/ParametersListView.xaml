@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
             <ItemsControl Grid.Row="1" Name="ParamsList" ItemsSource="{Binding ViewModel.Parameters, Mode=OneWay }">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="viewModel:ParametеrViewModel">
+                    <DataTemplate DataType="viewModel:ParameterViewModel">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="200"/>

@@ -5,9 +5,9 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ParametårViewModel : EntytyObjectVM<Parametår>
+    public class ParameterViewModel : EntytyObjectVM<Parameter>
     {
-        public ParametårViewModel(IServiceContainer container, Models dataBase, Parametår model)
+        public ParameterViewModel(IServiceContainer container, Models dataBase, Parameter model)
             : base(container, dataBase, model)
         {
             
