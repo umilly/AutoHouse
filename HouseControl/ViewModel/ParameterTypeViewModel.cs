@@ -1,0 +1,30 @@
+using Facade;
+using Model;
+using ViewModelBase;
+
+namespace ViewModel
+{
+    public class ParameterTypeViewModel : EntytyObjectVM<ParameterType>
+    {
+        public ParameterTypeViewModel(IServiceContainer container, Models dataBase, ParameterType model) : base(container, dataBase, model)
+        {
+        }
+
+        public string Name => Model.Name;
+
+        public override bool Validate()
+        {
+            return true;
+        }
+
+        public void LinkParam(Parametår model)
+        {
+            model.ParameterType = Model;
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
+}

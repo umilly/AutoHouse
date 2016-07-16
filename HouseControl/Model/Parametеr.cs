@@ -19,7 +19,6 @@ namespace Model
         {
             this.Name = "";
             this.Commands = new HashSet<Command>();
-            this.Conditions = new HashSet<Condition>();
         }
     
         public int Id { get; set; }
@@ -30,7 +29,5 @@ namespace Model
         public virtual ParameterType ParameterType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Command> Commands { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Condition> Conditions { get; set; }
     }
 }

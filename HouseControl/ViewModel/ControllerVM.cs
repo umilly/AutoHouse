@@ -18,8 +18,16 @@ namespace ViewModel
         public ControllerVM(IServiceContainer container,Models dataBase,Controller controller) : base(container,dataBase,controller)
         {
             fillSensorTypes();
+            _contextMenu.Add(new CustomContextMenuItem("Добавить устройство",new CommandHandler(AddDevice)));
         }
-        
+
+        private void AddDevice(bool b)
+        {
+            var newDev=Use<IPool>().CreateDBObject<CustomDeviceViewModel>();
+            newDev.LinkTo(Model);
+            newDev.Name = "Устройство";
+        }
+
         private void fillSensorTypes()
         {
             if (_cahedTypes != null || Context == null)

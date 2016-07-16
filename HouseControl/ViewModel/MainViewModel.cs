@@ -86,5 +86,4 @@ namespace ViewModel
             //fileStream.Dispose();
         }
     }
-
 }

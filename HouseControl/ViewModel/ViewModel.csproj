@@ -55,11 +55,13 @@
     <Compile Include="CommandViewModel.cs" />
     <Compile Include="ConditionViewModel.cs" />
     <Compile Include="ControllerVM.cs" />
+    <Compile Include="CustomDeviceViewModel.cs" />
     <Compile Include="DevicesEditorVM.cs" />
     <Compile Include="DevicesViewModel.cs" />
     <Compile Include="DeviceTreeVM.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="ModeViewModel.cs" />
+    <Compile Include="ParameterTypeViewModel.cs" />
     <Compile Include="ParametеrViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="SettingsVM.cs" />
     <Compile Include="SystemViewModel.cs" />
     <Compile Include="TimerService.cs" />
+    <Compile Include="ParametersListViewModel.cs" />
     <Compile Include="ZoneViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

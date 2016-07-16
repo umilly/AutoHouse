@@ -5,24 +5,40 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ParametårViewModel : LinkedObjectVM<Parametår>
+    public class ParametårViewModel : EntytyObjectVM<Parametår>
     {
         public ParametårViewModel(IServiceContainer container, Models dataBase, Parametår model)
             : base(container, dataBase, model)
         {
+            
         }
-
-        public override ITreeNode Parent { get; }
-        public override IEnumerable<ITreeNode> Children { get; }
-        public override string Value { get; set; }
-        public override bool IsConnected { get; set; }
 
         public override bool Validate()
         {
-            return !string.IsNullOrEmpty(Model.Name);
+            return !string.IsNullOrEmpty(Model.Name)&&Model.ParameterType!=null;
         }
 
-        public override string Name
+        public string Value
+        {
+            get { return Model.Value; }
+            set
+            {
+                Model.Value = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<ParameterTypeViewModel> ParamTypes => Use<IPool>().GetViewModels<ParameterTypeViewModel>();
+
+        public ParameterTypeViewModel ParamType
+        {
+            get { return Use<IPool>().GetDBVM<ParameterTypeViewModel>(Model.ParameterType); }
+            set
+            {
+                value.LinkParam(Model);
+            }
+        }
+        public string Name
         {
             get { return Model.Name; }
             set

@@ -39,8 +39,6 @@
         <InheritanceConnector EntityType="ApplicationModel.CustomDevice" />
         <AssociationConnector Association="ApplicationModel.CustomDeviceParameterType" ManuallyRouted="true" >
           <ConnectorPoint PointX="7" PointY="3.922841796875" />
-          <ConnectorPoint PointX="7.635416666666667" PointY="3.9228417968749993" />
-          <ConnectorPoint PointX="7.802083333333333" PointY="3.922841796875" />
           <ConnectorPoint PointX="8.0725" PointY="3.922841796875" />
           <ConnectorPoint PointX="8.0725" PointY="3.125" />
           <ConnectorPoint PointX="12.468748" PointY="3.125" />
@@ -48,10 +46,8 @@
         </AssociationConnector>
         <AssociationConnector Association="ApplicationModel.CommandParametеr" />
         <AssociationConnector Association="ApplicationModel.CommandCustomDevice" />
-        <AssociationConnector Association="ApplicationModel.ConditionParametеr" />
         <AssociationConnector Association="ApplicationModel.ConditionCondition" />
         <AssociationConnector Association="ApplicationModel.CustomDeviceController" />
-        <AssociationConnector Association="ApplicationModel.SensorCondition" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

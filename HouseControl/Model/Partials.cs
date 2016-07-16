@@ -20,6 +20,13 @@ namespace Model
             get { return this.Id; }
         }
     }
+    public partial class ParameterType : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
     public partial class Zone : IHaveID
     {
         public int ID
@@ -79,6 +86,13 @@ namespace Model
         }
     }
     public partial class Command : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
+    public partial class CustomDevice : IHaveID
     {
         public int ID
         {
@@ -149,7 +163,7 @@ namespace Model
                 RegiterUpdate(Guid.Parse("6DA1FC41-A02D-40EC-82AF-7489C8E62CE4"), @"", FillSencorTypeDict);
                 RegiterUpdate(Guid.Parse("E00785CC-F6D3-4A28-AA04-8B601AAD9015"), @"", FillZone);
                 RegiterUpdate(Guid.Parse("4501377E-791E-4827-B50A-0909A3CC4ED2"), @"", FillConditionTypes);
-                RegiterUpdate(Guid.Parse("4501377E-791E-4827-B50A-0909A3CC4ED2"), @"", FillParameterTypes);
+                RegiterUpdate(Guid.Parse("DE8C2E66-7A2B-477F-9424-96731DB6C102"), @"", FillParameterTypes);
             }
 
             private void FillParameterTypes()

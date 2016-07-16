@@ -101,5 +101,11 @@ namespace WpfApplication
             _container.Use<IViewService>().CreateView<ReactionNavigationView>();
             OnNextView(null, null);
         }
+
+        private void ShowParametersList(object sender, RoutedEventArgs e)
+        {
+            _container.Use<IViewService>().CreateView<ParametersListView>();
+            OnNextView(null, null);
+        }
     }
 }

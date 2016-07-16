@@ -27,6 +27,7 @@
             <MenuItem Header="Устройства" Click="ShowDevicesClick">
             </MenuItem>
             <MenuItem Header="Реакции" Click="ShowReactionsClick"/>
+            <MenuItem Header="Список параметров" Click="ShowParametersList"/>
         </Menu>
         <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Content="{Binding Path=CurrentContent}"></ContentControl>
     </Grid>
