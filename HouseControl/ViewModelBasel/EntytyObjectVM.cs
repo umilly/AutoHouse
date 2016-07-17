@@ -13,21 +13,19 @@ namespace ViewModelBase
 {
     public abstract class EntytyObjectVM<T> : ViewModelBase, IEntytyObjectVM where T : class, IHaveID
     {
-        public Type EntityType
-        {
-            get { return typeof (T); } 
-        }
+        public Type EntityType => typeof (T);
+
+        public bool IsFake => Model == null;
 
         public bool SavedInContext { get; set; }
 
         protected T Model { get; private set; }
 
-        public EntytyObjectVM(IServiceContainer container,Models dataBase,T model) : base(container)
+        protected EntytyObjectVM(IServiceContainer container,Models dataBase,T model) : base(container)
         {
             Context = dataBase;
             Model = model;
         }
-
         public override int ID
         {
             get { return Model.ID; }
@@ -111,7 +109,7 @@ namespace ViewModelBase
     {
         protected readonly List<IContexMenuItem> _contextMenu;
 
-        public LinkedObjectVM(IServiceContainer container, Models dataBase, T model) : base(container, dataBase, model)
+        protected LinkedObjectVM(IServiceContainer container, Models dataBase, T model) : base(container, dataBase, model)
         {
             _contextMenu=new List<IContexMenuItem>();
             _contextMenu.Add(new CustomContextMenuItem("Удалить", new CommandHandler(Delete)));

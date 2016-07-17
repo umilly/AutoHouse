@@ -5,7 +5,7 @@ using Model;
 using ViewModel;
 using ViewModelBase;
 
-public class SensorViewModel : LinkedObjectVM<Sensor>, ITreeNode
+public class SensorViewModel : LinkedObjectVM<Sensor>, IConditionSource
 {
     public SensorViewModel(IServiceContainer container, Models dataBase, Sensor model)
         : base(container, dataBase, model)
@@ -62,4 +62,11 @@ public class SensorViewModel : LinkedObjectVM<Sensor>, ITreeNode
     {
         OnPropertyChanged(()=>Value);
     }
+
+    public void LinkCondition(Condition model)
+    {
+        model.Sensor = Model;
+    }
+
+    public string SourceName => $"Sens: {Name}";
 }

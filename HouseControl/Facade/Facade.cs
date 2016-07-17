@@ -106,4 +106,9 @@ namespace Facade
         string Text { get; }
         ICommand Todo { get; }
     }
+
+    public interface IConditionSource 
+    {
+        string SourceName { get; }
+    }
 }

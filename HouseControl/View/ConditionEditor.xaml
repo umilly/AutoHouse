@@ -27,9 +27,9 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20"></ColumnDefinition>
-                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="10"></ColumnDefinition>
-                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="20"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="1" Grid.Column="1" Content="Настройки уловия:" HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.ColumnSpan="3"/>
@@ -37,6 +37,8 @@
             <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Mode=TwoWay, Path=ViewModel.Name }" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
             <Label Grid.Row="5" Grid.Column="1" Content="Тип услвия" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <ComboBox Height="20" Grid.Row="5" Grid.Column="3" ItemsSource="{Binding ViewModel.CondtionTypes}" SelectedValue="{Binding ViewModel.CondtionType, Mode=TwoWay }"></ComboBox>
+            <ComboBox Height="20" Grid.Row="7" Grid.Column="1" ItemsSource="{Binding ViewModel.LeftParamSource}" SelectedValue="{Binding ViewModel.LeftParam, Mode=TwoWay }" DisplayMemberPath="SourceName"></ComboBox>
+            <ComboBox Height="20" Grid.Row="7" Grid.Column="3" ItemsSource="{Binding ViewModel.RightParamSource}" SelectedValue="{Binding ViewModel.RightParam, Mode=TwoWay }" DisplayMemberPath="SourceName"></ComboBox>
         </Grid>
     </Border>
 </vmBase:CustomViewBase>

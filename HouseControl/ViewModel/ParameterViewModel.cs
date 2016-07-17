@@ -5,7 +5,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ParameterViewModel : EntytyObjectVM<Parameter>
+    public class ParameterViewModel : EntytyObjectVM<Parameter>,IConditionSource
     {
         public ParameterViewModel(IServiceContainer container, Models dataBase, Parameter model)
             : base(container, dataBase, model)
@@ -47,5 +47,19 @@ namespace ViewModel
                 OnPropertyChanged();
             }
         }
+
+        public void LinkCondition(Condition model, bool firstParam)
+        {
+            if (firstParam)
+            {
+                model.Parameter1 = Model;
+            }
+            else
+            {
+                model.Parameter2 = Model;
+            }
+        }
+
+        public string SourceName => $"Param: {Name}";
     }
 }

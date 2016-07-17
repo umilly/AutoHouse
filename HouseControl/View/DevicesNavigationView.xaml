@@ -25,7 +25,7 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Grid.Column="0">Управление: </Label>
-            <TreeView Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="300" Name="DeviceTreeView" Margin="5" ItemsSource="{Binding ViewModel.Reactions}">
+            <TreeView Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="DeviceTreeView" Margin="5" ItemsSource="{Binding ViewModel.Reactions}">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
                         <Grid Background="{Binding Path=IsConnected, Converter={StaticResource ColorConverter}}">
