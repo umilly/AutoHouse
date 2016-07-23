@@ -14,21 +14,22 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-            <ItemsControl Grid.Row="1" Name="ParamsList" ItemsSource="{Binding ViewModel.Parameters, Mode=OneWay }">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="viewModel:ParameterViewModel">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="100"/>
-                                
+        <ItemsControl Grid.Row="1" Name="ParamsList" ItemsSource="{Binding ViewModel.Parameters, Mode=OneWay }">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="viewModel:ParameterViewModel">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
-                            <TextBox Grid.Column="0" Text="{Binding Name , Mode=TwoWay}"/>
-                            <ComboBox Grid.Column="1"  SelectedValue="{Binding ParamType}" ItemsSource="{Binding ParamTypes}"/>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                        <TextBox Grid.Column="0" Text="{Binding Name , Mode=TwoWay}"/>
+                        <ComboBox Grid.Column="1"  SelectedValue="{Binding ParamType}" ItemsSource="{Binding ParamTypes}"/>
+                        <TextBox Grid.Column="2" Text="{Binding Value, Mode=TwoWay}"></TextBox>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <Button Grid.Row="0" Click="AddParamsClick">Сгенерировать парметры</Button>
-   </Grid>
+    </Grid>
 </vmBase:CustomViewBase>

@@ -117,8 +117,6 @@ namespace ViewModelBase
         {
             try
             {
-                //if (!Context.Set<T>().Contains(Model))
-                //    Context.Set<T>().Add(Model);
                 DB.SaveChanges();
             }
             catch (DbEntityValidationException e)
@@ -127,7 +125,6 @@ namespace ViewModelBase
                 Use<ILog>().Log(LogCategory.Data, e.ToString());
                 throw newException;
             }
-
         }
 
         public T GetOrCreateVM<T>(int number) where T:class,IViewModel

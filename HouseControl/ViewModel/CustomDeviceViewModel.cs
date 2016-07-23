@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Facade;
 using Model;
 using ViewModelBase;
@@ -24,15 +25,45 @@ namespace ViewModel
         public override string Name
         {
             get { return Model.Name; }
-            set { Model.Name = value; }
+            set
+            {
+                Model.Name = value; 
+                OnPropertyChanged();
+            }
         }
 
         public override string Value { get; set; }
         public override bool IsConnected { get; set; }
 
+        public IEnumerable<ParameterTypeViewModel> ParameterTypes
+        {
+            get
+            {
+                return Model.ParameterTypes
+                    .Select(parameterType => Use<IPool>().GetDBVM<ParameterTypeViewModel>(parameterType));
+            }
+        }
+
         public void LinkTo(Controller model)
         {
             Model.Controller = model;
+        }
+
+        public void AddParam(ParameterTypeValue parameterTypeValue)
+        {
+            var pt = Context.ParameterTypes.Find((int)parameterTypeValue);
+            Model.ParameterTypes.Add(pt);
+            OnPropertyChanged(()=>ParameterTypes);
+        }
+
+        public void DeleteParams()
+        {
+            Model.ParameterTypes.Clear();
+        }
+
+        public void LinkToCommand(Command model)
+        {
+            model.CustomDevice = Model;
         }
     }
 }

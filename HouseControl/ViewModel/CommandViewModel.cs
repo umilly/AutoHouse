@@ -36,6 +36,26 @@ namespace ViewModel
             }
         }
 
+        public IEnumerable<CustomDeviceViewModel> Devices
+        {
+            get {return Use<IPool>().GetViewModels<CustomDeviceViewModel>(); }
+        }
+
+        public CustomDeviceViewModel Device
+        {
+            get { return Use<IPool>().GetDBVM<CustomDeviceViewModel>(Model.CustomDevice); }
+            set
+            {
+                value.LinkToCommand(Model);
+                OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<ParameterViewModel> Params
+        {
+            get { return Use<IPool>().GetViewModels<ParameterViewModel>(); }
+        }
+
         public void LinkTo(Reaction model)
         {
             Model.Reaction = model;
