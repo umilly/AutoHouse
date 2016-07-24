@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Facade;
 using Model;
 using ViewModel;
@@ -46,19 +47,38 @@ namespace ViewModel
             get { return Use<IPool>().GetDBVM<CustomDeviceViewModel>(Model.CustomDevice); }
             set
             {
+                Parameters.ForEach(a=>a.Delete());
                 value.LinkToCommand(Model);
+                CreateCommandLinks();
                 OnPropertyChanged();
             }
         }
 
-        public IEnumerable<ParameterViewModel> Params
+        private void CreateCommandLinks()
         {
-            get { return Use<IPool>().GetViewModels<ParameterViewModel>(); }
+            foreach (var  devParam in Device.ParameterTypes.OrderBy(a=>a.Order))
+            {
+                var link=Use<IPool>().CreateDBObject<CommandParamLinkVm>();
+                link.DeviceParamType = devParam;
+                link.Command = this;
+            }
+            OnPropertyChanged(()=>Parameters);
+        }
+
+        public IEnumerable<CommandParamLinkVm> Parameters
+        {
+            get { return Model.ComandParameterLinks.Select(a => Use<IPool>().GetDBVM<CommandParamLinkVm>(a)); }
         }
 
         public void LinkTo(Reaction model)
         {
             Model.Reaction = model;
+        }
+
+        public void LinkCommandParam(ComandParameterLink model)
+        {
+            model.Command = Model;
+            Model.ComandParameterLinks.Add(model);
         }
     }
 }

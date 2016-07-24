@@ -18,7 +18,7 @@ namespace Model
         public Command()
         {
             this.Name = "";
-            this.Parameter = new HashSet<Parameter>();
+            this.ComandParameterLinks = new HashSet<ComandParameterLink>();
         }
     
         public int Id { get; set; }
@@ -27,8 +27,8 @@ namespace Model
         public int ReactionId { get; set; }
     
         public virtual Reaction Reaction { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Parameter> Parameter { get; set; }
         public virtual CustomDevice CustomDevice { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ComandParameterLink> ComandParameterLinks { get; set; }
     }
 }

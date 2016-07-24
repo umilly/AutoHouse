@@ -21,12 +21,12 @@
     <EntitySet Name="Devices" EntityType="ApplicationModel.Store.Devices" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Parameter" EntityType="ApplicationModel.Store.Parameter" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ParameterTypes" EntityType="ApplicationModel.Store.ParameterTypes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ComandParameterLinks" EntityType="ApplicationModel.Store.ComandParameterLinks" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DeviceParameterTypeLinks" EntityType="ApplicationModel.Store.DeviceParameterTypeLinks" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_Sensor" EntityType="ApplicationModel.Store.Devices_Sensor" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_Controller" EntityType="ApplicationModel.Store.Devices_Controller" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_CustomDevice" EntityType="ApplicationModel.Store.Devices_CustomDevice" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ZoneScenario" EntityType="ApplicationModel.Store.ZoneScenario" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="CustomDeviceParameterType" EntityType="ApplicationModel.Store.CustomDeviceParameterType" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="CommandParameter" EntityType="ApplicationModel.Store.CommandParameter" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_Users_Role" Association="ApplicationModel.Store.FK_Users_Role">
       <End Role="Role" EntitySet="Roles" />
       <End Role="Users" EntitySet="Users" />
@@ -71,22 +71,6 @@
       <End Role="Scenario" EntitySet="Scenarios" />
       <End Role="ZoneScenario" EntitySet="ZoneScenario" />
     </AssociationSet>
-    <AssociationSet Name="FK_CustomDeviceParameterType_CustomDevice" Association="ApplicationModel.Store.FK_CustomDeviceParameterType_CustomDevice">
-      <End Role="CustomDevice" EntitySet="Devices_CustomDevice" />
-      <End Role="CustomDeviceParameterType" EntitySet="CustomDeviceParameterType" />
-    </AssociationSet>
-    <AssociationSet Name="FK_CustomDeviceParameterType_ParameterType" Association="ApplicationModel.Store.FK_CustomDeviceParameterType_ParameterType">
-      <End Role="ParameterType" EntitySet="ParameterTypes" />
-      <End Role="CustomDeviceParameterType" EntitySet="CustomDeviceParameterType" />
-    </AssociationSet>
-    <AssociationSet Name="FK_CommandParameter_Command" Association="ApplicationModel.Store.FK_CommandParameter_Command">
-      <End Role="Command" EntitySet="Commands" />
-      <End Role="CommandParameter" EntitySet="CommandParameter" />
-    </AssociationSet>
-    <AssociationSet Name="FK_CommandParameter_Parameter" Association="ApplicationModel.Store.FK_CommandParameter_Parameter">
-      <End Role="Parameter" EntitySet="Parameter" />
-      <End Role="CommandParameter" EntitySet="CommandParameter" />
-    </AssociationSet>
     <AssociationSet Name="CommandCustomDevice" Association="ApplicationModel.Store.CommandCustomDevice">
       <End Role="Command" EntitySet="Commands" />
       <End Role="CustomDevice" EntitySet="Devices_CustomDevice" />
@@ -110,6 +94,26 @@
     <AssociationSet Name="ConditionParameter2" Association="ApplicationModel.Store.ConditionParameter2">
       <End Role="Condition" EntitySet="Conditions" />
       <End Role="Parameter" EntitySet="Parameter" />
+    </AssociationSet>
+    <AssociationSet Name="ComandParameterLinkCommand" Association="ApplicationModel.Store.ComandParameterLinkCommand">
+      <End Role="ComandParameterLink" EntitySet="ComandParameterLinks" />
+      <End Role="Command" EntitySet="Commands" />
+    </AssociationSet>
+    <AssociationSet Name="ComandParameterLinkParameter" Association="ApplicationModel.Store.ComandParameterLinkParameter">
+      <End Role="ComandParameterLink" EntitySet="ComandParameterLinks" />
+      <End Role="Parameter" EntitySet="Parameter" />
+    </AssociationSet>
+    <AssociationSet Name="DeviceParameterTypeLinkCustomDevice" Association="ApplicationModel.Store.DeviceParameterTypeLinkCustomDevice">
+      <End Role="DeviceParameterTypeLink" EntitySet="DeviceParameterTypeLinks" />
+      <End Role="CustomDevice" EntitySet="Devices_CustomDevice" />
+    </AssociationSet>
+    <AssociationSet Name="DeviceParameterTypeLinkParameterType" Association="ApplicationModel.Store.DeviceParameterTypeLinkParameterType">
+      <End Role="DeviceParameterTypeLink" EntitySet="DeviceParameterTypeLinks" />
+      <End Role="ParameterType" EntitySet="ParameterTypes" />
+    </AssociationSet>
+    <AssociationSet Name="ComandParameterLinkDeviceParameterTypeLink" Association="ApplicationModel.Store.ComandParameterLinkDeviceParameterTypeLink">
+      <End Role="ComandParameterLink" EntitySet="ComandParameterLinks" />
+      <End Role="DeviceParameterTypeLink" EntitySet="DeviceParameterTypeLinks" />
     </AssociationSet>
     <AssociationSet Name="FK_Sensor_inherits_Device" Association="ApplicationModel.Store.FK_Sensor_inherits_Device">
       <End Role="Device" EntitySet="Devices" />
@@ -250,6 +254,25 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
+  <EntityType Name="ComandParameterLinks">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Command_Id" Type="int" Nullable="false" />
+    <Property Name="Parameter_Id" Type="int" Nullable="false" />
+    <Property Name="DeviceParameterTypeLink_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DeviceParameterTypeLinks">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Order" Type="int" Nullable="false" />
+    <Property Name="CustomDevice_Id" Type="int" Nullable="false" />
+    <Property Name="ParameterType_Id" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="Devices_Sensor">
     <Key>
       <PropertyRef Name="Id" />
@@ -281,22 +304,6 @@
     </Key>
     <Property Name="Zones_Id" Type="int" Nullable="false" />
     <Property Name="Scenarios_Id" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="CustomDeviceParameterType">
-    <Key>
-      <PropertyRef Name="CustomDevices_Id" />
-      <PropertyRef Name="ParameterTypes_Id" />
-    </Key>
-    <Property Name="CustomDevices_Id" Type="int" Nullable="false" />
-    <Property Name="ParameterTypes_Id" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="CommandParameter">
-    <Key>
-      <PropertyRef Name="Commands_Id" />
-      <PropertyRef Name="Parameter_Id" />
-    </Key>
-    <Property Name="Commands_Id" Type="int" Nullable="false" />
-    <Property Name="Parameter_Id" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK_Users_Role">
     <End Role="Role" Type="ApplicationModel.Store.Roles" Multiplicity="0..1" />
@@ -478,6 +485,66 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="ComandParameterLinkCommand">
+    <End Role="ComandParameterLink" Type="ApplicationModel.Store.ComandParameterLinks" Multiplicity="*" />
+    <End Role="Command" Type="ApplicationModel.Store.Commands" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Command">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ComandParameterLink">
+        <PropertyRef Name="Command_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ComandParameterLinkParameter">
+    <End Role="ComandParameterLink" Type="ApplicationModel.Store.ComandParameterLinks" Multiplicity="*" />
+    <End Role="Parameter" Type="ApplicationModel.Store.Parameter" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Parameter">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ComandParameterLink">
+        <PropertyRef Name="Parameter_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DeviceParameterTypeLinkCustomDevice">
+    <End Role="DeviceParameterTypeLink" Type="ApplicationModel.Store.DeviceParameterTypeLinks" Multiplicity="*" />
+    <End Role="CustomDevice" Type="ApplicationModel.Store.Devices_CustomDevice" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="CustomDevice">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DeviceParameterTypeLink">
+        <PropertyRef Name="CustomDevice_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DeviceParameterTypeLinkParameterType">
+    <End Role="DeviceParameterTypeLink" Type="ApplicationModel.Store.DeviceParameterTypeLinks" Multiplicity="*" />
+    <End Role="ParameterType" Type="ApplicationModel.Store.ParameterTypes" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="ParameterType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DeviceParameterTypeLink">
+        <PropertyRef Name="ParameterType_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ComandParameterLinkDeviceParameterTypeLink">
+    <End Role="ComandParameterLink" Type="ApplicationModel.Store.ComandParameterLinks" Multiplicity="*" />
+    <End Role="DeviceParameterTypeLink" Type="ApplicationModel.Store.DeviceParameterTypeLinks" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="DeviceParameterTypeLink">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ComandParameterLink">
+        <PropertyRef Name="DeviceParameterTypeLink_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_ZoneScenario_Zone">
     <End Role="Zone" Type="ApplicationModel.Store.Zones" Multiplicity="1" />
     <End Role="ZoneScenario" Type="ApplicationModel.Store.ZoneScenario" Multiplicity="*" />
@@ -499,54 +566,6 @@
       </Principal>
       <Dependent Role="ZoneScenario">
         <PropertyRef Name="Scenarios_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CustomDeviceParameterType_CustomDevice">
-    <End Role="CustomDevice" Type="ApplicationModel.Store.Devices_CustomDevice" Multiplicity="1" />
-    <End Role="CustomDeviceParameterType" Type="ApplicationModel.Store.CustomDeviceParameterType" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="CustomDevice">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="CustomDeviceParameterType">
-        <PropertyRef Name="CustomDevices_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CustomDeviceParameterType_ParameterType">
-    <End Role="CustomDeviceParameterType" Type="ApplicationModel.Store.CustomDeviceParameterType" Multiplicity="*" />
-    <End Role="ParameterType" Type="ApplicationModel.Store.ParameterTypes" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="ParameterType">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="CustomDeviceParameterType">
-        <PropertyRef Name="ParameterTypes_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CommandParameter_Command">
-    <End Role="Command" Type="ApplicationModel.Store.Commands" Multiplicity="1" />
-    <End Role="CommandParameter" Type="ApplicationModel.Store.CommandParameter" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Command">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="CommandParameter">
-        <PropertyRef Name="Commands_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_CommandParameter_Parameter">
-    <End Role="CommandParameter" Type="ApplicationModel.Store.CommandParameter" Multiplicity="*" />
-    <End Role="Parameter" Type="ApplicationModel.Store.Parameter" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="Parameter">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="CommandParameter">
-        <PropertyRef Name="Parameter_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -689,14 +708,6 @@
             <End Role="Zone" EntitySet="Zones" />
             <End Role="Scenario" EntitySet="Scenarios" />
           </AssociationSet>
-          <AssociationSet Name="CustomDeviceParameterType" Association="ApplicationModel.CustomDeviceParameterType">
-            <End Role="CustomDevice" EntitySet="Devices" />
-            <End Role="ParameterType" EntitySet="ParameterTypes" />
-          </AssociationSet>
-          <AssociationSet Name="CommandParameter" Association="ApplicationModel.CommandParameter">
-            <End Role="Command" EntitySet="Commands" />
-            <End Role="Parameter" EntitySet="Parameter" />
-          </AssociationSet>
           <AssociationSet Name="CommandCustomDevice" Association="ApplicationModel.CommandCustomDevice">
             <End Role="Command" EntitySet="Commands" />
             <End Role="CustomDevice" EntitySet="Devices" />
@@ -720,6 +731,28 @@
           <AssociationSet Name="ConditionParameter2" Association="ApplicationModel.ConditionParameter2">
             <End Role="Condition" EntitySet="Conditions" />
             <End Role="Parameter" EntitySet="Parameter" />
+          </AssociationSet>
+          <EntitySet Name="ComandParameterLinks" EntityType="ApplicationModel.ComandParameterLink" />
+          <AssociationSet Name="ComandParameterLinkCommand" Association="ApplicationModel.ComandParameterLinkCommand">
+            <End Role="ComandParameterLink" EntitySet="ComandParameterLinks" />
+            <End Role="Command" EntitySet="Commands" />
+          </AssociationSet>
+          <AssociationSet Name="ComandParameterLinkParameter" Association="ApplicationModel.ComandParameterLinkParameter">
+            <End Role="ComandParameterLink" EntitySet="ComandParameterLinks" />
+            <End Role="Parameter" EntitySet="Parameter" />
+          </AssociationSet>
+          <EntitySet Name="DeviceParameterTypeLinks" EntityType="ApplicationModel.DeviceParameterTypeLink" />
+          <AssociationSet Name="DeviceParameterTypeLinkCustomDevice" Association="ApplicationModel.DeviceParameterTypeLinkCustomDevice">
+            <End Role="DeviceParameterTypeLink" EntitySet="DeviceParameterTypeLinks" />
+            <End Role="CustomDevice" EntitySet="Devices" />
+          </AssociationSet>
+          <AssociationSet Name="DeviceParameterTypeLinkParameterType" Association="ApplicationModel.DeviceParameterTypeLinkParameterType">
+            <End Role="DeviceParameterTypeLink" EntitySet="DeviceParameterTypeLinks" />
+            <End Role="ParameterType" EntitySet="ParameterTypes" />
+          </AssociationSet>
+          <AssociationSet Name="ComandParameterLinkDeviceParameterTypeLink" Association="ApplicationModel.ComandParameterLinkDeviceParameterTypeLink">
+            <End Role="ComandParameterLink" EntitySet="ComandParameterLinks" />
+            <End Role="DeviceParameterTypeLink" EntitySet="DeviceParameterTypeLinks" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Controller" BaseType="ApplicationModel.Device">
@@ -851,8 +884,8 @@
           <Property Name="ScenarioId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Reaction" Relationship="ApplicationModel.ReactionCommand" FromRole="Command" ToRole="Reaction" />
           <Property Name="ReactionId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Parameter" Relationship="ApplicationModel.CommandParameter" FromRole="Command" ToRole="Parameter" />
           <NavigationProperty Name="CustomDevice" Relationship="ApplicationModel.CommandCustomDevice" FromRole="Command" ToRole="CustomDevice" />
+          <NavigationProperty Name="ComandParameterLinks" Relationship="ApplicationModel.ComandParameterLinkCommand" FromRole="Command" ToRole="ComandParameterLink" />
         </EntityType>
         <EntityType Name="Device">
           <Key>
@@ -870,7 +903,7 @@
           <Property Name="Value" Type="String" Nullable="false" />
           <NavigationProperty Name="ParameterType" Relationship="ApplicationModel.ParameterTypeParameter" FromRole="Parameter" ToRole="ParameterType" />
           <Property Name="ParameterTypeId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Commands" Relationship="ApplicationModel.CommandParameter" FromRole="Parameter" ToRole="Command" />
+          <NavigationProperty Name="ComandParameterLinks" Relationship="ApplicationModel.ComandParameterLinkParameter" FromRole="Parameter" ToRole="ComandParameterLink" />
         </EntityType>
         <EntityType Name="ParameterType">
           <Key>
@@ -878,7 +911,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" />
-          <NavigationProperty Name="CustomDevices" Relationship="ApplicationModel.CustomDeviceParameterType" FromRole="ParameterType" ToRole="CustomDevice" />
+          <NavigationProperty Name="DeviceParameterTypeLinks" Relationship="ApplicationModel.DeviceParameterTypeLinkParameterType" FromRole="ParameterType" ToRole="DeviceParameterTypeLink" />
         </EntityType>
         <Association Name="ParameterTypeParameter">
           <End Type="ApplicationModel.ParameterType" Role="ParameterType" Multiplicity="1" />
@@ -941,18 +974,10 @@
           <End Type="ApplicationModel.Scenario" Role="Scenario" Multiplicity="*" />
         </Association>
         <EntityType Name="CustomDevice" BaseType="ApplicationModel.Device" >
-          <NavigationProperty Name="ParameterTypes" Relationship="ApplicationModel.CustomDeviceParameterType" FromRole="CustomDevice" ToRole="ParameterType" />
           <NavigationProperty Name="Commands" Relationship="ApplicationModel.CommandCustomDevice" FromRole="CustomDevice" ToRole="Command" />
           <NavigationProperty Name="Controller" Relationship="ApplicationModel.CustomDeviceController" FromRole="CustomDevice" ToRole="Controller" />
+          <NavigationProperty Name="DeviceParameterTypeLinks" Relationship="ApplicationModel.DeviceParameterTypeLinkCustomDevice" FromRole="CustomDevice" ToRole="DeviceParameterTypeLink" />
         </EntityType>
-        <Association Name="CustomDeviceParameterType">
-          <End Type="ApplicationModel.CustomDevice" Role="CustomDevice" Multiplicity="*" />
-          <End Type="ApplicationModel.ParameterType" Role="ParameterType" Multiplicity="*" />
-        </Association>
-        <Association Name="CommandParameter">
-          <End Type="ApplicationModel.Command" Role="Command" Multiplicity="*" />
-          <End Type="ApplicationModel.Parameter" Role="Parameter" Multiplicity="*" />
-        </Association>
         <Association Name="CommandCustomDevice">
           <End Type="ApplicationModel.Command" Role="Command" Multiplicity="*" />
           <End Type="ApplicationModel.CustomDevice" Role="CustomDevice" Multiplicity="1" />
@@ -984,6 +1009,46 @@
         <Association Name="ConditionParameter2">
           <End Type="ApplicationModel.Condition" Role="Condition" Multiplicity="*" />
           <End Type="ApplicationModel.Parameter" Role="Parameter" Multiplicity="0..1" />
+        </Association>
+        <EntityType Name="ComandParameterLink">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Command" Relationship="ApplicationModel.ComandParameterLinkCommand" FromRole="ComandParameterLink" ToRole="Command" />
+          <NavigationProperty Name="Parameter" Relationship="ApplicationModel.ComandParameterLinkParameter" FromRole="ComandParameterLink" ToRole="Parameter" />
+          <NavigationProperty Name="DeviceParameterTypeLink" Relationship="ApplicationModel.ComandParameterLinkDeviceParameterTypeLink" FromRole="ComandParameterLink" ToRole="DeviceParameterTypeLink" />
+        </EntityType>
+        <Association Name="ComandParameterLinkCommand">
+          <End Type="ApplicationModel.ComandParameterLink" Role="ComandParameterLink" Multiplicity="*" />
+          <End Type="ApplicationModel.Command" Role="Command" Multiplicity="1" />
+        </Association>
+        <Association Name="ComandParameterLinkParameter">
+          <End Type="ApplicationModel.ComandParameterLink" Role="ComandParameterLink" Multiplicity="*" />
+          <End Type="ApplicationModel.Parameter" Role="Parameter" Multiplicity="1" />
+        </Association>
+        <EntityType Name="DeviceParameterTypeLink">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="CustomDevice" Relationship="ApplicationModel.DeviceParameterTypeLinkCustomDevice" FromRole="DeviceParameterTypeLink" ToRole="CustomDevice" />
+          <NavigationProperty Name="ParameterType" Relationship="ApplicationModel.DeviceParameterTypeLinkParameterType" FromRole="DeviceParameterTypeLink" ToRole="ParameterType" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ComandParameterLinks" Relationship="ApplicationModel.ComandParameterLinkDeviceParameterTypeLink" FromRole="DeviceParameterTypeLink" ToRole="ComandParameterLink" />
+        </EntityType>
+        <Association Name="DeviceParameterTypeLinkCustomDevice">
+          <End Type="ApplicationModel.DeviceParameterTypeLink" Role="DeviceParameterTypeLink" Multiplicity="*" />
+          <End Type="ApplicationModel.CustomDevice" Role="CustomDevice" Multiplicity="1" />
+        </Association>
+        <Association Name="DeviceParameterTypeLinkParameterType">
+          <End Type="ApplicationModel.DeviceParameterTypeLink" Role="DeviceParameterTypeLink" Multiplicity="*" />
+          <End Type="ApplicationModel.ParameterType" Role="ParameterType" Multiplicity="1" />
+        </Association>
+        <Association Name="ComandParameterLinkDeviceParameterTypeLink">
+          <End Type="ApplicationModel.ComandParameterLink" Role="ComandParameterLink" Multiplicity="*" />
+          <End Type="ApplicationModel.DeviceParameterTypeLink" Role="DeviceParameterTypeLink" Multiplicity="1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -1146,6 +1211,22 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ComandParameterLinks">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.ComandParameterLink)">
+        <MappingFragment StoreEntitySet="ComandParameterLinks">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DeviceParameterTypeLinks">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.DeviceParameterTypeLink)">
+        <MappingFragment StoreEntitySet="DeviceParameterTypeLinks">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Order" ColumnName="Order" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="SensorController" TypeName="ApplicationModel.SensorController" StoreEntitySet="Devices_Sensor">
       <EndProperty Name="Controller">
         <ScalarProperty Name="Id" ColumnName="Controller_Id" />
@@ -1168,22 +1249,6 @@
       </EndProperty>
       <EndProperty Name="Scenario">
         <ScalarProperty Name="Id" ColumnName="Scenarios_Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="CustomDeviceParameterType" TypeName="ApplicationModel.CustomDeviceParameterType" StoreEntitySet="CustomDeviceParameterType">
-      <EndProperty Name="CustomDevice">
-        <ScalarProperty Name="Id" ColumnName="CustomDevices_Id" />
-      </EndProperty>
-      <EndProperty Name="ParameterType">
-        <ScalarProperty Name="Id" ColumnName="ParameterTypes_Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="CommandParameter" TypeName="ApplicationModel.CommandParameter" StoreEntitySet="CommandParameter">
-      <EndProperty Name="Command">
-        <ScalarProperty Name="Id" ColumnName="Commands_Id" />
-      </EndProperty>
-      <EndProperty Name="Parameter">
-        <ScalarProperty Name="Id" ColumnName="Parameter_Id" />
       </EndProperty>
     </AssociationSetMapping>
     <AssociationSetMapping Name="CommandCustomDevice" TypeName="ApplicationModel.CommandCustomDevice" StoreEntitySet="Commands">
@@ -1228,6 +1293,46 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
       <Condition ColumnName="Parameter2_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ComandParameterLinkCommand" TypeName="ApplicationModel.ComandParameterLinkCommand" StoreEntitySet="ComandParameterLinks">
+      <EndProperty Name="Command">
+        <ScalarProperty Name="Id" ColumnName="Command_Id" />
+      </EndProperty>
+      <EndProperty Name="ComandParameterLink">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ComandParameterLinkParameter" TypeName="ApplicationModel.ComandParameterLinkParameter" StoreEntitySet="ComandParameterLinks">
+      <EndProperty Name="Parameter">
+        <ScalarProperty Name="Id" ColumnName="Parameter_Id" />
+      </EndProperty>
+      <EndProperty Name="ComandParameterLink">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="DeviceParameterTypeLinkCustomDevice" TypeName="ApplicationModel.DeviceParameterTypeLinkCustomDevice" StoreEntitySet="DeviceParameterTypeLinks">
+      <EndProperty Name="CustomDevice">
+        <ScalarProperty Name="Id" ColumnName="CustomDevice_Id" />
+      </EndProperty>
+      <EndProperty Name="DeviceParameterTypeLink">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="DeviceParameterTypeLinkParameterType" TypeName="ApplicationModel.DeviceParameterTypeLinkParameterType" StoreEntitySet="DeviceParameterTypeLinks">
+      <EndProperty Name="ParameterType">
+        <ScalarProperty Name="Id" ColumnName="ParameterType_Id" />
+      </EndProperty>
+      <EndProperty Name="DeviceParameterTypeLink">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ComandParameterLinkDeviceParameterTypeLink" TypeName="ApplicationModel.ComandParameterLinkDeviceParameterTypeLink" StoreEntitySet="ComandParameterLinks">
+      <EndProperty Name="DeviceParameterTypeLink">
+        <ScalarProperty Name="Id" ColumnName="DeviceParameterTypeLink_Id" />
+      </EndProperty>
+      <EndProperty Name="ComandParameterLink">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>

@@ -49,7 +49,7 @@ namespace ViewModelBase
             if (model.State!=EntityState.Deleted
                 && model.State != EntityState.Detached)
                 Context.Set<T>().Remove(Model);
-            Use<IPool>().RemoveVM(GetType(), ID);
+            Use<IPool>().RemoveVM(GetType(),Model);
         
         }
 

@@ -12,18 +12,21 @@ namespace Model
     using System;
     using System.Collections.Generic;
     
-    public partial class ParameterType
+    public partial class DeviceParameterTypeLink
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ParameterType()
+        public DeviceParameterTypeLink()
         {
-            this.DeviceParameterTypeLinks = new HashSet<DeviceParameterTypeLink>();
+            this.ComandParameterLinks = new HashSet<ComandParameterLink>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
+        public int Order { get; set; }
     
+        public virtual CustomDevice CustomDevice { get; set; }
+        public virtual ParameterType ParameterType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DeviceParameterTypeLink> DeviceParameterTypeLinks { get; set; }
+        public virtual ICollection<ComandParameterLink> ComandParameterLinks { get; set; }
     }
 }

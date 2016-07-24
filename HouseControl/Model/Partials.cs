@@ -20,6 +20,21 @@ namespace Model
             get { return this.Id; }
         }
     }
+
+    public partial class DeviceParameterTypeLink : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
+    public partial class ComandParameterLink : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
     public partial class ParameterType : IHaveID
     {
         public int ID

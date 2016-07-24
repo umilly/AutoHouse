@@ -39,11 +39,18 @@
             <Label Grid.Row="5" Grid.Column="1" Content="Устройство" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <ComboBox Grid.Row="5" Grid.Column="3" ItemsSource="{Binding ViewModel.Devices}" SelectedValue="{Binding ViewModel.Device, Mode=TwoWay}" DisplayMemberPath="Name"></ComboBox>
             <Label Grid.Row="7" Grid.Column="1" Content="Параметры" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <ItemsControl Grid.Row="7" Grid.Column="3" ItemsSource="{Binding ViewModel.Device.ParameterTypes}">
+            <ItemsControl Grid.Row="7" Grid.Column="3" ItemsSource="{Binding ViewModel.Parameters}">
                 <ItemsControl.ItemTemplate>
-                    <ItemContainerTemplate>
-                        <ComboBox ItemsSource="{Binding ViewModel.Params, RelativeSource={RelativeSource AncestorType=view:CommandEditor}}" DisplayMemberPath="SourceName"></ComboBox>
-                    </ItemContainerTemplate>
+                    <DataTemplate DataType="viewModel:CommandParamLinkVm">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Bottom" Text="{Binding DeviceParamType.Name}"></TextBlock>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableParameters}" SelectedValue="{Binding Parameter}" DisplayMemberPath="SourceName"></ComboBox>
+                        </Grid>
+                    </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>

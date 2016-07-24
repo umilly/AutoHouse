@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using Facade;
 
 namespace ViewModelBase
@@ -20,5 +21,6 @@ namespace ViewModelBase
         T GetDBVM<T>(int id) where T : class,IEntytyObjectVM;
         void RemoveVM(Type type, int i);
         void SaveDB();
+        void RemoveVM(Type getType, IHaveID model);
     }
 }

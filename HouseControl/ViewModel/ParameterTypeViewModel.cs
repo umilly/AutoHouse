@@ -26,5 +26,10 @@ namespace ViewModel
         {
             return Name;
         }
+
+        public void LinkDeviceParam(DeviceParameterTypeLink model)
+        {
+            model.ParameterType = Model;
+        }
     }
 }

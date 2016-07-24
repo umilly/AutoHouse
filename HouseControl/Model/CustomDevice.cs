@@ -17,15 +17,15 @@ namespace Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CustomDevice()
         {
-            this.ParameterTypes = new HashSet<ParameterType>();
             this.Commands = new HashSet<Command>();
+            this.DeviceParameterTypeLinks = new HashSet<DeviceParameterTypeLink>();
         }
     
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParameterType> ParameterTypes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Command> Commands { get; set; }
         public virtual Controller Controller { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DeviceParameterTypeLink> DeviceParameterTypeLinks { get; set; }
     }
 }

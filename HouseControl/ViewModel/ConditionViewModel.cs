@@ -129,7 +129,7 @@ namespace ViewModel
                 {
                     Model.Parameter2 = null;
                 }
-                (value as ParameterViewModel)?.LinkCondition(Model, true);
+                (value as ParameterViewModel)?.LinkCondition(Model, false);
             }
         }
 

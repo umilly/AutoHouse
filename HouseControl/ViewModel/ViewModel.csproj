@@ -52,11 +52,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandParamLinkVm.cs" />
     <Compile Include="CommandViewModel.cs" />
     <Compile Include="ConditionTypeViewModel.cs" />
     <Compile Include="ConditionViewModel.cs" />
     <Compile Include="ControllerVM.cs" />
     <Compile Include="CustomDeviceViewModel.cs" />
+    <Compile Include="DeviceParamLinkVM.cs" />
     <Compile Include="DevicesEditorVM.cs" />
     <Compile Include="DevicesViewModel.cs" />
     <Compile Include="DeviceTreeVM.cs" />

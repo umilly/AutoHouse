@@ -82,6 +82,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ApplicationDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ComandParameterLink.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Command.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
@@ -104,6 +107,9 @@
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Device.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceParameterTypeLink.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Mode.cs">

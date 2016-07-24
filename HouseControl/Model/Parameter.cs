@@ -18,7 +18,7 @@ namespace Model
         public Parameter()
         {
             this.Name = "";
-            this.Commands = new HashSet<Command>();
+            this.ComandParameterLinks = new HashSet<ComandParameterLink>();
         }
     
         public int Id { get; set; }
@@ -28,6 +28,6 @@ namespace Model
     
         public virtual ParameterType ParameterType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Command> Commands { get; set; }
+        public virtual ICollection<ComandParameterLink> ComandParameterLinks { get; set; }
     }
 }

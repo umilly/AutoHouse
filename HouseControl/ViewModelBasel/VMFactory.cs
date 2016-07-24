@@ -3,6 +3,7 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
@@ -75,7 +76,7 @@ namespace ViewModelBase
             dbVmTypes.Clear();
             foreach (var dbVmType in types)
             {
-                var res = (IEntytyObjectVM)Activator.CreateInstance(dbVmType, null,null,null);
+                var res = (IEntytyObjectVM)Activator.CreateInstance(dbVmType, null,DB,null);
                 dbVmTypes[dbVmType] = res.EntityType;
                 FillType(dbVmType);
             }
@@ -99,6 +100,19 @@ namespace ViewModelBase
         public void RemoveVM<T>(int i)
         {
             RemoveVM(typeof(T),i);
+        }
+
+        public void RemoveVM(Type type, IHaveID model)
+        {
+            if (!_pool.ContainsKey(type))
+            {
+                return;
+            }
+            var toRemove = _pool[type].FirstOrDefault(a => (a as IEntytyObjectVM).CompareModel(model));
+            if (toRemove == null)
+                return;
+            _pool[type].Remove(toRemove);
+
         }
 
         public void RemoveVM(Type type, int i)

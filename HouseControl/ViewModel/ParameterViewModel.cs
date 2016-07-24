@@ -61,5 +61,10 @@ namespace ViewModel
         }
 
         public string SourceName => $"Param: {Name}";
+
+        public void LinkDeviceParam(ComandParameterLink model)
+        {
+            model.Parameter = Model;
+        }
     }
 }

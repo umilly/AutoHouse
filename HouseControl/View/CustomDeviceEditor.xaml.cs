@@ -17,25 +17,11 @@ namespace View
             InitializeComponent();
         }
 
-        private void AddBoolClick(object sender, RoutedEventArgs e)
+        private void AddParamClick(object sender, RoutedEventArgs e)
         {
-            ViewModel.AddParam(ParameterTypeValue.Bool);
+            ViewModel.AddParam();
         }
-
-        private void AddInt(object sender, RoutedEventArgs e)
-        {
-            ViewModel.AddParam(ParameterTypeValue.Int);
-        }
-
-        private void AddReal(object sender, RoutedEventArgs e)
-        {
-            ViewModel.AddParam(ParameterTypeValue.Double);
-        }
-
-        private void AddString(object sender, RoutedEventArgs e)
-        {
-            ViewModel.AddParam(ParameterTypeValue.String);
-        }
+    
 
         private void DeleteParams(object sender, RoutedEventArgs e)
         {

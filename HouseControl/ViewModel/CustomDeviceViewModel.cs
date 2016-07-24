@@ -35,12 +35,12 @@ namespace ViewModel
         public override string Value { get; set; }
         public override bool IsConnected { get; set; }
 
-        public IEnumerable<ParameterTypeViewModel> ParameterTypes
+        public IEnumerable<DeviceParamLinkVM> ParameterTypes
         {
             get
             {
-                return Model.ParameterTypes
-                    .Select(parameterType => Use<IPool>().GetDBVM<ParameterTypeViewModel>(parameterType));
+                return Model.DeviceParameterTypeLinks
+                    .Select(a => Use<IPool>().GetDBVM<DeviceParamLinkVM>(a)).OrderBy(a=>a.Order);
             }
         }
 
@@ -49,21 +49,35 @@ namespace ViewModel
             Model.Controller = model;
         }
 
-        public void AddParam(ParameterTypeValue parameterTypeValue)
+        public void AddParam()
         {
-            var pt = Context.ParameterTypes.Find((int)parameterTypeValue);
-            Model.ParameterTypes.Add(pt);
+            var pt = Use<IPool>().GetViewModels<ParameterTypeViewModel>().First();
+            var link= Use<IPool>().CreateDBObject<DeviceParamLinkVM>();
+            link.Order = ParameterTypes.Count();
+            link.ParamType = pt;
+            link.Name = "Параметр";
+            link.Device = this;
             OnPropertyChanged(()=>ParameterTypes);
         }
 
         public void DeleteParams()
         {
-            Model.ParameterTypes.Clear();
+            foreach (var source in ParameterTypes.ToList())
+            {
+                source.Delete();
+            }
+            OnPropertyChanged(() => ParameterTypes);
         }
 
         public void LinkToCommand(Command model)
         {
             model.CustomDevice = Model;
+        }
+
+        public void LinkDeviceParam(DeviceParameterTypeLink model)
+        {
+            model.CustomDevice = Model;
+            Model.DeviceParameterTypeLinks.Add(model);
         }
     }
 }
