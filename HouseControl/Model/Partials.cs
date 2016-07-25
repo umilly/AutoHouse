@@ -88,6 +88,7 @@ namespace Model
     }
     public partial class Parameter : IHaveID
     {
+        public const int CurrentTimeId = 1;
         public int ID
         {
             get { return this.Id; }
@@ -179,6 +180,23 @@ namespace Model
                 RegiterUpdate(Guid.Parse("E00785CC-F6D3-4A28-AA04-8B601AAD9015"), @"", FillZone);
                 RegiterUpdate(Guid.Parse("4501377E-791E-4827-B50A-0909A3CC4ED2"), @"", FillConditionTypes);
                 RegiterUpdate(Guid.Parse("DE8C2E66-7A2B-477F-9424-96731DB6C102"), @"", FillParameterTypes);
+                RegiterUpdate(Guid.Parse("AABAB4FA-1155-474B-855F-828A4C7C59A7"), @"", FillParameters);
+            }
+
+            private void FillParameters()
+            {
+                _context.ParameterTypes.Add(new ParameterType() { Id = (int)ParameterTypeValue.Time, Name = "Время" });
+                var param = _context.Parameter.Find(Model.Parameter.CurrentTimeId);
+                if (param == null)
+                {
+                    param=new Parameter();
+                    _context.Parameter.Add(param);
+                }
+                param.Id = Model.Parameter.CurrentTimeId;
+                param.Name = "Текущее время";
+                param.ParameterTypeId = (int) ParameterTypeValue.Time;
+                param.Value = string.Empty;
+
             }
 
             private void FillParameterTypes()
@@ -391,8 +409,9 @@ namespace Model
         String = 3,
         [TypeAssociation(typeof(double))]
         Double = 4,
+        [TypeAssociation(typeof(DateTime))]
+        Time = 5,
     }
-
     public class TypeAssociationAttribute : Attribute
     {
         private readonly Type _type;

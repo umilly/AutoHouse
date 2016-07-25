@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Facade;
 using Model;
@@ -10,7 +11,13 @@ namespace ViewModel
         public ParameterViewModel(IServiceContainer container, Models dataBase, Parameter model)
             : base(container, dataBase, model)
         {
-            
+            if(!IsFake && Model.ID == Parameter.CurrentTimeId)
+                Use<ITimerSerivce>().Subsctibe(this,UpdateTime,1000,true);
+        }
+
+        private void UpdateTime()
+        {
+            OnPropertyChanged(()=>Value);
         }
 
         public override bool Validate()
@@ -20,7 +27,7 @@ namespace ViewModel
 
         public string Value
         {
-            get { return Model.Value; }
+            get { return Model.ID == Parameter.CurrentTimeId ? DateTime.Now.ToLongTimeString() : Model.Value; }
             set
             {
                 Model.Value = value;
@@ -47,6 +54,8 @@ namespace ViewModel
                 OnPropertyChanged();
             }
         }
+
+        public bool IsEditable => Model.ID != Parameter.CurrentTimeId;
 
         public void LinkCondition(Condition model, bool firstParam)
         {

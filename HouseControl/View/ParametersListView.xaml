@@ -23,9 +23,9 @@
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Text="{Binding Name , Mode=TwoWay}"/>
-                        <ComboBox Grid.Column="1"  SelectedValue="{Binding ParamType}" ItemsSource="{Binding ParamTypes}"/>
-                        <TextBox Grid.Column="2" Text="{Binding Value, Mode=TwoWay}"></TextBox>
+                        <TextBox Grid.Column="0" Text="{Binding Name , Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
+                        <ComboBox Grid.Column="1"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding ParamType}" ItemsSource="{Binding ParamTypes}" />
+                        <TextBox Grid.Column="2" IsEnabled="{Binding IsEditable}" Text="{Binding Value, Mode=TwoWay}"></TextBox>
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
