@@ -11,7 +11,7 @@
                        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ItemsControl Grid.Row="1" Name="ParamsList" ItemsSource="{Binding ViewModel.Zones, Mode=OneWay }">
@@ -19,13 +19,13 @@
                 <DataTemplate DataType="viewModel:ZoneViewModel">
                     <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="50"/>
                             <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="30"/>
+
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Key}"/>
-                        <TextBox Grid.Column="2" Text="{Binding Name, Mode=TwoWay}"></TextBox>
+                        <TextBlock Grid.Column="1" Text="{Binding Key}"/>
+                        <TextBox Grid.Column="2" Text="{Binding Name, Mode=TwoWay}" HorizontalAlignment="Stretch"></TextBox>
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

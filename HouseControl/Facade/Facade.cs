@@ -88,6 +88,7 @@ namespace Facade
     public interface ITimerSerivce:IService {
         void Subsctibe(object key, Action action,int waitMilliSeconds,bool repeat=false);
         void UnSubsctibe(object key);
+        void Exit();
     }
 
     public interface ITreeNode : IViewModel

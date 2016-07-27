@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Facade;
 using ViewModelBase;
 
@@ -11,6 +12,6 @@ namespace ViewModel
         }
 
         public override int ID { get; set; }
-        public IEnumerable<ZoneViewModel> Zones => Use<IPool>().GetViewModels<ZoneViewModel>();
+        public IEnumerable<ZoneViewModel> Zones => Use<IPool>().GetViewModels<ZoneViewModel>().Except(new[]{Use<IPool>().GetViewModels<ZoneViewModel>().First()});
     }
 }

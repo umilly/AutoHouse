@@ -44,6 +44,10 @@ namespace ViewModel
             }
         }
 
+        public void Exit()
+        {
+            _timerThread.Abort();
+        }
         private readonly List<TimerTask>  _tasks=new List<TimerTask>();
         public void Subsctibe(object key, Action action,int waitMilliSeconds,bool repeat=false)
         {

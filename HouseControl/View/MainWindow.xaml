@@ -20,7 +20,7 @@
             <MenuItem Header="Settings" Click="SettingsMenuClick"></MenuItem>
             <MenuItem Header="Save" Click="SaveClick"></MenuItem>
             <MenuItem Header="Load" Click="LoadClick"></MenuItem>
-            <MenuItem Header="Exit"></MenuItem>
+            <MenuItem Header="Exit" Click="ExitClick"></MenuItem>
             </MenuItem>
             <MenuItem Header="Устройства" Click="ShowDevicesClick">
             </MenuItem>

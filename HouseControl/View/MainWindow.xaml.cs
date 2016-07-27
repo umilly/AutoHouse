@@ -112,6 +112,11 @@ namespace WpfApplication
         {
             _container.Use<IViewService>().CreateView<ZoneListView>();
             OnNextView(null, null);
+        }private void ExitClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+            Application.Current.Shutdown();
+            _container.Use<ITimerSerivce>().Exit();
         }
     }
 }

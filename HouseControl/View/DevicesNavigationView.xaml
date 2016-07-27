@@ -12,43 +12,44 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
-  <UserControl.Resources>
-    <viewTools:BoolToColorConverter x:Key="ColorConverter"/>
-  </UserControl.Resources>
+    <UserControl.Resources>
+        <viewTools:BoolToColorConverter x:Key="ColorConverter"/>
+    </UserControl.Resources>
     <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"></ColumnDefinition>
-        <ColumnDefinition Width="*"></ColumnDefinition>
-      </Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.Column="0">Управление: </Label>
-            <TreeView Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="DeviceTreeView" Margin="5" ItemsSource="{Binding ViewModel.Reactions}">
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
-                        <Grid Background="{Binding Path=IsConnected, Converter={StaticResource ColorConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.ContextMenu>
-                                <ContextMenu ItemsSource="{Binding ContextMenu}">
-                                    <ContextMenu.ItemTemplate>
-                                        <DataTemplate DataType="facade:IContexMenuItem">
-                                            <MenuItem Header="{Binding Text}" Command="{Binding Todo}"/>
-                                        </DataTemplate>
-                                    </ContextMenu.ItemTemplate>
-                                </ContextMenu>
-                            </Grid.ContextMenu>
-                            <TextBlock Grid.Column="0" Text="{Binding Path=Name}">
-                            </TextBlock>
-                            <TextBlock Grid.Column="1" Text="{Binding Path=Value}"/>
-                        </Grid>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>
-            <ContentPresenter Margin="5" Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" Content="{Binding Editor}"></ContentPresenter>
+        <Label Grid.Row="0" Grid.Column="0">Управление:</Label>
+        <TreeView Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="DeviceTreeView" Margin="5" ItemsSource="{Binding ViewModel.Reactions}">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
+                    <Grid>
+                        <!--Background="{Binding Path=IsConnected, Converter={StaticResource ColorConverter}}"-->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.ContextMenu>
+                            <ContextMenu ItemsSource="{Binding ContextMenu}">
+                                <ContextMenu.ItemTemplate>
+                                    <DataTemplate DataType="facade:IContexMenuItem">
+                                        <MenuItem Header="{Binding Text}" Command="{Binding Todo}"/>
+                                    </DataTemplate>
+                                </ContextMenu.ItemTemplate>
+                            </ContextMenu>
+                        </Grid.ContextMenu>
+                        <TextBlock Grid.Column="0" Text="{Binding Path=Name}">
+                        </TextBlock>
+                        <!--<TextBlock Grid.Column="1" Text="{Binding Path=Value}"/>-->
+                    </Grid>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        <ContentPresenter Margin="5" Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" Content="{Binding Editor}"></ContentPresenter>
     </Grid>
 </vmBase:CustomViewBase>
