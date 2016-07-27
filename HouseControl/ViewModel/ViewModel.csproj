@@ -80,6 +80,7 @@
     <Compile Include="SystemViewModel.cs" />
     <Compile Include="TimerService.cs" />
     <Compile Include="ParametersListViewModel.cs" />
+    <Compile Include="ZoneListViewModel.cs" />
     <Compile Include="ZoneViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

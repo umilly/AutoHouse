@@ -35,6 +35,16 @@ namespace ViewModel
         public override string Value { get; set; }
         public override bool IsConnected { get; set; }
 
+        public string DeviceKey
+        {
+            get { return Model.CommandPath; }
+            set
+            {
+                Model.CommandPath = value; 
+                OnPropertyChanged();
+            }
+        }
+
         public IEnumerable<DeviceParamLinkVM> ParameterTypes
         {
             get

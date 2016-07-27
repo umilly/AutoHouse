@@ -25,6 +25,8 @@ namespace Model
         public string Name { get; set; }
         public string Value { get; set; }
         public int ParameterTypeId { get; set; }
+        public bool IsPublic { get; set; }
+        public byte[] Image { get; set; }
     
         public virtual ParameterType ParameterType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

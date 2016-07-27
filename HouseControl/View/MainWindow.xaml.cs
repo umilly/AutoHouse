@@ -107,5 +107,11 @@ namespace WpfApplication
             _container.Use<IViewService>().CreateView<ParametersListView>();
             OnNextView(null, null);
         }
+
+        private void ShowZoneList(object sender, RoutedEventArgs e)
+        {
+            _container.Use<IViewService>().CreateView<ZoneListView>();
+            OnNextView(null, null);
+        }
     }
 }

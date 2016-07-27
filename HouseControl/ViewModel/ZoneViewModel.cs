@@ -17,6 +17,16 @@ namespace ViewModel
             set { Model.Name = value; }
         }
 
+        public string Key
+        {
+            get { return Model.Description; }
+            set
+            {
+                Model.Description = value; 
+                OnPropertyChanged();
+            }
+        }
+
         public override bool Validate()
         {
             return !string.IsNullOrEmpty(Model.Name);
@@ -39,6 +49,11 @@ namespace ViewModel
                 Model.Scenarios.Remove(model);
                 model.Zones.Remove(Model);
             }
+        }
+
+        public void LinkSensor(Sensor model)
+        {
+            model.Zone = Model;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<vmBase:CustomViewBase x:TypeArguments="viewModel:ParametersListViewModel" x:Class="View.ParametersListView"
+﻿<vmBase:CustomViewBase x:TypeArguments="viewModel:ZoneListViewModel" x:Class="View.ZoneListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -14,9 +14,9 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ItemsControl Grid.Row="1" Name="ParamsList" ItemsSource="{Binding ViewModel.Parameters, Mode=OneWay }">
+        <ItemsControl Grid.Row="1" Name="ParamsList" ItemsSource="{Binding ViewModel.Zones, Mode=OneWay }">
             <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="viewModel:ParameterViewModel">
+                <DataTemplate DataType="viewModel:ZoneViewModel">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
@@ -24,14 +24,11 @@
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Text="{Binding Name , Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
-                        <ComboBox Grid.Column="1"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding ParamType}" ItemsSource="{Binding ParamTypes}" />
-                        <TextBox Grid.Column="2" IsEnabled="{Binding IsEditable}" Text="{Binding Value, Mode=TwoWay}"></TextBox>
-                        <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3" IsEnabled="{Binding IsEditable}" IsChecked="{Binding IsPublic}"></CheckBox>
+                        <TextBlock Grid.Column="0" Text="{Binding Key}"/>
+                        <TextBox Grid.Column="2" Text="{Binding Name, Mode=TwoWay}"></TextBox>
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Button Grid.Row="0" Click="AddParamsClick">Сгенерировать парметры</Button>
     </Grid>
 </vmBase:CustomViewBase>

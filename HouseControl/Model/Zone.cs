@@ -20,6 +20,7 @@ namespace Model
             this.Name = "";
             this.Description = "";
             this.Scenarios = new HashSet<Scenario>();
+            this.Sensors = new HashSet<Sensor>();
         }
     
         public int Id { get; set; }
@@ -28,5 +29,7 @@ namespace Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Scenario> Scenarios { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sensor> Sensors { get; set; }
     }
 }

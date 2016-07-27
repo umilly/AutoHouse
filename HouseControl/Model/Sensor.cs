@@ -28,5 +28,6 @@ namespace Model
         public virtual Controller Controller { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Condition> Conditions { get; set; }
+        public virtual Zone Zone { get; set; }
     }
 }

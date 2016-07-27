@@ -59,6 +59,7 @@ namespace ViewModelBase
             {
                 var request = WebRequest.Create(url);
                 request.Credentials = CredentialCache.DefaultCredentials;
+                request.Timeout = 1000;
                 var response = request.GetResponseAsync();
                 await response;
                 res = ((HttpWebResponse)response.Result).StatusDescription;

@@ -115,6 +115,10 @@
       <End Role="ComandParameterLink" EntitySet="ComandParameterLinks" />
       <End Role="DeviceParameterTypeLink" EntitySet="DeviceParameterTypeLinks" />
     </AssociationSet>
+    <AssociationSet Name="SensorZone" Association="ApplicationModel.Store.SensorZone">
+      <End Role="Sensor" EntitySet="Devices_Sensor" />
+      <End Role="Zone" EntitySet="Zones" />
+    </AssociationSet>
     <AssociationSet Name="FK_Sensor_inherits_Device" Association="ApplicationModel.Store.FK_Sensor_inherits_Device">
       <End Role="Device" EntitySet="Devices" />
       <End Role="Sensor" EntitySet="Devices_Sensor" />
@@ -246,6 +250,8 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" DefaultValue="" />
     <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ParameterTypeId" Type="int" Nullable="false" />
+    <Property Name="IsPublic" Type="bit" Nullable="false" />
+    <Property Name="Image" Type="varbinary(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="ParameterTypes">
     <Key>
@@ -281,6 +287,7 @@
     <Property Name="SensorTypeId" Type="int" Nullable="false" />
     <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="Controller_Id" Type="int" Nullable="false" />
+    <Property Name="Zone_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Devices_Controller">
     <Key>
@@ -294,6 +301,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
+    <Property Name="CommandPath" Type="nvarchar(max)" Nullable="false" DefaultValue="" />
     <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="Controller_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -545,6 +553,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="SensorZone">
+    <End Role="Sensor" Type="ApplicationModel.Store.Devices_Sensor" Multiplicity="*" />
+    <End Role="Zone" Type="ApplicationModel.Store.Zones" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Zone">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Sensor">
+        <PropertyRef Name="Zone_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_ZoneScenario_Zone">
     <End Role="Zone" Type="ApplicationModel.Store.Zones" Multiplicity="1" />
     <End Role="ZoneScenario" Type="ApplicationModel.Store.ZoneScenario" Multiplicity="*" />
@@ -754,6 +774,10 @@
             <End Role="ComandParameterLink" EntitySet="ComandParameterLinks" />
             <End Role="DeviceParameterTypeLink" EntitySet="DeviceParameterTypeLinks" />
           </AssociationSet>
+          <AssociationSet Name="SensorZone" Association="ApplicationModel.SensorZone">
+            <End Role="Sensor" EntitySet="Devices" />
+            <End Role="Zone" EntitySet="Zones" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Controller" BaseType="ApplicationModel.Device">
           <Property Name="IP" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -767,6 +791,7 @@
           <Property Name="SensorTypeId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Controller" Relationship="ApplicationModel.SensorController" FromRole="Sensor" ToRole="Controller" />
           <NavigationProperty Name="Conditions" Relationship="ApplicationModel.ConditionSensor" FromRole="Sensor" ToRole="Condition" />
+          <NavigationProperty Name="Zone" Relationship="ApplicationModel.SensorZone" FromRole="Sensor" ToRole="Zone" />
         </EntityType>
         <EntityType Name="SensorType">
           <Key>
@@ -814,6 +839,7 @@
           <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
           <Property Name="Description" Type="String" Nullable="false" DefaultValue="" />
           <NavigationProperty Name="Scenarios" Relationship="ApplicationModel.ZoneScenario" FromRole="Zone" ToRole="Scenario" />
+          <NavigationProperty Name="Sensors" Relationship="ApplicationModel.SensorZone" FromRole="Zone" ToRole="Sensor" />
         </EntityType>
         <EntityType Name="Reaction">
           <Key>
@@ -904,6 +930,8 @@
           <NavigationProperty Name="ParameterType" Relationship="ApplicationModel.ParameterTypeParameter" FromRole="Parameter" ToRole="ParameterType" />
           <Property Name="ParameterTypeId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ComandParameterLinks" Relationship="ApplicationModel.ComandParameterLinkParameter" FromRole="Parameter" ToRole="ComandParameterLink" />
+          <Property Name="IsPublic" Type="Boolean" Nullable="false" />
+          <Property Name="Image" Type="Binary" Nullable="true" />
         </EntityType>
         <EntityType Name="ParameterType">
           <Key>
@@ -977,6 +1005,7 @@
           <NavigationProperty Name="Commands" Relationship="ApplicationModel.CommandCustomDevice" FromRole="CustomDevice" ToRole="Command" />
           <NavigationProperty Name="Controller" Relationship="ApplicationModel.CustomDeviceController" FromRole="CustomDevice" ToRole="Controller" />
           <NavigationProperty Name="DeviceParameterTypeLinks" Relationship="ApplicationModel.DeviceParameterTypeLinkCustomDevice" FromRole="CustomDevice" ToRole="DeviceParameterTypeLink" />
+          <Property Name="CommandPath" Type="String" Nullable="false" DefaultValue="" />
         </EntityType>
         <Association Name="CommandCustomDevice">
           <End Type="ApplicationModel.Command" Role="Command" Multiplicity="*" />
@@ -1049,6 +1078,10 @@
         <Association Name="ComandParameterLinkDeviceParameterTypeLink">
           <End Type="ApplicationModel.ComandParameterLink" Role="ComandParameterLink" Multiplicity="*" />
           <End Type="ApplicationModel.DeviceParameterTypeLink" Role="DeviceParameterTypeLink" Multiplicity="1" />
+        </Association>
+        <Association Name="SensorZone">
+          <End Type="ApplicationModel.Sensor" Role="Sensor" Multiplicity="*" />
+          <End Type="ApplicationModel.Zone" Role="Zone" Multiplicity="1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -1190,6 +1223,7 @@
       <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.CustomDevice)">
         <MappingFragment StoreEntitySet="Devices_CustomDevice">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CommandPath" ColumnName="CommandPath" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1200,6 +1234,8 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Value" ColumnName="Value" />
           <ScalarProperty Name="ParameterTypeId" ColumnName="ParameterTypeId" />
+          <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1331,6 +1367,14 @@
         <ScalarProperty Name="Id" ColumnName="DeviceParameterTypeLink_Id" />
       </EndProperty>
       <EndProperty Name="ComandParameterLink">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SensorZone" TypeName="ApplicationModel.SensorZone" StoreEntitySet="Devices_Sensor">
+      <EndProperty Name="Zone">
+        <ScalarProperty Name="Id" ColumnName="Zone_Id" />
+      </EndProperty>
+      <EndProperty Name="Sensor">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>

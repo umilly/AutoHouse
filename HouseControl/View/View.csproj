@@ -98,6 +98,12 @@
     <Compile Include="CommandEditor.xaml.cs">
       <DependentUpon>CommandEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ZoneListView.xaml.cs">
+      <DependentUpon>ZoneListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SensorEditor.xaml.cs">
+      <DependentUpon>SensorEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomDeviceEditor.xaml.cs">
       <DependentUpon>CustomDeviceEditor.xaml</DependentUpon>
     </Compile>
@@ -113,6 +119,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="CommandEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ZoneListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SensorEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

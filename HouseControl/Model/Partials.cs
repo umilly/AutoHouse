@@ -231,7 +231,6 @@ namespace Model
             {
                 _context.SensorTypes.Add(new SensorType()
                 {
-                    Id = 1,
                     Key = "button",
                     Name = "тактовая или сенсорная кнопка",
                     MinValue = 0,
@@ -239,7 +238,6 @@ namespace Model
                 });
                 _context.SensorTypes.Add(new SensorType()
                 {
-                    Id = 1,
                     Key = "sens_mq",
                     Name = "датчик газа/дыма",
                     MinValue = 0,
@@ -247,7 +245,6 @@ namespace Model
                 });
                 _context.SensorTypes.Add(new SensorType()
                 {
-                    Id = 1,
                     Key = "sens_pir",
                     Name = "датчик движения",
                     MinValue = 0,
@@ -255,7 +252,6 @@ namespace Model
                 });
                 _context.SensorTypes.Add(new SensorType()
                 {
-                    Id = 1,
                     Key = "sens_flame",
                     Name = "датчик огня",
                     MinValue = 0,
@@ -265,7 +261,6 @@ namespace Model
 
                 _context.SensorTypes.Add(new SensorType()
                 {
-                    Id = 1,
                     Key = "sens_light",
                     Name = "датчик света",
                     MinValue = 0,
@@ -275,7 +270,6 @@ namespace Model
 
                 _context.SensorTypes.Add(new SensorType()
                 {
-                    Id = 1,
                     Key = "sens_temp",
                     Name = "датчик температуры",
                     MinValue = -40,
@@ -285,7 +279,6 @@ namespace Model
 
                 _context.SensorTypes.Add(new SensorType()
                 {
-                    Id = 1,
                     Key = "sens_hum",
                     Name = "датчик влажности",
                     MinValue = 0,
@@ -295,7 +288,6 @@ namespace Model
 
                 _context.SensorTypes.Add(new SensorType()
                 {
-                    Id = 1,
                     Key = "sens_lum",
                     Name = "датчик уровня освещенности",
                     MinValue = 0,
@@ -304,7 +296,6 @@ namespace Model
 
                 _context.SensorTypes.Add(new SensorType()
                 {
-                    Id = 1,
                     Key = "sens_sound",
                     Name = "датчик звука",
                     MinValue = 0,
@@ -312,7 +303,6 @@ namespace Model
                 });
                 _context.SensorTypes.Add(new SensorType()
                 {
-                    Id = 1,
                     Key = "sens_water",
                     Name = "датчик протечки",
                     MinValue = 0,
@@ -320,7 +310,6 @@ namespace Model
                 });
                 _context.SensorTypes.Add(new SensorType()
                 {
-                    Id = 1,
                     Key = "sens_power",
                     Name = "датчик тока",
                     MinValue = 0,
@@ -328,12 +317,48 @@ namespace Model
                 });
                 _context.SensorTypes.Add(new SensorType()
                 {
-                    Id = 1,
                     Key = "sens_bar",
                     Name = "датчик атмосферного давления",
                     MinValue = 300,
                     MaxValue = 1100
                 });
+                //___________________
+                _context.SensorTypes.Add(new SensorType()
+                {
+                    Key = "rele_clim",
+                    Name = "реле управления контурами отопления ",
+                    MinValue = 0,
+                    MaxValue = 1
+                });
+                _context.SensorTypes.Add(new SensorType()
+                {
+                    Key = "rele_vent",
+                    Name = "реле управления вент. Контурами",
+                    MinValue = 0,
+                    MaxValue = 1
+                });
+                _context.SensorTypes.Add(new SensorType()
+                {
+                    Key = "shim_ligth",
+                    Name = "значение заданного уровня света шим",
+                    MinValue = 0,
+                    MaxValue = 255
+                });
+                _context.SensorTypes.Add(new SensorType()
+                {
+                    Key = "sens_door",
+                    Name = "датчик открытия двери",
+                    MinValue = 0,
+                    MaxValue = 1
+                });
+                _context.SensorTypes.Add(new SensorType()
+                {
+                    Key = "sens_wind",
+                    Name = "датчик открытия окна",
+                    MinValue = 0,
+                    MaxValue = 1
+                });
+
             }
 
             private void RegiterUpdate(Guid guid, string sql, Action fillData=null)

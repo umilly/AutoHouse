@@ -71,6 +71,16 @@ namespace ViewModel
 
         public string SourceName => $"Param: {Name}";
 
+        public bool IsPublic
+        {
+            get { return Model.IsPublic; }
+            set
+            {
+                Model.IsPublic = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void LinkDeviceParam(ComandParameterLink model)
         {
             model.Parameter = Model;

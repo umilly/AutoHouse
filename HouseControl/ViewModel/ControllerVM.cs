@@ -120,14 +120,27 @@ namespace ViewModel
                     continue;
                 }
                 var index = int.Parse(line.Split('_').First());
-                line = lines[++i];
-                var value = line.Split(' ').Last();
+                var value = line.Split('_').Last().Trim();
                 _values[index] = value;
             }
         }
 
         public async Task FindSensors()
         {
+//            var res = @"1_11_sens_temp_d_ 27.50 
+//2_11_sens_hum_d_ 68.10 
+//3_11_sens_temp_d_ 27.20 
+//4_11_sens_hum_d_ 49.20 
+//5_11_sens_pir_d_ 0 
+//6_11_sens_pir_d_ 0 
+//7_11_sens_temp_d_ 0.00 
+//8_11_sens_hum_d_ 0.00 
+//9_11_sens_mq2_a_ 232 
+//10_12_sens_temp_d_ 0.00 
+//11_12_sens_hum_d_ 0.00 
+//12_12_sens_temp_d_ 0.00 
+//13_12_sens_hum_d_ 0.00 
+//14_12_sens_mq2_a_ 226 ";
             var task = Use<INetworkService>().AsyncRequest(Url);
             await task;
             ParseConrollerSensors(task.Result);
@@ -144,11 +157,32 @@ namespace ViewModel
                 var key = _cahedTypes.Keys.FirstOrDefault(a => line.Contains(a));
                 if (key != null)
                 {
-                    var newSensor = Use<IPool>().CreateDBObject<SensorViewModel>();
-                    newSensor.Init(_cahedTypes[key], int.Parse(line.Split('_').First()), Model, "Датчик " + ++num);
+                    var sensorValues = line.Split('_');
+                    var slotNum=  int.Parse(sensorValues[0]);
+                    var zoneNum = int.Parse(sensorValues[1]);
+                    var found = Use<IPool>().GetViewModels<SensorViewModel>().FirstOrDefault(a => a.Parent == this && a.Slot == slotNum);
+                    if (found==null)
+                    {
+                        var newSensor = Use<IPool>().CreateDBObject<SensorViewModel>();
+                        var zone = GetOrCreateZone(zoneNum);
+                        newSensor.Init(_cahedTypes[key], slotNum, Model, "Датчик " + ++num);
+                        newSensor.Zone = zone;
+                    }
                 }
             }
             Context.SaveChanges();
+        }
+
+        private ZoneViewModel GetOrCreateZone(int zoneNum)
+        {
+            var zone= Use<IPool>().GetViewModels<ZoneViewModel>().FirstOrDefault(a => a.Key == zoneNum.ToString());
+            if (zone == null)
+            {
+                zone = Use<IPool>().CreateDBObject<ZoneViewModel>();
+                zone.Key = zoneNum.ToString();
+                zone.Name = "Зона " + zone.Key;
+            }
+            return zone;
         }
     }
 }

@@ -74,6 +74,8 @@ namespace ViewModel
             {
                 value.LinkCondtioin(Model);
                 UpdateConextMenu();
+                OnPropertyChanged();
+                OnPropertyChanged(()=> PramsEnabled);
             }
         }
 

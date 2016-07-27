@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApplication"
         xmlns:view="clr-namespace:View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="650"
+        Title="MainWindow" Height="700" Width="1000"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         >
     <Grid>
@@ -25,7 +25,8 @@
             <MenuItem Header="Устройства" Click="ShowDevicesClick">
             </MenuItem>
             <MenuItem Header="Реакции" Click="ShowReactionsClick"/>
-            <MenuItem Header="Список параметров" Click="ShowParametersList"/>
+            <MenuItem Header="Параметры" Click="ShowParametersList"/>
+            <MenuItem Header="Зоны" Click="ShowZoneList"/>
         </Menu>
         <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Content="{Binding Path=CurrentContent}"></ContentControl>
     </Grid>

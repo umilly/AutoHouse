@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 07/24/2016 17:29:55
+-- Date Created: 07/28/2016 00:22:51
 -- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -68,6 +68,24 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ConditionParameter2]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Conditions] DROP CONSTRAINT [FK_ConditionParameter2];
 GO
+IF OBJECT_ID(N'[dbo].[FK_ComandParameterLinkCommand]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ComandParameterLinks] DROP CONSTRAINT [FK_ComandParameterLinkCommand];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ComandParameterLinkParameter]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ComandParameterLinks] DROP CONSTRAINT [FK_ComandParameterLinkParameter];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DeviceParameterTypeLinkCustomDevice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DeviceParameterTypeLinks] DROP CONSTRAINT [FK_DeviceParameterTypeLinkCustomDevice];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DeviceParameterTypeLinkParameterType]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DeviceParameterTypeLinks] DROP CONSTRAINT [FK_DeviceParameterTypeLinkParameterType];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ComandParameterLinkDeviceParameterTypeLink]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ComandParameterLinks] DROP CONSTRAINT [FK_ComandParameterLinkDeviceParameterTypeLink];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SensorZone]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Devices_Sensor] DROP CONSTRAINT [FK_SensorZone];
+GO
 IF OBJECT_ID(N'[dbo].[FK_Sensor_inherits_Device]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Devices_Sensor] DROP CONSTRAINT [FK_Sensor_inherits_Device];
 GO
@@ -126,6 +144,12 @@ IF OBJECT_ID(N'[dbo].[Parameter]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[ParameterTypes]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ParameterTypes];
+GO
+IF OBJECT_ID(N'[dbo].[ComandParameterLinks]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ComandParameterLinks];
+GO
+IF OBJECT_ID(N'[dbo].[DeviceParameterTypeLinks]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DeviceParameterTypeLinks];
 GO
 IF OBJECT_ID(N'[dbo].[Devices_Sensor]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Devices_Sensor];
@@ -259,7 +283,9 @@ CREATE TABLE [dbo].[Parameter] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [Value] nvarchar(max)  NOT NULL,
-    [ParameterTypeId] int  NOT NULL
+    [ParameterTypeId] int  NOT NULL,
+    [IsPublic] bit  NOT NULL,
+    [Image] varbinary(max)  NULL
 );
 GO
 
@@ -294,7 +320,8 @@ CREATE TABLE [dbo].[Devices_Sensor] (
     [ContollerSlot] int  NOT NULL,
     [SensorTypeId] int  NOT NULL,
     [Id] int  NOT NULL,
-    [Controller_Id] int  NOT NULL
+    [Controller_Id] int  NOT NULL,
+    [Zone_Id] int  NOT NULL
 );
 GO
 
@@ -308,6 +335,7 @@ GO
 
 -- Creating table 'Devices_CustomDevice'
 CREATE TABLE [dbo].[Devices_CustomDevice] (
+    [CommandPath] nvarchar(max)  NOT NULL,
     [Id] int  NOT NULL,
     [Controller_Id] int  NOT NULL
 );
@@ -776,6 +804,21 @@ GO
 CREATE INDEX [IX_FK_ComandParameterLinkDeviceParameterTypeLink]
 ON [dbo].[ComandParameterLinks]
     ([DeviceParameterTypeLink_Id]);
+GO
+
+-- Creating foreign key on [Zone_Id] in table 'Devices_Sensor'
+ALTER TABLE [dbo].[Devices_Sensor]
+ADD CONSTRAINT [FK_SensorZone]
+    FOREIGN KEY ([Zone_Id])
+    REFERENCES [dbo].[Zones]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SensorZone'
+CREATE INDEX [IX_FK_SensorZone]
+ON [dbo].[Devices_Sensor]
+    ([Zone_Id]);
 GO
 
 -- Creating foreign key on [Id] in table 'Devices_Sensor'
