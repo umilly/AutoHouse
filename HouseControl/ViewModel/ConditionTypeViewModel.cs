@@ -16,6 +16,8 @@ namespace ViewModel
             return true;
         }
 
+        public ConditionTypeValue TypeValue => (ConditionTypeValue)Model.ID;
+
         public void LinkCondtioin(Condition model)
         {
             model.ConditionType = Model;

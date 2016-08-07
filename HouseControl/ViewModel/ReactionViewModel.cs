@@ -72,15 +72,36 @@ namespace ViewModel
             set { }
         }
 
-        public override bool IsConnected
+        public override bool? IsConnected
         {
-            get { return true; }
+            get { return null; }
             set { }
         }
 
         public void Link(Scenario model)
         {
             Model.Scenario = model;
+        }
+
+        public void Check()
+        {
+            var conditions = Use<IPool>()
+                .GetViewModels<ConditionViewModel>()
+                .Where(a => a.Parent == this);
+
+            if (conditions.All(a => a.CheckComplete()))
+            {
+                SendCommands();
+            }
+        }
+
+        private void SendCommands()
+        {
+            Use<IPool>()
+                .GetViewModels<CommandViewModel>()
+                .Where(a => a.Parent == this)
+                .ForEach(a => a.SendCommand());
+
         }
     }
 }

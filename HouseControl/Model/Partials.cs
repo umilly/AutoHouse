@@ -206,7 +206,7 @@ namespace Model
                 _context.ParameterTypes.Add(new ParameterType() { Id = (int) ParameterTypeValue.Bool, Name = "bool"});
                 _context.ParameterTypes.Add(new ParameterType() { Id = (int)ParameterTypeValue.Int, Name = "Целое" });
                 _context.ParameterTypes.Add(new ParameterType() { Id = (int)ParameterTypeValue.String, Name = "Строка" });
-                _context.ParameterTypes.Add(new ParameterType() { Id = (int)ParameterTypeValue.Double, Name = "Десятичное" });
+                _context.ParameterTypes.Add(new ParameterType() { Id = (int)ParameterTypeValue.Float, Name = "Десятичное" });
             }
 
             private void FillConditionTypes()
@@ -434,8 +434,8 @@ namespace Model
         Int = 2,
         [TypeAssociation(typeof(string))]
         String = 3,
-        [TypeAssociation(typeof(double))]
-        Double = 4,
+        [TypeAssociation(typeof(float))]
+        Float = 4,
         [TypeAssociation(typeof(DateTime))]
         Time = 5,
     }

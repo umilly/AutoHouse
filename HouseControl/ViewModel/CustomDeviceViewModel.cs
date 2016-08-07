@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Facade;
@@ -8,8 +9,10 @@ namespace ViewModel
 {
     public class CustomDeviceViewModel : LinkedObjectVM<CustomDevice>
     {
+        
         public CustomDeviceViewModel(IServiceContainer container, Models dataBase, CustomDevice model) : base(container, dataBase, model)
         {
+            
         }
 
         public override bool Validate()
@@ -33,7 +36,16 @@ namespace ViewModel
         }
 
         public override string Value { get; set; }
-        public override bool IsConnected { get; set; }
+
+        
+        public override bool? IsConnected
+        {
+            get { return null; }
+            set
+            {
+            }
+        }
+
 
         public string DeviceKey
         {

@@ -28,7 +28,7 @@ public class SystemViewModel : ViewModelBase.ViewModelBase, ITreeNode
 
     public string Value => string.Empty;
 
-    public bool IsConnected => true;
+    public bool? IsConnected => null;
 
     public List<IContexMenuItem> ContextMenu => _contextMenu;
 

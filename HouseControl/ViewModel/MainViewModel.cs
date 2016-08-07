@@ -21,6 +21,7 @@ namespace ViewModel
             container.RegisterType<INetworkService, NetworkService>();
             container.RegisterType<ILog, EventLogger>();
             container.RegisterType<ITimerSerivce, TimerService>();
+            container.RegisterType<IReactionService, ReactionService>();
             PreparePool();
             Use<ITimerSerivce>().Subsctibe(this, UpdateControllers, 500,true);
         }
@@ -29,6 +30,7 @@ namespace ViewModel
         {
             Use<IPool>().GetViewModels<ControllerVM>().ForEach(a=>a.Update());
             Use<IPool>().GetViewModels<SensorViewModel>().ForEach(a => a.UpdateValue());
+            Use<IReactionService>().Check();
         }
 
         private void PreparePool()

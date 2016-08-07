@@ -15,6 +15,8 @@ namespace ViewModel
                 Use<ITimerSerivce>().Subsctibe(this,UpdateTime,1000,true);
         }
 
+        public Type ValueType => ParamType.Type;
+
         private void UpdateTime()
         {
             OnPropertyChanged(()=>Value);

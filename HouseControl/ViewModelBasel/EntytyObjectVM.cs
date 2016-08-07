@@ -121,7 +121,7 @@ namespace ViewModelBase
         public abstract IEnumerable<ITreeNode> Children { get; }
         public abstract string Name { get;  set; }
         public abstract string Value { get; set; }
-        public abstract bool IsConnected { get; set; }
+        public abstract bool? IsConnected { get; set; }
 
         public List<IContexMenuItem> ContextMenu => _contextMenu;
 

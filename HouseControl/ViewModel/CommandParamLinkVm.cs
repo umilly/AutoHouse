@@ -64,5 +64,6 @@ namespace ViewModel
                 OnPropertyChanged();
             }
         }
+        
     }
 }

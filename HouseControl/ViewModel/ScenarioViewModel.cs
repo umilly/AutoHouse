@@ -28,9 +28,9 @@ namespace ViewModel
             set { }
         }
 
-        public override bool IsConnected
+        public override bool? IsConnected
         {
-            get { return true; }
+            get { return null; }
             set { }
         }
 

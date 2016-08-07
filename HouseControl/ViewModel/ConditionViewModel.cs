@@ -28,8 +28,16 @@ namespace ViewModel
         public ITreeNode ParentCondition => Use<IPool>().GetDBVM<ConditionViewModel>(Model.ParentCondition);
 
         public override IEnumerable<ITreeNode> Children => Use<IPool>().GetViewModels<ConditionViewModel>().Where(a=>a.Parent==this);
-        public override string Value { get; set; }
-        public override bool IsConnected { get; set; }
+
+        public override string Value
+        {
+            get { return _isComplete.ToString(); }
+            set
+            {
+            }
+        }
+
+        public override bool? IsConnected { get { return _isComplete; }set {} }
 
         public override bool Validate()
         {
@@ -153,6 +161,81 @@ namespace ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private bool _isComplete = false;
+
+        public bool CheckComplete()
+        {
+
+            try
+            {
+                var newVal = TypedCompare();
+                if (_isComplete == newVal)
+                    return _isComplete;
+                _isComplete = newVal;
+            }
+            catch (Exception)
+            {
+                _isComplete = false;
+            }
+            OnPropertyChanged(() => Value);
+            OnPropertyChanged(() => IsConnected);
+            return _isComplete;
+        }
+
+        private bool TypedCompare()
+        {
+            switch (CondtionType.TypeValue)
+            {
+                case ConditionTypeValue.And:
+                    return Children.Cast<ConditionViewModel>().All(a => a.CheckComplete());
+                case ConditionTypeValue.Or:
+                    return Children.Cast<ConditionViewModel>().Any(a => a.CheckComplete());
+                case ConditionTypeValue.Less:
+                    return Compare(LeftParam, RightParam) == -1;
+                case ConditionTypeValue.More:
+                    return Compare(LeftParam, RightParam) == 1;
+                case ConditionTypeValue.Equal:
+                    return Compare(LeftParam, RightParam) == 0;
+                case ConditionTypeValue.NotEqual:
+                    return Compare(LeftParam, RightParam) != 0;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public int Compare(IConditionSource s1, IConditionSource s2)
+        {
+            if (s1.ValueType == typeof (DateTime))
+            {
+                if (s2.ValueType != typeof (DateTime))
+                {
+                    throw new ArgumentOutOfRangeException(
+                        "типы значений не совпадают, время можно сравнить только со временем");
+                }
+                var t1 = DateTime.Parse(s1.Value);
+                var t2 = DateTime.Parse(s2.Value);
+                return t1.CompareTo(t2);
+            }
+            if (s1.ValueType == typeof (bool) || s1.ValueType == typeof (int) || s1.ValueType == typeof (float))
+            {
+                if (s2.ValueType != typeof (bool) && s2.ValueType != typeof (int) && s2.ValueType != typeof (float))
+                {
+                    throw new ArgumentOutOfRangeException("типы значений не сравнимы");
+                }
+                var f1 = float.Parse(s1.Value);
+                var f2 = float.Parse(s2.Value);
+                return f1.CompareTo(f2);
+            }
+            if (s1.ValueType == typeof (string))
+            {
+                if (s2.ValueType != typeof (string))
+                    throw new ArgumentOutOfRangeException("строки можно сравнивать только с строками");
+                return string.CompareOrdinal(s1.Value, s2.Value);
+            }
+            throw new ArgumentOutOfRangeException("сравнеение таких типов не определено");
+        }
+
         public void LinkTo(Reaction model)
         {
             Model.Reaction = model;
@@ -164,5 +247,15 @@ namespace ViewModel
         public static EmptyValue Instance { get; } = new EmptyValue();
 
         public string SourceName => "Не установлен";
+
+        public string Value
+        {
+            get
+            {
+                throw new ArgumentOutOfRangeException("Настройка реакций не завершена, где то не установлено значение");
+            }
+        }
+
+        public Type ValueType => typeof (object);
     }
 }

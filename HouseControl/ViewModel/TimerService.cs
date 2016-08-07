@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Common;
 using Facade;
+using ViewModelBase;
 
 namespace ViewModel
 {
@@ -77,4 +78,14 @@ namespace ViewModel
             Repeat = repeat;
         }
     }
+
+    public class ReactionService : ServiceBase, IReactionService
+    {
+        public void Check()
+        {
+            Use<IPool>().GetViewModels<ReactionViewModel>().ForEach(a=>a.Check());
+        }
+    }
+
+    
 }

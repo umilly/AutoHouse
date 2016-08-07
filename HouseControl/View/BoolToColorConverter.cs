@@ -12,9 +12,9 @@ namespace ViewTools
             var param = parameter!=null&& bool.Parse(parameter.ToString());
             var val = value as bool?;
             if (!val.HasValue)
-                return new SolidColorBrush(Colors.Gray);
-            if (val.Value ^ param)
                 return new SolidColorBrush(Colors.Transparent);
+            if (val.Value ^ param)
+                return new SolidColorBrush(Colors.LightGreen);
             else
                 return new SolidColorBrush(Colors.LightCoral);
 

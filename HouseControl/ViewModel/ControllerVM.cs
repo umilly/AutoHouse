@@ -57,16 +57,16 @@ namespace ViewModel
 
         public override string Value
         {
-            get { return IsConnected ? "-" : "+"; }
+            get { return IsConnected.Value ? "-" : "+"; }
             set { }
         }
 
-        public override bool IsConnected
+        public override bool? IsConnected
         {
             get { return _isConnected; }
             set
             {
-                _isConnected = value; 
+                _isConnected = value.Value; 
                 OnPropertyChanged();
             }
         }

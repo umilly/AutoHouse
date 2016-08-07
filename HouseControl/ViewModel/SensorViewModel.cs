@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Facade;
@@ -7,9 +8,6 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-
-
-
     public class SensorViewModel : LinkedObjectVM<Sensor>, IConditionSource
     {
         public SensorViewModel(IServiceContainer container, Models dataBase, Sensor model)
@@ -42,6 +40,11 @@ namespace ViewModel
             }
         }
 
+        public Type ValueType
+        {
+            get { return typeof (float); }
+        }
+
         public override string Value
         {
             get
@@ -54,7 +57,7 @@ namespace ViewModel
             set { }
         }
 
-        public override bool IsConnected
+        public override bool? IsConnected
         {
             get { return Parent != null && (Parent as ControllerVM).Values.ContainsKey(Model.ContollerSlot); }
             set { }

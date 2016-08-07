@@ -1,3 +1,4 @@
+using System;
 using Facade;
 using Model;
 using ViewModelBase;
@@ -8,9 +9,14 @@ namespace ViewModel
     {
         public ParameterTypeViewModel(IServiceContainer container, Models dataBase, ParameterType model) : base(container, dataBase, model)
         {
+            if(IsFake)
+                return;
+            Type = TypeAssociationAttribute.GetType((ParameterTypeValue) model.ID);
         }
 
         public string Name => Model.Name;
+
+        public Type Type { get;private set; }
 
         public override bool Validate()
         {

@@ -96,7 +96,7 @@ namespace Facade
         IEnumerable<ITreeNode> Children { get; }
         string Name { get; }
         string Value { get; }
-        bool IsConnected { get; }
+        bool? IsConnected { get; }
         List<IContexMenuItem> ContextMenu { get; }
         void OnChildDelete(ITreeNode node);
     }
@@ -110,5 +110,11 @@ namespace Facade
     public interface IConditionSource 
     {
         string SourceName { get; }
+        string Value { get; }
+        Type ValueType { get; }
+    }
+    public interface IReactionService:IService
+    {
+        void Check();
     }
 }

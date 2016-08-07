@@ -29,15 +29,10 @@ namespace WpfApplication
             InitializeComponent();
             CommandBindings.Add(new CommandBinding(ShowNextViewCommand.Instance, OnNextView));
             
-            OpenControlView();
+            ShowDevicesClick(null,null);
         }
 
-        private void OpenControlView()
-        {
-            var control = _container.Use<IViewService>().CreateView<DeviceTree>(1);
-            OnNextView(null,null);
-            control.ViewModel.Devices = MainVM.Devices;
-        }
+        
 
         private void OnNextView(object sender, ExecutedRoutedEventArgs executedRoutedEventArgs)
         {
@@ -71,7 +66,7 @@ namespace WpfApplication
 
         private void ControlMenuClick(object sender, RoutedEventArgs e)
         {
-            OpenControlView();
+            
         }
 
         private void SaveClick(object sender, RoutedEventArgs e)

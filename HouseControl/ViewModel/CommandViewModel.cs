@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using System.Text;
 using Facade;
 using Model;
 using ViewModel;
@@ -12,7 +16,7 @@ namespace ViewModel
         public CommandViewModel(IServiceContainer container, Models dataBase, Command model)
             : base(container, dataBase, model)
         {
-            
+            _isConnected = null;
         }
 
         public ReactionViewModel Reaction => Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction);
@@ -20,8 +24,7 @@ namespace ViewModel
         public override ITreeNode Parent => Reaction;
         public override IEnumerable<ITreeNode> Children { get; }
         public override string Value { get; set; }
-        public override bool IsConnected { get; set; }
-
+        
         public override bool Validate()
         {
             return !string.IsNullOrEmpty(Model.Name) && Reaction != null;
@@ -79,6 +82,48 @@ namespace ViewModel
         {
             model.Command = Model;
             Model.ComandParameterLinks.Add(model);
+        }
+        private bool? _isConnected;
+
+        public override bool? IsConnected
+        {
+            get { return _isConnected; }
+            set
+            {
+                _isConnected = value;
+                if (value.HasValue && value.Value)
+                    Use<ITimerSerivce>().Subsctibe(this, ResetIsConnected, 1000);
+                OnPropertyChanged(() => IsConnected);
+            }
+        }
+
+        private void ResetIsConnected()
+        {
+            if (_isConnected.HasValue && _isConnected.Value)
+            {
+                _isConnected = null;
+                OnPropertyChanged(() => IsConnected);
+            }
+        }
+
+        public async void SendCommand()
+        {
+            try
+            {
+                var sb = new StringBuilder();
+                sb.Append(
+                    $"{Model.CustomDevice.Controller.IP}:{Model.CustomDevice.Controller.Port}/{Model.CustomDevice.CommandPath}");
+                Parameters.Select(a => a.Parameter.Value).ForEach(a => sb.Append("?" + a));
+                var res =  Use<INetworkService>().AsyncRequest(sb.ToString());
+                await res;
+                if(res.Result != "OK")
+                    throw new Exception("No Connect");
+                IsConnected = true;
+            }
+            catch (Exception)
+            {
+                IsConnected = false;
+            }
         }
     }
 }
