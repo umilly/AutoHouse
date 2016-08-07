@@ -24,7 +24,7 @@ namespace ViewModel
             {
                 var now = DateTime.Now;
 
-                foreach (var timerTask in _tasks)
+                foreach (var timerTask in _tasks.ToList())
                 {
                     var needInvoke = timerTask.Created.Add(new TimeSpan(0, 0, 0, 0, timerTask.PeriodMS)) < now;
                     if (needInvoke)

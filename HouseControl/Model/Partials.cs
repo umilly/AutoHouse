@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Data.Entity.Core.EntityClient;
 using System.Data.Entity.Core.Mapping;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -121,6 +122,7 @@ namespace Model
         private static Dictionary<string, string> _connectinsStrings = new Dictionary<string, string>();
         static Models()
         {
+            _connectinsStrings["local"] = File.ReadAllText("constr");
             _connectinsStrings["vlad"] =
                 @"Data Source=UMILLY;Initial Catalog=house;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
             _connectinsStrings["tima"] =

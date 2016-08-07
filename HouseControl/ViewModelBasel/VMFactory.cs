@@ -151,7 +151,7 @@ namespace ViewModelBase
             var ensureDLLIsCopied = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
             try
             {
-                DB = new Models("vlad");
+                DB = new Models("local");
             }
             catch (Exception e)
             {
