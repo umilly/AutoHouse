@@ -64,6 +64,7 @@ namespace ViewModel
                 OnPropertyChanged();
             }
         }
-        
+
+        public int Order => Model.DeviceParameterTypeLink.Order;
     }
 }

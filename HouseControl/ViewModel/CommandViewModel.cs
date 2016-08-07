@@ -112,16 +112,17 @@ namespace ViewModel
             {
                 var sb = new StringBuilder();
                 sb.Append(
-                    $"{Model.CustomDevice.Controller.IP}:{Model.CustomDevice.Controller.Port}/{Model.CustomDevice.CommandPath}");
-                Parameters.Select(a => a.Parameter.Value).ForEach(a => sb.Append("?" + a));
+                    $"http://{Model.CustomDevice.Controller.IP}:{Model.CustomDevice.Controller.Port}/{Model.CustomDevice.CommandPath}");
+                Parameters.OrderBy(a=>a.Order).Select(a => a.Parameter.Value).ForEach(a => sb.Append("?" + a));
                 var res =  Use<INetworkService>().AsyncRequest(sb.ToString());
                 await res;
                 if(res.Result != "OK")
-                    throw new Exception("No Connect");
+                    throw new Exception($"No Connect:{res.Result}");
                 IsConnected = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Use<ILog>().Log(LogCategory.Network, ex.ToString());
                 IsConnected = false;
             }
         }

@@ -174,8 +174,9 @@ namespace ViewModel
                     return _isComplete;
                 _isComplete = newVal;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Use<ILog>().Log(LogCategory.Network, ex.ToString());
                 _isComplete = false;
             }
             OnPropertyChanged(() => Value);

@@ -57,7 +57,7 @@ namespace ViewModel
 
         public override string Value
         {
-            get { return IsConnected.Value ? "-" : "+"; }
+            get { return IsConnected.Value ? "+" : "-"; }
             set { }
         }
 
@@ -114,7 +114,7 @@ namespace ViewModel
                 return;
             }
             IsConnected = true;
-            var lines = result.Split(new[] { "<br>", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var lines = result.Split(new[] { "<",">"}, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < lines.Count(); i++)
             {
                 var line = lines[i];
@@ -131,25 +131,11 @@ namespace ViewModel
 
         public async Task FindSensors()
         {
-//            var res = @"1_11_sens_temp_d_ 27.50 
-//2_11_sens_hum_d_ 68.10 
-//3_11_sens_temp_d_ 27.20 
-//4_11_sens_hum_d_ 49.20 
-//5_11_sens_pir_d_ 0 
-//6_11_sens_pir_d_ 0 
-//7_11_sens_temp_d_ 0.00 
-//8_11_sens_hum_d_ 0.00 
-//9_11_sens_mq2_a_ 232 
-//10_12_sens_temp_d_ 0.00 
-//11_12_sens_hum_d_ 0.00 
-//12_12_sens_temp_d_ 0.00 
-//13_12_sens_hum_d_ 0.00 
-//14_12_sens_mq2_a_ 226 ";
             var task = Use<INetworkService>().AsyncRequest(Url);
             await task;
             ParseConrollerSensors(task.Result);
             ParseSensorsValues(task.Result);
-            OnPropertyChanged(()=>Children);
+            OnPropertyChanged(() => Children);
         }
 
         private void ParseConrollerSensors(string result)
