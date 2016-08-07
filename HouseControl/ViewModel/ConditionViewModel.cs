@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Facade;
 using Model;
@@ -121,11 +122,9 @@ namespace ViewModel
             get { return Parameter1 ?? (IConditionSource)Sensor?? EmptyValue.Instance; }
             set
             {
-                if (value is EmptyValue)
-                {
-                    Model.Parameter1 = null;
-                    Model.Sensor = null;
-                }
+                
+                 Model.Parameter1 = null;
+                 Model.Sensor = null;
                 (value as SensorViewModel)?.LinkCondition(Model);
                 (value as ParameterViewModel)?.LinkCondition(Model,true);
             }
@@ -207,34 +206,43 @@ namespace ViewModel
 
         public int Compare(IConditionSource s1, IConditionSource s2)
         {
-            if (s1.ValueType == typeof (DateTime))
+            try
             {
-                if (s2.ValueType != typeof (DateTime))
+                if (s1.ValueType == typeof(DateTime))
                 {
-                    throw new ArgumentOutOfRangeException(
-                        "типы значений не совпадают, время можно сравнить только со временем");
+                    if (s2.ValueType != typeof(DateTime))
+                    {
+                        throw new ArgumentOutOfRangeException(
+                            "типы значений не совпадают, время можно сравнить только со временем");
+                    }
+                    var t1 = DateTime.Parse(s1.Value, CultureInfo.InvariantCulture.NumberFormat);
+                    var t2 = DateTime.Parse(s2.Value, CultureInfo.InvariantCulture.NumberFormat);
+                    return t1.CompareTo(t2);
                 }
-                var t1 = DateTime.Parse(s1.Value);
-                var t2 = DateTime.Parse(s2.Value);
-                return t1.CompareTo(t2);
-            }
-            if (s1.ValueType == typeof (bool) || s1.ValueType == typeof (int) || s1.ValueType == typeof (float))
-            {
-                if (s2.ValueType != typeof (bool) && s2.ValueType != typeof (int) && s2.ValueType != typeof (float))
+                if (s1.ValueType == typeof(bool) || s1.ValueType == typeof(int) || s1.ValueType == typeof(float))
                 {
-                    throw new ArgumentOutOfRangeException("типы значений не сравнимы");
+                    if (s2.ValueType != typeof(bool) && s2.ValueType != typeof(int) && s2.ValueType != typeof(float))
+                    {
+                        throw new ArgumentOutOfRangeException("типы значений не сравнимы");
+                    }
+                    var f1 = float.Parse(s1.Value,CultureInfo.InvariantCulture.NumberFormat);
+                    var f2 = float.Parse(s2.Value, CultureInfo.InvariantCulture.NumberFormat);
+                    return f1.CompareTo(f2);
                 }
-                var f1 = float.Parse(s1.Value);
-                var f2 = float.Parse(s2.Value);
-                return f1.CompareTo(f2);
+                if (s1.ValueType == typeof(string))
+                {
+                    if (s2.ValueType != typeof(string))
+                        throw new ArgumentOutOfRangeException("строки можно сравнивать только с строками");
+                    return string.CompareOrdinal(s1.Value, s2.Value);
+                }
+                throw new ArgumentOutOfRangeException("сравнеение таких типов не определено");
+
             }
-            if (s1.ValueType == typeof (string))
+            catch (Exception ex)
             {
-                if (s2.ValueType != typeof (string))
-                    throw new ArgumentOutOfRangeException("строки можно сравнивать только с строками");
-                return string.CompareOrdinal(s1.Value, s2.Value);
+                throw new ArgumentException($"compare v1:'{s1.Value}',v2:'{s2.Value}'",ex);
             }
-            throw new ArgumentOutOfRangeException("сравнеение таких типов не определено");
+            
         }
 
         public void LinkTo(Reaction model)
