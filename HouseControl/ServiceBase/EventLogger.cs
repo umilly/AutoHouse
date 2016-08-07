@@ -11,7 +11,7 @@ namespace Common
     {
         public void Log(LogCategory network, string message,bool showMessageBox=false)
         {
-            var show= $"[{network}] [{DateTime.Now.ToLongDateString()}]:'{message}'";
+            var show= $"[{network}] [{DateTime.Now.ToLongTimeString()}]:'{message}'";
             Console.WriteLine(show);
             if(showMessageBox)
                 Use<IViewService>().ShowMessage(show);
