@@ -79,11 +79,11 @@ namespace VMBase
 
         public void CloseView(IView view)
         {
-            if (!typeof (IEntytyObjectVM).IsAssignableFrom(view.VmType))
-                return;
-            var oldVM = (view.ViewModel as IEntytyObjectVM);
-            if (!oldVM.SavedInContext)
-                oldVM.Delete();
+            //if (!typeof (IEntytyObjectVM).IsAssignableFrom(view.VmType))
+            //    return;
+            //var oldVM = (view.ViewModel as IEntytyObjectVM);
+            //if (!oldVM.SavedInContext)
+            //    oldVM.Delete();
         }
 
         public IView CreateView(IViewModel viewModel)

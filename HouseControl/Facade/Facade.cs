@@ -79,7 +79,6 @@ namespace Facade
     public interface IEntytyObjectVM:IViewModel
     {
         Type EntityType { get; }
-        bool SavedInContext { get; set; }
         bool Validate();
         void SaveDB();
         void Delete();

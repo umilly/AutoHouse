@@ -93,7 +93,6 @@ namespace ViewModelBase
         private void AddEntityFromDB(Type dbVmType, object model)
         {
             var res = (IEntytyObjectVM)Activator.CreateInstance(dbVmType, Container, DB, model);
-            res.SavedInContext = true;
             _pool[dbVmType].Add(res);
         }
 
@@ -133,11 +132,12 @@ namespace ViewModelBase
             {
                 DB.SaveChanges();
             }
-            catch (DbEntityValidationException e)
+            catch (Exception e)
             {
-                var newException = new FormattedDbEntityValidationException(e);
+                if(e is DbEntityValidationException)
+                    e = new FormattedDbEntityValidationException(e as DbEntityValidationException);
                 Use<ILog>().Log(LogCategory.Data, e.ToString());
-                throw newException;
+                Use<IViewService>().ShowMessage("ИЗМЕНЕНИЯ НЕ БЫЛИ СОХРАНЕНЫ.\r\n В конфигурации была обнаружена ошибка, возможно какая-то сущность была настроена не полностью. ");
             }
         }
 

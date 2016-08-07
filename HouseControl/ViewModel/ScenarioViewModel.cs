@@ -83,7 +83,6 @@ namespace ViewModel
         public void LinkZone(ZoneViewModel zone, bool value)
         {
             zone.LinkWithScenario(Model, value);
-            SaveDB();
         }
     }
 }

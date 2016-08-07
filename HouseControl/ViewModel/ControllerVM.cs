@@ -55,7 +55,11 @@ namespace ViewModel
             set { Model.Name=value; }
         }
 
-        public override string Value { get; set; }
+        public override string Value
+        {
+            get { return IsConnected ? "-" : "+"; }
+            set { }
+        }
 
         public override bool IsConnected
         {

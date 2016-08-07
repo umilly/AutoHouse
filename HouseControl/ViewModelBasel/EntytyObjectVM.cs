@@ -16,9 +16,7 @@ namespace ViewModelBase
         public Type EntityType => typeof (T);
 
         public bool IsFake => Model == null;
-
-        public bool SavedInContext { get; set; }
-
+        
         protected T Model { get; private set; }
 
         protected EntytyObjectVM(IServiceContainer container,Models dataBase,T model) : base(container)
@@ -39,7 +37,6 @@ namespace ViewModelBase
             if (!Validate())
                 return;
             Use<IPool>().SaveDB();
-            SavedInContext = true;
             OnPropertyChanged(() => ID);
         }
 
