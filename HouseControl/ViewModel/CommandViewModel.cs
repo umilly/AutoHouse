@@ -57,6 +57,12 @@ namespace ViewModel
             }
         }
 
+        public override void Delete()
+        {
+            Parameters.ForEach(a => a.Delete());
+            base.Delete();
+        }
+
         private void CreateCommandLinks()
         {
             foreach (var  devParam in Device.ParameterTypes.OrderBy(a=>a.Order))
