@@ -10,22 +10,20 @@ namespace ViewModelBase
 {
     public class NetworkService : ServiceBase, INetworkService
     {
-        public string Ping(string address)
+        public IPStatus Ping(string address)
         {
             try
             {
                 var p = new Ping();
                 var reply = p.Send(address, 100);
-                return reply.Status.ToString();
+                return reply.Status;
             }
             catch (Exception e)
             {
-
-                if (e.InnerException != null)
-                    return e.InnerException.Message;
-                return e.Message;
+                Use<ILog>().Log(LogCategory.Network, e.ToString());
+                //return e.InnerException != null ? e.InnerException.Message : e.Message;
+                return IPStatus.Unknown;
             }
-
         }
 
         public string SyncRequest(string url)
@@ -36,18 +34,14 @@ namespace ViewModelBase
                 var request = WebRequest.Create(url);
                 request.Credentials = CredentialCache.DefaultCredentials;
                 var response = request.GetResponse();
-                res = ((HttpWebResponse)response).StatusDescription;
+                //res = ((HttpWebResponse)response).StatusDescription;
                 var reader = new StreamReader(response.GetResponseStream());
                 res = reader.ReadToEnd();
             }
             catch (Exception e)
             {
-                res = e.ToString();
+                Use<ILog>().Log(LogCategory.Network, e.ToString());
                 return string.Empty;
-            }
-            finally
-            {
-                Use<ILog>().Log(LogCategory.Network, string.Format("url:{0} \r\n response:\r\n {1}", url, res));
             }
             return res;
         }
@@ -70,7 +64,6 @@ namespace ViewModelBase
             {
                 res = e.ToString();
                 return string.Empty;
-                //throw e;
             }
             finally
             {

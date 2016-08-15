@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -66,7 +67,7 @@ namespace Facade
 
     public interface INetworkService : IService
     {
-        string Ping(string address);
+        IPStatus Ping(string address);
         string SyncRequest(string url);
         Task<string> AsyncRequest(string url);
     }

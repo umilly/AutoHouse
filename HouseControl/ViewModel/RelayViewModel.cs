@@ -117,7 +117,7 @@ public class RelayViewModel : ViewModelBase.ViewModelBase
 
     public void UpdateIsAvailable()
     {
-        IsAvailable  = Use<INetworkService>().Ping(Address);
+        IsAvailable  = Use<INetworkService>().Ping(Address).ToString();
     }
 
     public string Address
