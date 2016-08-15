@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Server.cs" />
+    <Compile Include="WebServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +61,14 @@
     <ProjectReference Include="..\ServiceBase\Common.csproj">
       <Project>{7bcffefb-5d13-4325-9638-f98f8d2510b8}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ViewModelBasel\ViewModelBase.csproj">
+      <Project>{ed898011-a331-41bd-94e3-6ef4f9ef654f}</Project>
+      <Name>ViewModelBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ViewModel\ViewModel.csproj">
+      <Project>{814dc7e6-3c6c-44a8-a57b-7e43c19c4a4a}</Project>
+      <Name>ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

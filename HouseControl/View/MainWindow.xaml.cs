@@ -22,6 +22,7 @@ namespace WpfApplication
         public MainWindow()
         {
             _container.RegisterType<IViewService,ViewService>();
+            _container.RegisterType<IWebServer, WebServer.WebServer>();
             var types = GetType().Assembly.GetTypes().Where(type => typeof(IView).IsAssignableFrom(type));
             _container.Use<IViewService>().FillTypes(types.ToArray());
             MainVM = new MainViewModel(_container);

@@ -24,6 +24,7 @@ namespace ViewModel
             container.RegisterType<IReactionService, ReactionService>();
             PreparePool();
             Use<ITimerSerivce>().Subsctibe(this, UpdateControllers, 500,true);
+            Use<IWebServer>().Start();
         }
 
         private void UpdateControllers()

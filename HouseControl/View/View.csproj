@@ -267,6 +267,10 @@
       <Project>{d4cd334d-2b50-4c66-bb5f-7f03fb87acc5}</Project>
       <Name>ViewBase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WebServer\WebServer.csproj">
+      <Project>{43848aa0-db79-4ecb-81d2-468ada3c42b1}</Project>
+      <Name>WebServer</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

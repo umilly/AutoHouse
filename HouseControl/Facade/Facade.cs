@@ -23,6 +23,12 @@ namespace Facade
 
     }
 
+    public interface IWebServer : IService
+    {
+        void Start();
+        void Stop();
+        string GetClientParams();
+    }
     public interface IViewService : IService
     {
         T CreateView<T>(int id = -1) where T : IView;
