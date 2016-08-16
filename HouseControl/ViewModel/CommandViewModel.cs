@@ -121,15 +121,17 @@ namespace ViewModel
                     $"http://{Model.CustomDevice.Controller.IP}:{Model.CustomDevice.Controller.Port}/{Model.CustomDevice.CommandPath}");
                 Parameters.OrderBy(a=>a.Order).Select(a => a.Parameter.Value).ForEach(a => sb.Append("?" + a));
                 IsConnected = false;
-                var res =  Use<INetworkService>().AsyncRequest(sb.ToString());
-                await res;
-                if(string.IsNullOrEmpty(res.Result))
-                    throw new Exception($"No Connect:{res.Result}");
+                var http = sb.ToString();
+                using (var res = Use<INetworkService>().AsyncRequest(http))
+                {
+                    await res;
+                    if (string.IsNullOrEmpty(res.Result))
+                        throw new Exception($"No Connect to {http }:\r\n{res.Result}");
+                }
                 IsConnected = true;
             }
             catch (Exception ex)
             {
-                Use<ILog>().Log(LogCategory.Network, ex.ToString());
                 IsConnected = false;
             }
         }

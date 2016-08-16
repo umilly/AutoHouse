@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ViewModelBase
@@ -12,17 +13,21 @@ namespace ViewModelBase
     {
         public IPStatus Ping(string address)
         {
+            Ping p = null;
             try
             {
-                var p = new Ping();
+                p = new Ping();
                 var reply = p.Send(address, 100);
                 return reply.Status;
             }
             catch (Exception e)
             {
-                Use<ILog>().Log(LogCategory.Network, e.ToString());
-                //return e.InnerException != null ? e.InnerException.Message : e.Message;
+                Use<ILog>().Log(LogCategory.Network,"Ping: " + e.Message);
                 return IPStatus.Unknown;
+            }
+            finally
+            {
+                p?.Dispose();
             }
         }
 
@@ -33,14 +38,15 @@ namespace ViewModelBase
             {
                 var request = WebRequest.Create(url);
                 request.Credentials = CredentialCache.DefaultCredentials;
-                var response = request.GetResponse();
-                //res = ((HttpWebResponse)response).StatusDescription;
-                var reader = new StreamReader(response.GetResponseStream());
-                res = reader.ReadToEnd();
+                using (var response = (HttpWebResponse) request.GetResponse())
+                {
+                    var reader = new StreamReader(response.GetResponseStream());
+                    res = reader.ReadToEnd();
+                }
             }
             catch (Exception e)
             {
-                Use<ILog>().Log(LogCategory.Network, e.ToString());
+                Use<ILog>().Log(LogCategory.Network,$"Sync request to {url}:\r\n {e.Message}");
                 return string.Empty;
             }
             return res;
@@ -51,25 +57,40 @@ namespace ViewModelBase
             string res = null;
             try
             {
-                var request = WebRequest.Create(url);
-                request.Credentials = CredentialCache.DefaultCredentials;
-                request.Timeout = 1000;
-                var response = request.GetResponseAsync();
-                await response;
-                res = ((HttpWebResponse)response.Result).StatusDescription;
-                var reader = new StreamReader(response.Result.GetResponseStream());
+                var response = (HttpWebResponse) await GetResponseTask(url);
+                var reader = new StreamReader(response.GetResponseStream());
                 res = reader.ReadToEnd();
+                response.Dispose();
             }
             catch (Exception e)
             {
-                res = e.ToString();
+                Use<ILog>().Log(LogCategory.Network, $"async request to url:{url} \r\n {e.Message}");
                 return string.Empty;
             }
-            finally
-            {
-                Use<ILog>().Log(LogCategory.Network, $"url:{url} \r\n response:\r\n {res}");
-            }
             return res;
+        }
+        private const int Timeout = 1000;
+        private const int StepTime = 100;
+
+        private async Task<WebResponse> GetResponseTask(string url)
+        {
+
+            var request = (HttpWebRequest) WebRequest.Create(url);
+            request.Credentials = CredentialCache.DefaultCredentials;
+            request.Timeout = Timeout;
+            request.ReadWriteTimeout = Timeout;
+            request.ContinueTimeout = Timeout;
+            request.KeepAlive = false;
+            var res = request.GetResponseAsync();
+            var steps = Timeout/StepTime;
+            for (int i = 0; i < steps; i++)
+            {
+                await Task.Delay(StepTime);
+                if (res.IsCompleted)
+                    return res.Result;
+            }
+            request.Abort();
+            throw new TimeoutException("No Response");
         }
     }
 }

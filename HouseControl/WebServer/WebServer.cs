@@ -31,15 +31,8 @@ namespace WebServer
             while (true)
             {
                 var task = await _listener.AcceptTcpClientAsync();
-                var client = new Client(task, this);
-                try
-                {
-                    client.Run();
-                }
-                catch (Exception e)
-                {
-                    Use<ILog>().Log(LogCategory.Network, e.ToString());
-                }
+                var client = new Client(task, this, Use<ILog>());
+                client.Run();
             }
         }
 
@@ -63,22 +56,24 @@ namespace WebServer
         }
     }
 
-    public class Client
+    public class Client:IDisposable
     {
         private readonly TcpClient _client;
         private readonly IWebServer _server;
+        private readonly ILog _logger;
+        private const int timeout = 1000;
         private string _request;
-        public Client(TcpClient client, IWebServer server)
+        public Client(TcpClient client, IWebServer server,ILog logger)
         {
             _client = client;
+            _client.ReceiveTimeout = timeout;
+            _client.SendTimeout = timeout;
             _server = server;
+            _logger = logger;
         }
 
         public void Parse()
         {
-
-
-
             int count;
             var bytes = new byte[1024];
             while ((count = _client.GetStream().Read(bytes, 0, bytes.Length)) > 0)
@@ -90,7 +85,6 @@ namespace WebServer
                     break;
                 }
             }
-
         }
 
         public void Response()
@@ -107,8 +101,25 @@ namespace WebServer
 
         public async void Run()
         {
-            await Task.Run(() => Parse());
-            await Task.Run(() => Response());
+            try
+            {
+                await Task.Run(() => Parse());
+                await Task.Run(() => Response());
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogCategory.MobileWebServer, $"Client request handle error:\r\n{e.Message}");
+            }
+            finally
+            {
+                Dispose();
+            }
+
+        }
+
+        public void Dispose()
+        {
+            _client.Dispose();
         }
     }
 }

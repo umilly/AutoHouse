@@ -80,7 +80,9 @@ namespace Facade
     public enum LogCategory
     {
         Network,
-        Data
+        Data,
+        Configuration,
+        MobileWebServer
     }
 
     public interface IEntytyObjectVM:IViewModel

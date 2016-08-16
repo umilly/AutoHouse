@@ -99,11 +99,16 @@ namespace ViewModel
             get { return $"Найдено {Model.Sensors.Count} сенсоров"; }
         }
 
+        public static int i = 0;
         public async void Update()
         {
-            var task = Use<INetworkService>().AsyncRequest(Url);
-            await task;
-            ParseSensorsValues(task.Result);
+            i++;
+            using (var task = Use<INetworkService>().AsyncRequest(Url))
+            {
+                await task;
+                ParseSensorsValues(task.Result);
+            }
+            i--;
         }
 
         private void ParseSensorsValues(string result)

@@ -136,7 +136,7 @@ namespace ViewModelBase
             {
                 if(e is DbEntityValidationException)
                     e = new FormattedDbEntityValidationException(e as DbEntityValidationException);
-                Use<ILog>().Log(LogCategory.Data, e.ToString());
+                Use<ILog>().Log(LogCategory.Data, $"Validation fail:\r\n {e.Message}");
                 Use<IViewService>().ShowMessage("ИЗМЕНЕНИЯ НЕ БЫЛИ СОХРАНЕНЫ.\r\n В конфигурации была обнаружена ошибка, возможно какая-то сущность была настроена не полностью. ");
             }
         }

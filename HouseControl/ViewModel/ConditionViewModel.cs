@@ -175,7 +175,7 @@ namespace ViewModel
             }
             catch (Exception ex)
             {
-                Use<ILog>().Log(LogCategory.Network, ex.ToString());
+                Use<ILog>().Log(LogCategory.Configuration, $"Condition {Name} CheckFail: \r\n {ex.Message}" );
                 _isComplete = false;
             }
             OnPropertyChanged(() => Value);
