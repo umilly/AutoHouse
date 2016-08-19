@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClietViewModel;
 using Xamarin.Forms;
 
 namespace MobileClient
@@ -12,6 +13,7 @@ namespace MobileClient
         public MainPage()
         {
             InitializeComponent();
+            var vm=new SomeViewModel();
         }
     }
 }
