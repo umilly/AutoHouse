@@ -2,8 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:MobileClient"
-             xmlns:clietViewModel="clr-namespace:ClietViewModel;assembly=ClietViewModel"
-             x:Class="MobileClient.MainPage">
+             x:Class="MobileClient.View.MainPage">
+
+  <Label Text="Welcome to Xamarin Forms!"
+           VerticalOptions="Center"
+           HorizontalOptions="Center" />
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto"/>
@@ -11,26 +14,10 @@
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Зоны" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"></Label>
     <Label Grid.Column="0" Grid.Row="1" Text="Режимы" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"></Label>
     <Label Grid.Column="1" Grid.Row="1" Text="Параметры" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"></Label>
-    <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
-      Text="{Binding DateTime,
-                        StringFormat='{0:T}'}"
-        FontSize="Large"
-        HorizontalOptions="Center"
-        VerticalOptions="Center">
-      
-      <Label.BindingContext>
-        <clietViewModel:MainPageViewModel />
-      </Label.BindingContext>
-    </Label>
   </Grid>
 </ContentPage>
-
-
-
- 

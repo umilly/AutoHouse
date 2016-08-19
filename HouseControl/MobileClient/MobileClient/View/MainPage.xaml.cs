@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace MobileClient
+namespace MobileClient.View
 {
     public partial class MainPage : ContentPage
     {
