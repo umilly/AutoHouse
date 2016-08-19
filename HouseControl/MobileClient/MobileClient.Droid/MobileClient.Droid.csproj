@@ -56,7 +56,6 @@
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ObjectModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Xamarin.Android.Support.Design, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -121,6 +120,10 @@
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ClietViewModel\ClietViewModel.csproj">
+      <Project>{67f9d3a8-f71e-4428-913f-c37ae82cdb24}</Project>
+      <Name>ClietViewModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MobileClient\MobileClient.csproj">
       <Project>{B6D2CF7D-82E3-45F9-8387-A4FA29DD0079}</Project>
       <Name>MobileClient</Name>

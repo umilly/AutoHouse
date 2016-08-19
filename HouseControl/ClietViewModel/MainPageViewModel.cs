@@ -1,44 +1,37 @@
-﻿using System;
-using System.ComponentModel;
-using Xamarin.Forms;
+﻿using System.ComponentModel;
+
 
 namespace ClietViewModel
 {
     public class MainPageViewModel : INotifyPropertyChanged
     {
-        DateTime dateTime;
+        string _someText;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainPageViewModel()
         {
-            this.DateTime = DateTime.Now;
-
-            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
-            {
-                this.DateTime = DateTime.Now;
-                return true;
-            });
+            this.SomText = "хуйня муйня";
         }
 
-        public DateTime DateTime
+        public string SomText
         {
             set
             {
-                if (dateTime != value)
+                if (_someText != value)
                 {
-                    dateTime = value;
+                    _someText = value;
 
                     if (PropertyChanged != null)
                     {
                         PropertyChanged(this,
-                            new PropertyChangedEventArgs("DateTime"));
+                            new PropertyChangedEventArgs("SomText"));
                     }
                 }
             }
             get
             {
-                return dateTime;
+                return _someText;
             }
         }
     }
