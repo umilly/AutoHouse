@@ -24,8 +24,12 @@ namespace ViewModel
             while (true)
             {
                 var now = DateTime.Now;
-
-                foreach (var timerTask in _tasks.ToList())
+                List<TimerTask> list = null;
+                lock (_tasks)
+                {
+                    list = _tasks.ToList();
+                }
+                foreach (var timerTask in list)
                 {
                     var needInvoke = timerTask.Created.Add(new TimeSpan(0, 0, 0, 0, timerTask.PeriodMS)) < now;
                     if (needInvoke)
@@ -37,7 +41,10 @@ namespace ViewModel
                         }
                         else
                         {
-                            _tasks.Remove(timerTask);
+                            lock (_tasks)
+                            {
+                                _tasks.Remove(timerTask);
+                            }
                         }
                     }
                 }
@@ -52,12 +59,19 @@ namespace ViewModel
         private readonly List<TimerTask>  _tasks=new List<TimerTask>();
         public void Subsctibe(object key, Action action,int waitMilliSeconds,bool repeat=false)
         {
-            _tasks.Add(new TimerTask(key,waitMilliSeconds, DateTime.Now, action, repeat));
+            lock (_tasks)
+            {
+                _tasks.Add(new TimerTask(key, waitMilliSeconds, DateTime.Now, action, repeat));
+            }
+            
         }
         public void UnSubsctibe(object key)
         {
-            var toRemove = _tasks.Where(a=>a.Key==key).ToList();
-            toRemove.ForEach(a=>_tasks.Remove(a));
+            lock (_tasks)
+            {
+                var toRemove = _tasks.Where(a => a.Key == key).ToList();
+                toRemove.ForEach(a => _tasks.Remove(a));
+            }
         }
     }
 
