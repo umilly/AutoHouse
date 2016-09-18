@@ -91,6 +91,12 @@ namespace ViewModel
             OnPropertyChanged(() => ParameterTypes);
         }
 
+        public override void Delete()
+        {
+            DeleteParams();
+            base.Delete();
+        }
+
         public void LinkToCommand(Command model)
         {
             model.CustomDevice = Model;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Facade;
 using Model;
 using ViewModelBase;
@@ -47,6 +48,18 @@ namespace ViewModel
                 OnPropertyChanged();
             }
         }
+
+        public override void Delete()
+        {
+            DeleteCommandParams();
+            base.Delete();
+        }
+
+        private void DeleteCommandParams()
+        {
+            Use<IPool>().GetViewModels<CommandViewModel>().ForEach(a => a.DeleteDeviceParam(this.Model));
+        }
+
         public IEnumerable<ParameterTypeViewModel> ParamTypes => Use<IPool>().GetViewModels<ParameterTypeViewModel>();
 
         public int Order

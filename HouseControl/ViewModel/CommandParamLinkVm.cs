@@ -66,5 +66,10 @@ namespace ViewModel
         }
 
         public int Order => Model.DeviceParameterTypeLink.Order;
+
+        public bool IsTypeOf(DeviceParameterTypeLink model)
+        {
+            return Model.DeviceParameterTypeLink == model;
+        }
     }
 }

@@ -135,5 +135,10 @@ namespace ViewModel
                 IsConnected = false;
             }
         }
+
+        public void DeleteDeviceParam(DeviceParameterTypeLink model)
+        {
+            Parameters.Where(a=>a.IsTypeOf(model)).ForEach(a=>a.Delete());
+        }
     }
 }
