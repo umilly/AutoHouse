@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -29,6 +30,9 @@ namespace Facade
         void Start();
         void Stop();
         string GetClientParams();
+        string GetModes();
+        string SetParameter(int paramId, string value);
+        string SetMode(int modeId);
     }
     public interface IViewService : IService
     {
@@ -125,5 +129,14 @@ namespace Facade
     public interface IReactionService:IService
     {
         void Check();
+    }
+
+    public interface IGlobalParams
+    {
+        int CurrentModeId { get; set; }
+    }
+    public class GlobalParams : IGlobalParams
+    {
+        public int CurrentModeId { get; set; }
     }
 }

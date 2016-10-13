@@ -1,5 +1,6 @@
 ﻿using Common;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -51,8 +52,36 @@ namespace WebServer
         public string GetClientParams()
         {
             var sb = new StringBuilder();
-            Use<IPool>().GetViewModels<ParameterViewModel>().Where(a => a.IsPublic).ForEach(a => sb.Append($"<br>{a.Name}={a.Value}<br>"));
+            Use<IPool>().GetViewModels<ParameterViewModel>().Where(a => a.IsPublic).ForEach(a => sb.Append($"<br>{a.ID.ToString()}:{a.Name}={a.Value}<br>"));
             return sb.ToString();
+        }
+
+        public string GetModes()
+        {
+            var sb = new StringBuilder();
+            Use<IPool>().GetViewModels<ModeViewModel>().ForEach(a => sb.Append($"<br>{a.ID.ToString()}:{a.Name}={a.Value}<br>"));
+            return sb.ToString();
+
+        }
+
+        public string SetParameter(int paramId, string value)
+        {
+            try
+            {
+                Use<IPool>().GetViewModels<ParameterViewModel>().First(a => a.ID == paramId).Value = value;
+                Use<IPool>().SaveDB();
+                return "OK";
+            }
+            catch (Exception e)
+            {
+                return "Fail set param";
+            }
+        }
+
+        public string SetMode(int modeId)
+        {
+            Use<IGlobalParams>().CurrentModeId = modeId;
+            return "OK";
         }
     }
 
@@ -63,6 +92,7 @@ namespace WebServer
         private readonly ILog _logger;
         private const int timeout = 1000;
         private string _request;
+        private WebCommand _command;
         public Client(TcpClient client, IWebServer server,ILog logger)
         {
             _client = client;
@@ -79,19 +109,26 @@ namespace WebServer
             while ((count = _client.GetStream().Read(bytes, 0, bytes.Length)) > 0)
             {
                 _request += Encoding.ASCII.GetString(bytes, 0, count);
-
                 if (_request.IndexOf("\r\n\r\n", StringComparison.Ordinal) >= 0 || _request.Length > 4096)
                 {
                     break;
                 }
             }
+            var body = _request.Split('\r')[0].Split(' ')[1];
+            var splitBody = body.Split('?','/');
+            var command = splitBody[1];
+            var comParams = new List<string>();
+            for (int i = 2; i < splitBody.Length; i++)
+            {
+                comParams.Add(splitBody[i]);
+            }
+            _command = new WebCommand(command, comParams);
         }
 
         public void Response()
         {
             const string headerStr = "HTTP/1.1 200 OK\nContent-type: text/html;charset=utf-8\n";
-            var clientParams = _server.GetClientParams();
-            var body = $"<html lang=\"ru-RU\"><body><h1>{clientParams}</h1></body></html>";
+            var body = $"<html lang=\"ru-RU\"><body><h1>{_command.Execute(_server)}</h1></body></html>";
             var res = $"{headerStr}\n\n{body}";
             var buffer = Encoding.UTF8.GetBytes(res);
             _client.GetStream().Write(buffer, 0, buffer.Length);
@@ -119,7 +156,45 @@ namespace WebServer
 
         public void Dispose()
         {
-            _client.Dispose();
+            //_client.Dispose();
+        }
+    }
+}
+
+public enum WebCommandType
+{
+    GetParams,
+    GetModes,
+    SetParam,
+    SetMode
+}
+
+public class WebCommand
+{
+    public WebCommandType Type { get;private set; }
+    public List<string> Params { get; private set; }
+
+    public WebCommand(string type, List<string> @params)
+    {
+
+        Type = (WebCommandType)Enum.Parse(typeof(WebCommandType),type);
+        Params = @params;
+    }
+
+    public string Execute(IWebServer serv)
+    {
+        switch (Type)
+        {
+            case WebCommandType.GetParams:
+                return serv.GetClientParams();
+            case WebCommandType.GetModes:
+                return serv.GetModes();
+            case WebCommandType.SetParam:
+                return serv.SetParameter(int.Parse(Params[0]), Params[1]);
+            case WebCommandType.SetMode:
+                return serv.SetMode(int.Parse(Params[0]));
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 }
