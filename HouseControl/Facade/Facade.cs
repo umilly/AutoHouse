@@ -131,12 +131,16 @@ namespace Facade
         void Check();
     }
 
-    public interface IGlobalParams
+    public interface IGlobalParams:IService
     {
-        int CurrentModeId { get; set; }
+        int? CurrentModeId { get; set; }
     }
     public class GlobalParams : IGlobalParams
     {
-        public int CurrentModeId { get; set; }
+        public int? CurrentModeId { get; set; }
+        public void SetContainer(IServiceContainer container)
+        {
+            
+        }
     }
 }

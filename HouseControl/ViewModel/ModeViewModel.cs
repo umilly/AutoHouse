@@ -40,7 +40,11 @@ namespace ViewModel
 
         public override bool? IsConnected
         {
-            get { return null; }
+            get
+            {
+                var mode = Use<IGlobalParams>().CurrentModeId;
+                return !mode.HasValue || mode.Value == ID;
+            }
             set { }
         }
 

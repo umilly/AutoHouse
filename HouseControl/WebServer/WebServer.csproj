@@ -58,6 +58,10 @@
       <Project>{4a90dd13-26b3-4a89-9df0-0e5723ef392f}</Project>
       <Name>Facade</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{c9740e4f-63a1-4458-8902-a1117e87ae4b}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceBase\Common.csproj">
       <Project>{7bcffefb-5d13-4325-9638-f98f8d2510b8}</Project>
       <Name>Common</Name>

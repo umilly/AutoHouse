@@ -97,7 +97,13 @@ namespace ViewModel
     {
         public void Check()
         {
-            Use<IPool>().GetViewModels<ReactionViewModel>().ForEach(a=>a.Check());
+            var reacts=Use<IPool>().GetViewModels<ReactionViewModel>();
+            var mode = Use<IGlobalParams>().CurrentModeId;
+            if (mode.HasValue)
+            {
+                reacts = reacts.Where(a => a.Scenario.Parent.ID == mode.Value);
+            }
+            reacts.ForEach(a=>a.Check());
         }
     }
 
