@@ -22,4 +22,9 @@ public class ParameterCategoryVm : EntytyObjectVM<ParameterCategory>
             OnPropertyChanged();
         }
     }
+
+    public void LinkParam(Parameter model)
+    {
+        model.ParameterCategory = Model;
+    }
 }

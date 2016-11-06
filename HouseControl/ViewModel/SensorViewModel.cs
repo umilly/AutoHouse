@@ -103,5 +103,10 @@ namespace ViewModel
         {
             model.Sensor = Model;
         }
+
+        public void LinkParam(Parameter model)
+        {
+            model.Sensor = Model;
+        }
     }
 }

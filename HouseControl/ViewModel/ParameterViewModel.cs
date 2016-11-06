@@ -38,6 +38,8 @@ namespace ViewModel
         }
 
         public IEnumerable<ParameterTypeViewModel> ParamTypes => Use<IPool>().GetViewModels<ParameterTypeViewModel>();
+        public IEnumerable<ParameterCategoryVm> Categories => Use<IPool>().GetViewModels<ParameterCategoryVm>();
+        public IEnumerable<SensorViewModel> Sensors => Use<IPool>().GetViewModels<SensorViewModel>();
 
         public ParameterTypeViewModel ParamType
         {
@@ -45,6 +47,24 @@ namespace ViewModel
             set
             {
                 value.LinkParam(Model);
+            }
+        }
+        public ParameterCategoryVm Category
+        {
+            get { return Use<IPool>().GetDBVM<ParameterCategoryVm>(Model.ParameterCategory); }
+            set
+            {
+                value.LinkParam(Model);
+                OnPropertyChanged();
+            }
+        }
+        public SensorViewModel Sensor
+        {
+            get { return Use<IPool>().GetDBVM<SensorViewModel>(Model.Sensor); }
+            set
+            {
+                value.LinkParam(Model);
+                OnPropertyChanged();
             }
         }
         public string Name
