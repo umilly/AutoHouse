@@ -42,5 +42,7 @@ namespace Model
         public virtual DbSet<ParameterType> ParameterTypes { get; set; }
         public virtual DbSet<ComandParameterLink> ComandParameterLinks { get; set; }
         public virtual DbSet<DeviceParameterTypeLink> DeviceParameterTypeLinks { get; set; }
+        public virtual DbSet<ParameterCategory> ParameterCategories { get; set; }
+        public virtual DbSet<ParametrSetCommand> ParametrSetCommands { get; set; }
     }
 }

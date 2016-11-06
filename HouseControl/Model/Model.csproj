@@ -118,7 +118,13 @@
     <Compile Include="Parameter.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParameterCategory.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParameterType.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ParametrSetCommand.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Partials.cs" />
@@ -177,6 +183,7 @@
       <DependentUpon>ApplicationDB.edmx</DependentUpon>
       <LastGenOutput>ApplicationDB.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="ApplicationDB.edmx - Copy.sql" />
     <Content Include="ApplicationDB.edmx.sql" />
     <Content Include="ApplicationDB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

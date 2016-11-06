@@ -19,6 +19,7 @@ namespace Model
         {
             this.ContollerSlot = 0;
             this.Conditions = new HashSet<Condition>();
+            this.Parameters = new HashSet<Parameter>();
         }
     
         public int ContollerSlot { get; set; }
@@ -29,5 +30,7 @@ namespace Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Condition> Conditions { get; set; }
         public virtual Zone Zone { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Parameter> Parameters { get; set; }
     }
 }

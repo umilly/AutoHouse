@@ -23,6 +23,8 @@
     <EntitySet Name="ParameterTypes" EntityType="ApplicationModel.Store.ParameterTypes" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ComandParameterLinks" EntityType="ApplicationModel.Store.ComandParameterLinks" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DeviceParameterTypeLinks" EntityType="ApplicationModel.Store.DeviceParameterTypeLinks" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ParameterCategories" EntityType="ApplicationModel.Store.ParameterCategories" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ParametrSetCommands" EntityType="ApplicationModel.Store.ParametrSetCommands" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_Sensor" EntityType="ApplicationModel.Store.Devices_Sensor" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_Controller" EntityType="ApplicationModel.Store.Devices_Controller" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_CustomDevice" EntityType="ApplicationModel.Store.Devices_CustomDevice" store:Type="Tables" Schema="dbo" />
@@ -118,6 +120,30 @@
     <AssociationSet Name="SensorZone" Association="ApplicationModel.Store.SensorZone">
       <End Role="Sensor" EntitySet="Devices_Sensor" />
       <End Role="Zone" EntitySet="Zones" />
+    </AssociationSet>
+    <AssociationSet Name="ParameterParameterCategory" Association="ApplicationModel.Store.ParameterParameterCategory">
+      <End Role="Parameter" EntitySet="Parameter" />
+      <End Role="ParameterCategory" EntitySet="ParameterCategories" />
+    </AssociationSet>
+    <AssociationSet Name="SensorParameter" Association="ApplicationModel.Store.SensorParameter">
+      <End Role="Parameter" EntitySet="Parameter" />
+      <End Role="Sensor" EntitySet="Devices_Sensor" />
+    </AssociationSet>
+    <AssociationSet Name="ParametrSetCommandParameter" Association="ApplicationModel.Store.ParametrSetCommandParameter">
+      <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
+      <End Role="Parameter" EntitySet="Parameter" />
+    </AssociationSet>
+    <AssociationSet Name="ParametrSetCommandParameter1" Association="ApplicationModel.Store.ParametrSetCommandParameter1">
+      <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
+      <End Role="Parameter" EntitySet="Parameter" />
+    </AssociationSet>
+    <AssociationSet Name="ParametrSetCommandSensor" Association="ApplicationModel.Store.ParametrSetCommandSensor">
+      <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
+      <End Role="Sensor" EntitySet="Devices_Sensor" />
+    </AssociationSet>
+    <AssociationSet Name="ParametrSetCommandParameter2" Association="ApplicationModel.Store.ParametrSetCommandParameter2">
+      <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
+      <End Role="Parameter" EntitySet="Parameter" />
     </AssociationSet>
     <AssociationSet Name="FK_Sensor_inherits_Device" Association="ApplicationModel.Store.FK_Sensor_inherits_Device">
       <End Role="Device" EntitySet="Devices" />
@@ -252,6 +278,8 @@
     <Property Name="ParameterTypeId" Type="int" Nullable="false" />
     <Property Name="IsPublic" Type="bit" Nullable="false" />
     <Property Name="Image" Type="varbinary(max)" Nullable="true" />
+    <Property Name="ParameterCategory_Id" Type="int" Nullable="true" />
+    <Property Name="Sensor_Id" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="ParameterTypes">
     <Key>
@@ -278,6 +306,25 @@
     <Property Name="Order" Type="int" Nullable="false" />
     <Property Name="CustomDevice_Id" Type="int" Nullable="false" />
     <Property Name="ParameterType_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ParameterCategories">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ParametrSetCommands">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" DefaultValue="" />
+    <Property Name="Cooldown" Type="int" Nullable="false" />
+    <Property Name="DestParameter_Id" Type="int" Nullable="false" />
+    <Property Name="SrcParameter1_Id" Type="int" Nullable="true" />
+    <Property Name="Sensor_Id" Type="int" Nullable="true" />
+    <Property Name="SrcParameter2_Id" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="Devices_Sensor">
     <Key>
@@ -565,6 +612,78 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="ParameterParameterCategory">
+    <End Role="Parameter" Type="ApplicationModel.Store.Parameter" Multiplicity="*" />
+    <End Role="ParameterCategory" Type="ApplicationModel.Store.ParameterCategories" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="ParameterCategory">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Parameter">
+        <PropertyRef Name="ParameterCategory_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SensorParameter">
+    <End Role="Parameter" Type="ApplicationModel.Store.Parameter" Multiplicity="*" />
+    <End Role="Sensor" Type="ApplicationModel.Store.Devices_Sensor" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Sensor">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Parameter">
+        <PropertyRef Name="Sensor_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ParametrSetCommandParameter">
+    <End Role="ParametrSetCommand" Type="ApplicationModel.Store.ParametrSetCommands" Multiplicity="*" />
+    <End Role="Parameter" Type="ApplicationModel.Store.Parameter" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Parameter">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ParametrSetCommand">
+        <PropertyRef Name="DestParameter_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ParametrSetCommandParameter1">
+    <End Role="ParametrSetCommand" Type="ApplicationModel.Store.ParametrSetCommands" Multiplicity="*" />
+    <End Role="Parameter" Type="ApplicationModel.Store.Parameter" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Parameter">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ParametrSetCommand">
+        <PropertyRef Name="SrcParameter1_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ParametrSetCommandSensor">
+    <End Role="ParametrSetCommand" Type="ApplicationModel.Store.ParametrSetCommands" Multiplicity="*" />
+    <End Role="Sensor" Type="ApplicationModel.Store.Devices_Sensor" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Sensor">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ParametrSetCommand">
+        <PropertyRef Name="Sensor_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ParametrSetCommandParameter2">
+    <End Role="ParametrSetCommand" Type="ApplicationModel.Store.ParametrSetCommands" Multiplicity="*" />
+    <End Role="Parameter" Type="ApplicationModel.Store.Parameter" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Parameter">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ParametrSetCommand">
+        <PropertyRef Name="SrcParameter2_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_ZoneScenario_Zone">
     <End Role="Zone" Type="ApplicationModel.Store.Zones" Multiplicity="1" />
     <End Role="ZoneScenario" Type="ApplicationModel.Store.ZoneScenario" Multiplicity="*" />
@@ -778,6 +897,32 @@
             <End Role="Sensor" EntitySet="Devices" />
             <End Role="Zone" EntitySet="Zones" />
           </AssociationSet>
+          <EntitySet Name="ParameterCategories" EntityType="ApplicationModel.ParameterCategory" />
+          <AssociationSet Name="ParameterParameterCategory" Association="ApplicationModel.ParameterParameterCategory">
+            <End Role="Parameter" EntitySet="Parameter" />
+            <End Role="ParameterCategory" EntitySet="ParameterCategories" />
+          </AssociationSet>
+          <AssociationSet Name="SensorParameter" Association="ApplicationModel.SensorParameter">
+            <End Role="Parameter" EntitySet="Parameter" />
+            <End Role="Sensor" EntitySet="Devices" />
+          </AssociationSet>
+          <EntitySet Name="ParametrSetCommands" EntityType="ApplicationModel.ParametrSetCommand" />
+          <AssociationSet Name="ParametrSetCommandParameter" Association="ApplicationModel.ParametrSetCommandParameter">
+            <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
+            <End Role="Parameter" EntitySet="Parameter" />
+          </AssociationSet>
+          <AssociationSet Name="ParametrSetCommandParameter1" Association="ApplicationModel.ParametrSetCommandParameter1">
+            <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
+            <End Role="Parameter" EntitySet="Parameter" />
+          </AssociationSet>
+          <AssociationSet Name="ParametrSetCommandSensor" Association="ApplicationModel.ParametrSetCommandSensor">
+            <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
+            <End Role="Sensor" EntitySet="Devices" />
+          </AssociationSet>
+          <AssociationSet Name="ParametrSetCommandParameter2" Association="ApplicationModel.ParametrSetCommandParameter2">
+            <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
+            <End Role="Parameter" EntitySet="Parameter" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Controller" BaseType="ApplicationModel.Device">
           <Property Name="IP" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -792,6 +937,7 @@
           <NavigationProperty Name="Controller" Relationship="ApplicationModel.SensorController" FromRole="Sensor" ToRole="Controller" />
           <NavigationProperty Name="Conditions" Relationship="ApplicationModel.ConditionSensor" FromRole="Sensor" ToRole="Condition" />
           <NavigationProperty Name="Zone" Relationship="ApplicationModel.SensorZone" FromRole="Sensor" ToRole="Zone" />
+          <NavigationProperty Name="Parameters" Relationship="ApplicationModel.SensorParameter" FromRole="Sensor" ToRole="Parameter" />
         </EntityType>
         <EntityType Name="SensorType">
           <Key>
@@ -932,6 +1078,8 @@
           <NavigationProperty Name="ComandParameterLinks" Relationship="ApplicationModel.ComandParameterLinkParameter" FromRole="Parameter" ToRole="ComandParameterLink" />
           <Property Name="IsPublic" Type="Boolean" Nullable="false" />
           <Property Name="Image" Type="Binary" Nullable="true" />
+          <NavigationProperty Name="ParameterCategory" Relationship="ApplicationModel.ParameterParameterCategory" FromRole="Parameter" ToRole="ParameterCategory" />
+          <NavigationProperty Name="Sensor" Relationship="ApplicationModel.SensorParameter" FromRole="Parameter" ToRole="Sensor" />
         </EntityType>
         <EntityType Name="ParameterType">
           <Key>
@@ -1082,6 +1230,50 @@
         <Association Name="SensorZone">
           <End Type="ApplicationModel.Sensor" Role="Sensor" Multiplicity="*" />
           <End Type="ApplicationModel.Zone" Role="Zone" Multiplicity="1" />
+        </Association>
+        <EntityType Name="ParameterCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="Parameters" Relationship="ApplicationModel.ParameterParameterCategory" FromRole="ParameterCategory" ToRole="Parameter" />
+        </EntityType>
+        <Association Name="ParameterParameterCategory">
+          <End Type="ApplicationModel.Parameter" Role="Parameter" Multiplicity="*" />
+          <End Type="ApplicationModel.ParameterCategory" Role="ParameterCategory" Multiplicity="0..1" />
+        </Association>
+        <Association Name="SensorParameter">
+          <End Type="ApplicationModel.Parameter" Role="Parameter" Multiplicity="*" />
+          <End Type="ApplicationModel.Sensor" Role="Sensor" Multiplicity="0..1" />
+        </Association>
+        <EntityType Name="ParametrSetCommand">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="DestParameter" Relationship="ApplicationModel.ParametrSetCommandParameter" FromRole="ParametrSetCommand" ToRole="Parameter" />
+          <NavigationProperty Name="SrcParameter1" Relationship="ApplicationModel.ParametrSetCommandParameter1" FromRole="ParametrSetCommand" ToRole="Parameter" />
+          <NavigationProperty Name="Sensor" Relationship="ApplicationModel.ParametrSetCommandSensor" FromRole="ParametrSetCommand" ToRole="Sensor" />
+          <NavigationProperty Name="SrcParameter2" Relationship="ApplicationModel.ParametrSetCommandParameter2" FromRole="ParametrSetCommand" ToRole="Parameter" />
+          <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
+          <Property Name="Cooldown" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="ParametrSetCommandParameter">
+          <End Type="ApplicationModel.ParametrSetCommand" Role="ParametrSetCommand" Multiplicity="*" />
+          <End Type="ApplicationModel.Parameter" Role="Parameter" Multiplicity="1" />
+        </Association>
+        <Association Name="ParametrSetCommandParameter1">
+          <End Type="ApplicationModel.ParametrSetCommand" Role="ParametrSetCommand" Multiplicity="*" />
+          <End Type="ApplicationModel.Parameter" Role="Parameter" Multiplicity="0..1" />
+        </Association>
+        <Association Name="ParametrSetCommandSensor">
+          <End Type="ApplicationModel.ParametrSetCommand" Role="ParametrSetCommand" Multiplicity="*" />
+          <End Type="ApplicationModel.Sensor" Role="Sensor" Multiplicity="0..1" />
+        </Association>
+        <Association Name="ParametrSetCommandParameter2">
+          <End Type="ApplicationModel.ParametrSetCommand" Role="ParametrSetCommand" Multiplicity="*" />
+          <End Type="ApplicationModel.Parameter" Role="Parameter" Multiplicity="0..1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -1263,6 +1455,23 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ParameterCategories">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.ParameterCategory)">
+        <MappingFragment StoreEntitySet="ParameterCategories">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ParametrSetCommands">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.ParametrSetCommand)">
+        <MappingFragment StoreEntitySet="ParametrSetCommands">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Cooldown" ColumnName="Cooldown" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="SensorController" TypeName="ApplicationModel.SensorController" StoreEntitySet="Devices_Sensor">
       <EndProperty Name="Controller">
         <ScalarProperty Name="Id" ColumnName="Controller_Id" />
@@ -1377,6 +1586,59 @@
       <EndProperty Name="Sensor">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ParameterParameterCategory" TypeName="ApplicationModel.ParameterParameterCategory" StoreEntitySet="Parameter">
+      <EndProperty Name="ParameterCategory">
+        <ScalarProperty Name="Id" ColumnName="ParameterCategory_Id" />
+      </EndProperty>
+      <EndProperty Name="Parameter">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="ParameterCategory_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SensorParameter" TypeName="ApplicationModel.SensorParameter" StoreEntitySet="Parameter">
+      <EndProperty Name="Sensor">
+        <ScalarProperty Name="Id" ColumnName="Sensor_Id" />
+      </EndProperty>
+      <EndProperty Name="Parameter">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="Sensor_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ParametrSetCommandParameter" TypeName="ApplicationModel.ParametrSetCommandParameter" StoreEntitySet="ParametrSetCommands">
+      <EndProperty Name="Parameter">
+        <ScalarProperty Name="Id" ColumnName="DestParameter_Id" />
+      </EndProperty>
+      <EndProperty Name="ParametrSetCommand">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ParametrSetCommandParameter1" TypeName="ApplicationModel.ParametrSetCommandParameter1" StoreEntitySet="ParametrSetCommands">
+      <EndProperty Name="Parameter">
+        <ScalarProperty Name="Id" ColumnName="SrcParameter1_Id" />
+      </EndProperty>
+      <EndProperty Name="ParametrSetCommand">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="SrcParameter1_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ParametrSetCommandSensor" TypeName="ApplicationModel.ParametrSetCommandSensor" StoreEntitySet="ParametrSetCommands">
+      <EndProperty Name="Sensor">
+        <ScalarProperty Name="Id" ColumnName="Sensor_Id" />
+      </EndProperty>
+      <EndProperty Name="ParametrSetCommand">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="Sensor_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ParametrSetCommandParameter2" TypeName="ApplicationModel.ParametrSetCommandParameter2" StoreEntitySet="ParametrSetCommands">
+      <EndProperty Name="Parameter">
+        <ScalarProperty Name="Id" ColumnName="SrcParameter2_Id" />
+      </EndProperty>
+      <EndProperty Name="ParametrSetCommand">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="SrcParameter2_Id" IsNull="false" />
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>

@@ -12,26 +12,18 @@ namespace Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Parameter
+    public partial class ParameterCategory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Parameter()
+        public ParameterCategory()
         {
-            this.Name = "";
-            this.ComandParameterLinks = new HashSet<ComandParameterLink>();
+            this.Parameters = new HashSet<Parameter>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Value { get; set; }
-        public int ParameterTypeId { get; set; }
-        public bool IsPublic { get; set; }
-        public byte[] Image { get; set; }
     
-        public virtual ParameterType ParameterType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ComandParameterLink> ComandParameterLinks { get; set; }
-        public virtual ParameterCategory ParameterCategory { get; set; }
-        public virtual Sensor Sensor { get; set; }
+        public virtual ICollection<Parameter> Parameters { get; set; }
     }
 }

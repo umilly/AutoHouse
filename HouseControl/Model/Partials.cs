@@ -183,7 +183,126 @@ namespace Model
                 RegiterUpdate(Guid.Parse("4501377E-791E-4827-B50A-0909A3CC4ED2"), @"", FillConditionTypes);
                 RegiterUpdate(Guid.Parse("DE8C2E66-7A2B-477F-9424-96731DB6C102"), @"", FillParameterTypes);
                 RegiterUpdate(Guid.Parse("AABAB4FA-1155-474B-855F-828A4C7C59A7"), @"", FillParameters);
+                RegiterUpdate(Guid.Parse("9974EEE0-E905-4BCF-B2C7-AAD0F5F7A3CD"), ParamsCommandUpdate, FillParameterCategories);
             }
+
+            private void FillParameterCategories()
+            {
+                _context.ParameterCategories.Add(new ParameterCategory() {Id = (int) Category.Light, Name = "Свет"});
+                _context.ParameterCategories.Add(new ParameterCategory() { Id = (int)Category.Climat, Name = "Климат" });
+                _context.ParameterCategories.Add(new ParameterCategory() { Id = (int)Category.Door, Name = "СКУД" });
+                _context.ParameterCategories.Add(new ParameterCategory() { Id = (int)Category.Media, Name = "Медиа" });
+            }
+
+            public const string ParamsCommandUpdate = @"
+SET QUOTED_IDENTIFIER OFF;
+USE [house];
+CREATE TABLE [dbo].[ParameterCategories] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL
+);
+CREATE TABLE [dbo].[ParametrSetCommands] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [Cooldown] int  NOT NULL,
+    [DestParameter_Id] int  NOT NULL,
+    [SrcParameter1_Id] int  NULL,
+    [Sensor_Id] int  NULL,
+    [SrcParameter2_Id] int  NULL
+);
+
+ALTER TABLE [dbo].[Parameter]
+ADD  [ParameterCategory_Id] int  NULL;
+
+ALTER TABLE [dbo].[Parameter]
+ADD  [Sensor_Id] int  NULL;
+
+ALTER TABLE [dbo].[ParameterCategories]
+ADD CONSTRAINT [PK_ParameterCategories]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD CONSTRAINT [PK_ParametrSetCommands]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+-- Creating foreign key on [ParameterCategory_Id] in table 'Parameter'
+ALTER TABLE [dbo].[Parameter]
+ADD CONSTRAINT [FK_ParameterParameterCategory]
+    FOREIGN KEY ([ParameterCategory_Id])
+    REFERENCES [dbo].[ParameterCategories]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParameterParameterCategory'
+CREATE INDEX [IX_FK_ParameterParameterCategory]
+ON [dbo].[Parameter]
+    ([ParameterCategory_Id]);
+
+-- Creating foreign key on [Sensor_Id] in table 'Parameter'
+ALTER TABLE [dbo].[Parameter]
+ADD CONSTRAINT [FK_SensorParameter]
+    FOREIGN KEY ([Sensor_Id])
+    REFERENCES [dbo].[Devices_Sensor]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SensorParameter'
+CREATE INDEX [IX_FK_SensorParameter]
+ON [dbo].[Parameter]
+    ([Sensor_Id]);
+
+-- Creating foreign key on [DestParameter_Id] in table 'ParametrSetCommands'
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD CONSTRAINT [FK_ParametrSetCommandParameter]
+    FOREIGN KEY ([DestParameter_Id])
+    REFERENCES [dbo].[Parameter]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParametrSetCommandParameter'
+CREATE INDEX [IX_FK_ParametrSetCommandParameter]
+ON [dbo].[ParametrSetCommands]
+    ([DestParameter_Id]);
+
+-- Creating foreign key on [SrcParameter1_Id] in table 'ParametrSetCommands'
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD CONSTRAINT [FK_ParametrSetCommandParameter1]
+    FOREIGN KEY ([SrcParameter1_Id])
+    REFERENCES [dbo].[Parameter]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParametrSetCommandParameter1'
+CREATE INDEX [IX_FK_ParametrSetCommandParameter1]
+ON [dbo].[ParametrSetCommands]
+    ([SrcParameter1_Id]);
+
+-- Creating foreign key on [Sensor_Id] in table 'ParametrSetCommands'
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD CONSTRAINT [FK_ParametrSetCommandSensor]
+    FOREIGN KEY ([Sensor_Id])
+    REFERENCES [dbo].[Devices_Sensor]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParametrSetCommandSensor'
+CREATE INDEX [IX_FK_ParametrSetCommandSensor]
+ON [dbo].[ParametrSetCommands]
+    ([Sensor_Id]);
+
+-- Creating foreign key on [SrcParameter2_Id] in table 'ParametrSetCommands'
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD CONSTRAINT [FK_ParametrSetCommandParameter2]
+    FOREIGN KEY ([SrcParameter2_Id])
+    REFERENCES [dbo].[Parameter]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParametrSetCommandParameter2'
+CREATE INDEX [IX_FK_ParametrSetCommandParameter2]
+ON [dbo].[ParametrSetCommands]
+    ([SrcParameter2_Id]);
+
+
+";
 
             private void FillParameters()
             {
@@ -438,6 +557,14 @@ namespace Model
         Float = 4,
         [TypeAssociation(typeof(DateTime))]
         Time = 5,
+    }
+
+    public enum Category
+    {
+        Light=1,
+        Climat=2,
+        Door=3,
+        Media=4,
     }
     public class TypeAssociationAttribute : Attribute
     {

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 07/28/2016 00:22:51
+-- Date Created: 11/06/2016 15:00:25
 -- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -285,7 +285,9 @@ CREATE TABLE [dbo].[Parameter] (
     [Value] nvarchar(max)  NOT NULL,
     [ParameterTypeId] int  NOT NULL,
     [IsPublic] bit  NOT NULL,
-    [Image] varbinary(max)  NULL
+    [Image] varbinary(max)  NULL,
+    [ParameterCategory_Id] int  NULL,
+    [Sensor_Id] int  NULL
 );
 GO
 
@@ -312,6 +314,25 @@ CREATE TABLE [dbo].[DeviceParameterTypeLinks] (
     [Order] int  NOT NULL,
     [CustomDevice_Id] int  NOT NULL,
     [ParameterType_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'ParameterCategories'
+CREATE TABLE [dbo].[ParameterCategories] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'ParametrSetCommands'
+CREATE TABLE [dbo].[ParametrSetCommands] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [Cooldown] int  NOT NULL,
+    [DestParameter_Id] int  NOT NULL,
+    [SrcParameter1_Id] int  NULL,
+    [Sensor_Id] int  NULL,
+    [SrcParameter2_Id] int  NULL
 );
 GO
 
@@ -451,6 +472,18 @@ GO
 -- Creating primary key on [Id] in table 'DeviceParameterTypeLinks'
 ALTER TABLE [dbo].[DeviceParameterTypeLinks]
 ADD CONSTRAINT [PK_DeviceParameterTypeLinks]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ParameterCategories'
+ALTER TABLE [dbo].[ParameterCategories]
+ADD CONSTRAINT [PK_ParameterCategories]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ParametrSetCommands'
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD CONSTRAINT [PK_ParametrSetCommands]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -819,6 +852,96 @@ GO
 CREATE INDEX [IX_FK_SensorZone]
 ON [dbo].[Devices_Sensor]
     ([Zone_Id]);
+GO
+
+-- Creating foreign key on [ParameterCategory_Id] in table 'Parameter'
+ALTER TABLE [dbo].[Parameter]
+ADD CONSTRAINT [FK_ParameterParameterCategory]
+    FOREIGN KEY ([ParameterCategory_Id])
+    REFERENCES [dbo].[ParameterCategories]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParameterParameterCategory'
+CREATE INDEX [IX_FK_ParameterParameterCategory]
+ON [dbo].[Parameter]
+    ([ParameterCategory_Id]);
+GO
+
+-- Creating foreign key on [Sensor_Id] in table 'Parameter'
+ALTER TABLE [dbo].[Parameter]
+ADD CONSTRAINT [FK_SensorParameter]
+    FOREIGN KEY ([Sensor_Id])
+    REFERENCES [dbo].[Devices_Sensor]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SensorParameter'
+CREATE INDEX [IX_FK_SensorParameter]
+ON [dbo].[Parameter]
+    ([Sensor_Id]);
+GO
+
+-- Creating foreign key on [DestParameter_Id] in table 'ParametrSetCommands'
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD CONSTRAINT [FK_ParametrSetCommandParameter]
+    FOREIGN KEY ([DestParameter_Id])
+    REFERENCES [dbo].[Parameter]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParametrSetCommandParameter'
+CREATE INDEX [IX_FK_ParametrSetCommandParameter]
+ON [dbo].[ParametrSetCommands]
+    ([DestParameter_Id]);
+GO
+
+-- Creating foreign key on [SrcParameter1_Id] in table 'ParametrSetCommands'
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD CONSTRAINT [FK_ParametrSetCommandParameter1]
+    FOREIGN KEY ([SrcParameter1_Id])
+    REFERENCES [dbo].[Parameter]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParametrSetCommandParameter1'
+CREATE INDEX [IX_FK_ParametrSetCommandParameter1]
+ON [dbo].[ParametrSetCommands]
+    ([SrcParameter1_Id]);
+GO
+
+-- Creating foreign key on [Sensor_Id] in table 'ParametrSetCommands'
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD CONSTRAINT [FK_ParametrSetCommandSensor]
+    FOREIGN KEY ([Sensor_Id])
+    REFERENCES [dbo].[Devices_Sensor]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParametrSetCommandSensor'
+CREATE INDEX [IX_FK_ParametrSetCommandSensor]
+ON [dbo].[ParametrSetCommands]
+    ([Sensor_Id]);
+GO
+
+-- Creating foreign key on [SrcParameter2_Id] in table 'ParametrSetCommands'
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD CONSTRAINT [FK_ParametrSetCommandParameter2]
+    FOREIGN KEY ([SrcParameter2_Id])
+    REFERENCES [dbo].[Parameter]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParametrSetCommandParameter2'
+CREATE INDEX [IX_FK_ParametrSetCommandParameter2]
+ON [dbo].[ParametrSetCommands]
+    ([SrcParameter2_Id]);
 GO
 
 -- Creating foreign key on [Id] in table 'Devices_Sensor'
