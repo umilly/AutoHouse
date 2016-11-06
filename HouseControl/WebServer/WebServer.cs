@@ -80,7 +80,10 @@ namespace WebServer
 
         public string SetMode(int modeId)
         {
-            Use<IGlobalParams>().CurrentModeId = modeId;
+            foreach (var mode in Use<IPool>().GetViewModels<ModeViewModel>())
+            {
+                mode.IsSelected = mode.ID == modeId;
+            }
             return "OK";
         }
     }

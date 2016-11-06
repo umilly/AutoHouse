@@ -112,7 +112,7 @@ namespace ViewModel
             }
         }
 
-        public async void SendCommand()
+        public async void Execute()
         {
             try
             {

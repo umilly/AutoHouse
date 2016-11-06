@@ -145,6 +145,10 @@
       <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
       <End Role="Parameter" EntitySet="Parameter" />
     </AssociationSet>
+    <AssociationSet Name="ParametrSetCommandReaction" Association="ApplicationModel.Store.ParametrSetCommandReaction">
+      <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
+      <End Role="Reaction" EntitySet="Reactions" />
+    </AssociationSet>
     <AssociationSet Name="FK_Sensor_inherits_Device" Association="ApplicationModel.Store.FK_Sensor_inherits_Device">
       <End Role="Device" EntitySet="Devices" />
       <End Role="Sensor" EntitySet="Devices_Sensor" />
@@ -205,6 +209,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" DefaultValue="" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" DefaultValue="" />
+    <Property Name="IsSelected" Type="bit" Nullable="false" DefaultValue="false" />
   </EntityType>
   <EntityType Name="Scenarios">
     <Key>
@@ -325,6 +330,7 @@
     <Property Name="SrcParameter1_Id" Type="int" Nullable="true" />
     <Property Name="Sensor_Id" Type="int" Nullable="true" />
     <Property Name="SrcParameter2_Id" Type="int" Nullable="true" />
+    <Property Name="Reaction_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Devices_Sensor">
     <Key>
@@ -684,6 +690,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="ParametrSetCommandReaction">
+    <End Role="ParametrSetCommand" Type="ApplicationModel.Store.ParametrSetCommands" Multiplicity="*" />
+    <End Role="Reaction" Type="ApplicationModel.Store.Reactions" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Reaction">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ParametrSetCommand">
+        <PropertyRef Name="Reaction_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_ZoneScenario_Zone">
     <End Role="Zone" Type="ApplicationModel.Store.Zones" Multiplicity="1" />
     <End Role="ZoneScenario" Type="ApplicationModel.Store.ZoneScenario" Multiplicity="*" />
@@ -923,6 +941,10 @@
             <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
             <End Role="Parameter" EntitySet="Parameter" />
           </AssociationSet>
+          <AssociationSet Name="ParametrSetCommandReaction" Association="ApplicationModel.ParametrSetCommandReaction">
+            <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
+            <End Role="Reaction" EntitySet="Reactions" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Controller" BaseType="ApplicationModel.Device">
           <Property Name="IP" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -965,6 +987,7 @@
           <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
           <Property Name="Description" Type="String" Nullable="false" DefaultValue="" />
           <NavigationProperty Name="Scenarios" Relationship="ApplicationModel.ScenarioMode" FromRole="Mode" ToRole="Scenario" />
+          <Property Name="IsSelected" Type="Boolean" Nullable="false" DefaultValue="False" />
         </EntityType>
         <EntityType Name="Scenario">
           <Key>
@@ -997,6 +1020,7 @@
           <NavigationProperty Name="Scenario" Relationship="ApplicationModel.ScenarioReaction" FromRole="Reaction" ToRole="Scenario" />
           <Property Name="ScenarioId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Commands" Relationship="ApplicationModel.ReactionCommand" FromRole="Reaction" ToRole="Command" />
+          <NavigationProperty Name="ParametrSetCommands" Relationship="ApplicationModel.ParametrSetCommandReaction" FromRole="Reaction" ToRole="ParametrSetCommand" />
         </EntityType>
         <EntityType Name="Condition">
           <Key>
@@ -1258,6 +1282,7 @@
           <NavigationProperty Name="SrcParameter2" Relationship="ApplicationModel.ParametrSetCommandParameter2" FromRole="ParametrSetCommand" ToRole="Parameter" />
           <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
           <Property Name="Cooldown" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Reaction" Relationship="ApplicationModel.ParametrSetCommandReaction" FromRole="ParametrSetCommand" ToRole="Reaction" />
         </EntityType>
         <Association Name="ParametrSetCommandParameter">
           <End Type="ApplicationModel.ParametrSetCommand" Role="ParametrSetCommand" Multiplicity="*" />
@@ -1274,6 +1299,10 @@
         <Association Name="ParametrSetCommandParameter2">
           <End Type="ApplicationModel.ParametrSetCommand" Role="ParametrSetCommand" Multiplicity="*" />
           <End Type="ApplicationModel.Parameter" Role="Parameter" Multiplicity="0..1" />
+        </Association>
+        <Association Name="ParametrSetCommandReaction">
+          <End Type="ApplicationModel.ParametrSetCommand" Role="ParametrSetCommand" Multiplicity="*" />
+          <End Type="ApplicationModel.Reaction" Role="Reaction" Multiplicity="1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -1332,6 +1361,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IsSelected" ColumnName="IsSelected" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1639,6 +1669,14 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
       <Condition ColumnName="SrcParameter2_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ParametrSetCommandReaction" TypeName="ApplicationModel.ParametrSetCommandReaction" StoreEntitySet="ParametrSetCommands">
+      <EndProperty Name="Reaction">
+        <ScalarProperty Name="Id" ColumnName="Reaction_Id" />
+      </EndProperty>
+      <EndProperty Name="ParametrSetCommand">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>

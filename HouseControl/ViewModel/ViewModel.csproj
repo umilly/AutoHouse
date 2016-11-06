@@ -64,6 +64,8 @@
     <Compile Include="DeviceTreeVM.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="ModeViewModel.cs" />
+    <Compile Include="ParameterCategoryVm.cs" />
+    <Compile Include="ParameterSetCommandVm.cs" />
     <Compile Include="ParameterTypeViewModel.cs" />
     <Compile Include="ParameterViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />

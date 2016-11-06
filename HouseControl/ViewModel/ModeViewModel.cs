@@ -42,8 +42,7 @@ namespace ViewModel
         {
             get
             {
-                var mode = Use<IGlobalParams>().CurrentModeId;
-                return !mode.HasValue || mode.Value == ID;
+                return IsSelected?(bool?)true:null;
             }
             set { }
         }
@@ -69,6 +68,16 @@ namespace ViewModel
         public IEnumerable<ScenarioViewModel> Scenarios
         {
             get { return Use<IPool>().GetViewModels<ScenarioViewModel>().Where(a=>a.Parent==this); }
+        }
+
+        public bool IsSelected
+        {
+            get { return Model.IsSelected; }
+            set
+            {
+                Model.IsSelected = value; 
+                OnPropertyChanged(()=>IsConnected);
+            }
         }
 
         public override bool Validate()

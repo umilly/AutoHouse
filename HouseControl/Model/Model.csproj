@@ -183,7 +183,6 @@
       <DependentUpon>ApplicationDB.edmx</DependentUpon>
       <LastGenOutput>ApplicationDB.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="ApplicationDB.edmx - Copy.sql" />
     <Content Include="ApplicationDB.edmx.sql" />
     <Content Include="ApplicationDB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

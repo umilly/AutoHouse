@@ -28,5 +28,6 @@ namespace Model
         public virtual Parameter SrcParameter1 { get; set; }
         public virtual Sensor Sensor { get; set; }
         public virtual Parameter SrcParameter2 { get; set; }
+        public virtual Reaction Reaction { get; set; }
     }
 }

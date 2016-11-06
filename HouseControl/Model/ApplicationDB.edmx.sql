@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/06/2016 15:00:25
+-- Date Created: 11/06/2016 22:11:18
 -- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -86,6 +86,24 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_SensorZone]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Devices_Sensor] DROP CONSTRAINT [FK_SensorZone];
 GO
+IF OBJECT_ID(N'[dbo].[FK_ParameterParameterCategory]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parameter] DROP CONSTRAINT [FK_ParameterParameterCategory];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SensorParameter]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parameter] DROP CONSTRAINT [FK_SensorParameter];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ParametrSetCommandParameter]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ParametrSetCommands] DROP CONSTRAINT [FK_ParametrSetCommandParameter];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ParametrSetCommandParameter1]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ParametrSetCommands] DROP CONSTRAINT [FK_ParametrSetCommandParameter1];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ParametrSetCommandSensor]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ParametrSetCommands] DROP CONSTRAINT [FK_ParametrSetCommandSensor];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ParametrSetCommandParameter2]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ParametrSetCommands] DROP CONSTRAINT [FK_ParametrSetCommandParameter2];
+GO
 IF OBJECT_ID(N'[dbo].[FK_Sensor_inherits_Device]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Devices_Sensor] DROP CONSTRAINT [FK_Sensor_inherits_Device];
 GO
@@ -151,6 +169,12 @@ GO
 IF OBJECT_ID(N'[dbo].[DeviceParameterTypeLinks]', 'U') IS NOT NULL
     DROP TABLE [dbo].[DeviceParameterTypeLinks];
 GO
+IF OBJECT_ID(N'[dbo].[ParameterCategories]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ParameterCategories];
+GO
+IF OBJECT_ID(N'[dbo].[ParametrSetCommands]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ParametrSetCommands];
+GO
 IF OBJECT_ID(N'[dbo].[Devices_Sensor]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Devices_Sensor];
 GO
@@ -212,7 +236,8 @@ GO
 CREATE TABLE [dbo].[Modes] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [Description] nvarchar(max)  NOT NULL
+    [Description] nvarchar(max)  NOT NULL,
+    [IsSelected] bit  NOT NULL
 );
 GO
 
@@ -332,7 +357,8 @@ CREATE TABLE [dbo].[ParametrSetCommands] (
     [DestParameter_Id] int  NOT NULL,
     [SrcParameter1_Id] int  NULL,
     [Sensor_Id] int  NULL,
-    [SrcParameter2_Id] int  NULL
+    [SrcParameter2_Id] int  NULL,
+    [Reaction_Id] int  NOT NULL
 );
 GO
 
@@ -942,6 +968,21 @@ GO
 CREATE INDEX [IX_FK_ParametrSetCommandParameter2]
 ON [dbo].[ParametrSetCommands]
     ([SrcParameter2_Id]);
+GO
+
+-- Creating foreign key on [Reaction_Id] in table 'ParametrSetCommands'
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD CONSTRAINT [FK_ParametrSetCommandReaction]
+    FOREIGN KEY ([Reaction_Id])
+    REFERENCES [dbo].[Reactions]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParametrSetCommandReaction'
+CREATE INDEX [IX_FK_ParametrSetCommandReaction]
+ON [dbo].[ParametrSetCommands]
+    ([Reaction_Id]);
 GO
 
 -- Creating foreign key on [Id] in table 'Devices_Sensor'

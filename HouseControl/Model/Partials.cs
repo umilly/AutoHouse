@@ -116,6 +116,20 @@ namespace Model
             get { return this.Id; }
         }
     }
+    public partial class ParameterCategory : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
+    public partial class ParametrSetCommand : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
 
     public partial class Models
     {
@@ -184,7 +198,33 @@ namespace Model
                 RegiterUpdate(Guid.Parse("DE8C2E66-7A2B-477F-9424-96731DB6C102"), @"", FillParameterTypes);
                 RegiterUpdate(Guid.Parse("AABAB4FA-1155-474B-855F-828A4C7C59A7"), @"", FillParameters);
                 RegiterUpdate(Guid.Parse("9974EEE0-E905-4BCF-B2C7-AAD0F5F7A3CD"), ParamsCommandUpdate, FillParameterCategories);
+                RegiterUpdate(Guid.Parse("9A8F722D-1E46-4924-962B-CCCF1CD8D10F"), AddFields);
             }
+
+            public const string AddFields = @"
+SET QUOTED_IDENTIFIER OFF;
+USE [house];
+
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD  [Reaction_Id] int NOT NULL;
+
+ALTER TABLE [dbo].[Modes]
+ADD [IsSelected] bit  NOT NULL DEFAULT(0);
+
+-- Creating foreign key on [Reaction_Id] in table 'ParametrSetCommands'
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD CONSTRAINT [FK_ParametrSetCommandReaction]
+    FOREIGN KEY ([Reaction_Id])
+    REFERENCES [dbo].[Reactions]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParametrSetCommandReaction'
+CREATE INDEX [IX_FK_ParametrSetCommandReaction]
+ON [dbo].[ParametrSetCommands]
+    ([Reaction_Id]);
+
+";
 
             private void FillParameterCategories()
             {

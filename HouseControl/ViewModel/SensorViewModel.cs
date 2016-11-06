@@ -98,5 +98,10 @@ namespace ViewModel
         public string SensorType => Model.SensorType.Name;
 
         public string ValueRange => $"от {Model.SensorType.MinValue} до {Model.SensorType.MaxValue}";
+
+        public void LinkSetComand(ParametrSetCommand model)
+        {
+            model.Sensor = Model;
+        }
     }
 }

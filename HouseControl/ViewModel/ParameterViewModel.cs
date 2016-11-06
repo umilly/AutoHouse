@@ -87,5 +87,19 @@ namespace ViewModel
         {
             model.Parameter = Model;
         }
+
+        public void LinkDestSetParam(ParametrSetCommand model)
+        {
+            model.DestParameter = Model;
+        }
+
+        public void LinkSrcSetParam1(ParametrSetCommand model)
+        {
+            model.SrcParameter1 = Model;
+        }
+        public void LinkSrcSetParam2(ParametrSetCommand model)
+        {
+            model.SrcParameter2 = Model;
+        }
     }
 }

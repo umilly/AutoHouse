@@ -95,6 +95,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ParamSetCommandEditor.xaml.cs">
+      <DependentUpon>ParamSetCommandEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CommandEditor.xaml.cs">
       <DependentUpon>CommandEditor.xaml</DependentUpon>
     </Compile>
@@ -110,6 +113,10 @@
     <Compile Include="ParametersListView.xaml.cs">
       <DependentUpon>ParametersListView.xaml</DependentUpon>
     </Compile>
+    <Page Include="ParamSetCommandEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ContolView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

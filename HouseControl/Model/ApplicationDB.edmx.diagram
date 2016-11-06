@@ -59,6 +59,7 @@
         <AssociationConnector Association="ApplicationModel.ParametrSetCommandParameter1" />
         <AssociationConnector Association="ApplicationModel.ParametrSetCommandSensor" />
         <AssociationConnector Association="ApplicationModel.ParametrSetCommandParameter2" />
+        <AssociationConnector Association="ApplicationModel.ParametrSetCommandReaction" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -15,6 +15,15 @@ namespace ViewModel
         {
             _contextMenu.Add(new CustomContextMenuItem("Добавить условие",new CommandHandler(AddCondition)));
             _contextMenu.Add(new CustomContextMenuItem("Добавить команду", new CommandHandler(AddCommand)));
+            _contextMenu.Add(new CustomContextMenuItem("Добавить команду управления параметром", new CommandHandler(AddCommandParam)));
+        }
+
+        private void AddCommandParam(bool obj)
+        {
+            var command = Use<IPool>().CreateDBObject<ParameterSetCommandVm>();
+            command.LinkTo(Model);
+            command.Name = "Команда параметра";
+            OnPropertyChanged(() => Children);
         }
 
         private void AddCommand(bool obj)
@@ -62,7 +71,8 @@ namespace ViewModel
                     Use<IPool>()
                         .GetViewModels<ConditionViewModel>().Where(a=>a.Parent==this)
                         .Cast<ITreeNode>()
-                        .Union(Use<IPool>().GetViewModels<CommandViewModel>().Where(a => a.Parent == this));
+                        .Union(Use<IPool>().GetViewModels<CommandViewModel>().Where(a => a.Parent == this))
+                        .Union(Use<IPool>().GetViewModels<ParameterSetCommandVm>().Where(a => a.Parent == this));
             } 
         }
 
@@ -100,7 +110,11 @@ namespace ViewModel
             Use<IPool>()
                 .GetViewModels<CommandViewModel>()
                 .Where(a => a.Parent == this)
-                .ForEach(a => a.SendCommand());
+                .ForEach(a => a.Execute());
+            Use<IPool>()
+                .GetViewModels<ParameterSetCommandVm>()
+                .Where(a => a.Parent == this)
+                .ForEach(a => a.Execute());
 
         }
     }
