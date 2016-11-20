@@ -99,6 +99,8 @@ namespace ViewModel
 
         public string ValueRange => $"от {Model.SensorType.MinValue} до {Model.SensorType.MaxValue}";
 
+        public IEnumerable<ZoneViewModel> Zones => Use<IPool>().GetViewModels<ZoneViewModel>();
+
         public void LinkSetComand(ParametrSetCommand model)
         {
             model.Sensor = Model;

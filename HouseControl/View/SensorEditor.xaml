@@ -40,7 +40,7 @@
             <Label Grid.Row="5" Grid.Column="1" Content="Тип датчика" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBlock Grid.Row="5" Grid.Column="3" Text="{Binding  Path=ViewModel.SensorType}" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBlock>
             <Label Grid.Row="7" Grid.Column="1" Content="Зона:"/>
-            <TextBlock Grid.Row="7" Grid.Column="3" Text="{Binding  Path=ViewModel.Zone.Name}" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBlock>
+            <ComboBox Grid.Row="7" Grid.Column="3" SelectedValue="{Binding  Path=ViewModel.Zone, Mode=TwoWay}" DisplayMemberPath="Name" ItemsSource="{Binding Path=ViewModel.Zones}" HorizontalAlignment="Stretch" VerticalAlignment="Center"></ComboBox>
             <Label Grid.Row="9" Grid.Column="1" Content="Диапазон значений:" VerticalAlignment="Center"/>
             <TextBlock Grid.Row="9" Grid.Column="3" Text="{Binding  Path=ViewModel.ValueRange}" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBlock>
             <Label Grid.Row="11" Grid.Column="1" Content="Текущее значение:" VerticalAlignment="Center"/>

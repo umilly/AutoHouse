@@ -11,9 +11,10 @@
                        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Button Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ButtonBase_OnClick">Добавить зону</Button>
         <ItemsControl Grid.Row="1" Name="ParamsList" ItemsSource="{Binding ViewModel.Zones, Mode=OneWay }">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="viewModel:ZoneViewModel">
@@ -24,7 +25,7 @@
                             <ColumnDefinition Width="200"/>
 
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="1" Text="{Binding Key}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ID}"/>
                         <TextBox Grid.Column="2" Text="{Binding Name, Mode=TwoWay}" HorizontalAlignment="Stretch"></TextBox>
                     </Grid>
                 </DataTemplate>

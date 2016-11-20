@@ -11,6 +11,13 @@ namespace ViewModel
         {
         }
 
+        public void CreateZone()
+        {
+            var model=Use<IPool>().CreateDBObject<ZoneViewModel>();
+            model.Name = "Новая зона";
+            Use<IPool>().SaveDB();
+            OnPropertyChanged(()=>Zones);
+        }
         public override int ID { get; set; }
         public IEnumerable<ZoneViewModel> Zones => Use<IPool>().GetViewModels<ZoneViewModel>().Except(new[]{Use<IPool>().GetViewModels<ZoneViewModel>().First()});
     }

@@ -31,5 +31,9 @@ namespace View
             InitializeComponent();
         }
 
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            ViewModel.CreateZone();
+        }
     }
 }
