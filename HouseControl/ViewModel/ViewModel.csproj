@@ -62,6 +62,7 @@
     <Compile Include="DevicesEditorVM.cs" />
     <Compile Include="DevicesViewModel.cs" />
     <Compile Include="DeviceTreeVM.cs" />
+    <Compile Include="ClientMainViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="ModeViewModel.cs" />
     <Compile Include="ParameterCategoryVm.cs" />

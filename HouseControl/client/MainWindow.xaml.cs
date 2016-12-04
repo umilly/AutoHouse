@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,17 +13,56 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Facade;
+using ViewModel;
+using VMBase;
+
 
 namespace client
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ClientMainWindow : Window
     {
-        public MainWindow()
+        private ContentControl _currentConent;
+        private readonly IServiceContainer _container = new Container();
+        private ClientMainViewModel MainVM { get; set; }
+        public ClientMainWindow()
         {
+            _container.RegisterType<IViewService, ViewService>();
+            var types = GetType().Assembly.GetTypes().Where(type => typeof(IView).IsAssignableFrom(type));
+            _container.Use<IViewService>().FillTypes(types.ToArray());
+            MainVM = new ClientMainViewModel(_container);
+            MainVM.InitSettings();
             InitializeComponent();
+            CommandBindings.Add(new CommandBinding(ShowNextViewCommand.Instance, OnNextView));
         }
+
+
+
+        private void OnNextView(object sender, ExecutedRoutedEventArgs executedRoutedEventArgs)
+        {
+            if ((CurrentContent != null) && (CurrentContent is IView))
+            {
+                (CurrentContent as IView).OnClose();
+            }
+            CurrentContent = _container.Use<IViewService>().NextView as ContentControl;
+        }
+
+        public ContentControl CurrentContent
+        {
+            get { return _currentConent; }
+            private set
+            {
+                _currentConent = value;
+                var pc = PropertyChanged;
+                if (pc != null)
+                    pc.Invoke(this, new PropertyChangedEventArgs("CurrentContent"));
+            }
+
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

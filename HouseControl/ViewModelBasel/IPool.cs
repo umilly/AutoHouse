@@ -7,6 +7,7 @@ namespace ViewModelBase
 {
     public interface IPool:IService
     {
+        void Init();
         IEnumerable<T> GetViewModels<T>() where T : class,IViewModel;
         IViewModel CreateVM(Type type);
         T CreateVM<T>() where T:IViewModel;

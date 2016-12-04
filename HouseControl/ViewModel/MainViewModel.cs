@@ -18,6 +18,7 @@ namespace ViewModel
         public MainViewModel(IServiceContainer container) : base(container)
         {
             container.RegisterType<IPool, VMFactory>();
+            container.Use<IPool>().Init();
             container.RegisterType<INetworkService, NetworkService>();
             container.RegisterType<ILog, EventLogger>();
             container.RegisterType<ITimerSerivce, TimerService>();
@@ -46,19 +47,7 @@ namespace ViewModel
             get { return 1; }
             set { }
         }
-
-        public ITreeNode[] Devices => Use<IPool>().GetViewModels<ControllerVM>().ToArray();
-
-        public ControllerVM GetOrCreateControllerVm()
-        {
-            //var controller =  Use<IPool>().GetViewModels<ControllerVM>().FirstOrDefault();
-            //if (controller == null)
-            //{
-            var controller = Use<IPool>().CreateDBObject<ControllerVM>();
-            //}
-            return controller;
-        }
-
+        
         public void InitSettings()
         {
             var settings = Use<IPool>().GetOrCreateVM<SettingsVM>(1);

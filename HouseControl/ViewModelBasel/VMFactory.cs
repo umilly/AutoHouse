@@ -19,6 +19,18 @@ namespace ViewModelBase
 
         private static Models DB;
 
+        public void Init()
+        {
+            var ensureDLLIsCopied = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
+            try
+            {
+                DB = new Models("local");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
         private static Dictionary<Type,Type> dbVmTypes=new Dictionary<Type, Type>();
         public IViewModel GetOrCreateVM(Type vmType, int id)
         {
@@ -146,18 +158,7 @@ namespace ViewModelBase
             return (T)GetOrCreateVM(typeof (T), number);
         }
 
-        static VMFactory()
-        {
-            var ensureDLLIsCopied = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
-            try
-            {
-                DB = new Models("local");
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
+        
 
         
 
