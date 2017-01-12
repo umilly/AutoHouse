@@ -80,6 +80,8 @@ namespace ViewModel
             }
         }
 
+        public ModeProxy GetProxy => ModeProxy.FromDBMode(Model);
+
         public override bool Validate()
         {
             return !string.IsNullOrEmpty(Model.Name) && !string.IsNullOrEmpty(Model.Description);

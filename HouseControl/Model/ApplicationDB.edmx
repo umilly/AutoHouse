@@ -149,6 +149,10 @@
       <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
       <End Role="Reaction" EntitySet="Reactions" />
     </AssociationSet>
+    <AssociationSet Name="ParameterParameter" Association="ApplicationModel.Store.ParameterParameter">
+      <End Role="Parameter" EntitySet="Parameter" />
+      <End Role="Parameter1" EntitySet="Parameter" />
+    </AssociationSet>
     <AssociationSet Name="FK_Sensor_inherits_Device" Association="ApplicationModel.Store.FK_Sensor_inherits_Device">
       <End Role="Device" EntitySet="Devices" />
       <End Role="Sensor" EntitySet="Devices_Sensor" />
@@ -283,6 +287,7 @@
     <Property Name="ParameterTypeId" Type="int" Nullable="false" />
     <Property Name="IsPublic" Type="bit" Nullable="false" />
     <Property Name="Image" Type="varbinary(max)" Nullable="true" />
+    <Property Name="NextParameterId" Type="int" Nullable="true" />
     <Property Name="ParameterCategory_Id" Type="int" Nullable="true" />
     <Property Name="Sensor_Id" Type="int" Nullable="true" />
   </EntityType>
@@ -702,6 +707,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="ParameterParameter">
+    <End Role="Parameter" Type="ApplicationModel.Store.Parameter" Multiplicity="0..1" />
+    <End Role="Parameter1" Type="ApplicationModel.Store.Parameter" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Parameter">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Parameter1">
+        <PropertyRef Name="NextParameterId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_ZoneScenario_Zone">
     <End Role="Zone" Type="ApplicationModel.Store.Zones" Multiplicity="1" />
     <End Role="ZoneScenario" Type="ApplicationModel.Store.ZoneScenario" Multiplicity="*" />
@@ -945,6 +962,10 @@
             <End Role="ParametrSetCommand" EntitySet="ParametrSetCommands" />
             <End Role="Reaction" EntitySet="Reactions" />
           </AssociationSet>
+          <AssociationSet Name="ParameterParameter" Association="ApplicationModel.ParameterParameter">
+            <End Role="Parameter" EntitySet="Parameter" />
+            <End Role="Parameter1" EntitySet="Parameter" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Controller" BaseType="ApplicationModel.Device">
           <Property Name="IP" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -1104,6 +1125,8 @@
           <Property Name="Image" Type="Binary" Nullable="true" />
           <NavigationProperty Name="ParameterCategory" Relationship="ApplicationModel.ParameterParameterCategory" FromRole="Parameter" ToRole="ParameterCategory" />
           <NavigationProperty Name="Sensor" Relationship="ApplicationModel.SensorParameter" FromRole="Parameter" ToRole="Sensor" />
+          <NavigationProperty Name="NextParameter" Relationship="ApplicationModel.ParameterParameter" FromRole="Parameter1" ToRole="Parameter" />
+          <Property Name="NextParameterId" Type="Int32" Nullable="true" />
         </EntityType>
         <EntityType Name="ParameterType">
           <Key>
@@ -1304,6 +1327,18 @@
           <End Type="ApplicationModel.ParametrSetCommand" Role="ParametrSetCommand" Multiplicity="*" />
           <End Type="ApplicationModel.Reaction" Role="Reaction" Multiplicity="1" />
         </Association>
+        <Association Name="ParameterParameter">
+          <End Type="ApplicationModel.Parameter" Role="Parameter" Multiplicity="0..1" />
+          <End Type="ApplicationModel.Parameter" Role="Parameter1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parameter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Parameter1">
+              <PropertyRef Name="NextParameterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1458,6 +1493,7 @@
           <ScalarProperty Name="ParameterTypeId" ColumnName="ParameterTypeId" />
           <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
           <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="NextParameterId" ColumnName="NextParameterId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

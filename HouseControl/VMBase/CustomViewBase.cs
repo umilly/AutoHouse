@@ -54,5 +54,10 @@ namespace VMBase
         {
             _viewService.CloseView(this);
         }
+
+        public virtual void OnVMSet()
+        {
+            
+        }
     }
 }

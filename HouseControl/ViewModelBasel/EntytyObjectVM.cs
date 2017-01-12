@@ -22,7 +22,7 @@ namespace ViewModelBase
         protected EntytyObjectVM(IServiceContainer container,Models dataBase,T model) : base(container)
         {
             Context = dataBase;
-            Model = model;
+            Model = model;            
         }
         public override int ID
         {
@@ -53,6 +53,11 @@ namespace ViewModelBase
         public bool CompareModel(IHaveID id)
         {
             return Model == id;
+        }
+
+        public virtual void AddedToPool()
+        {
+            
         }
 
         public Models Context { get; }

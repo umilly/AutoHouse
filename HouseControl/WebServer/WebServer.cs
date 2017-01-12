@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Facade;
+using Model;
 using ViewModel;
 using ViewModelBase;
 
@@ -86,6 +87,16 @@ namespace WebServer
             }
             return "OK";
         }
+
+        public string GetModesJson()
+        {
+            var res = new Modes {ModeList = new List<ModeProxy>()};
+            foreach (var modeViewModel in Use<IPool>().GetViewModels<ModeViewModel>())
+            {
+                res.ModeList.Add(modeViewModel.GetProxy);
+            }
+            return Use<INetworkService>().Serilize(res);
+        }
     }
 
     public class Client:IDisposable
@@ -130,10 +141,13 @@ namespace WebServer
 
         public void Response()
         {
+            byte[] buffer = null;
             const string headerStr = "HTTP/1.1 200 OK\nContent-type: text/html;charset=utf-8\n";
-            var body = $"<html lang=\"ru-RU\"><body><h1>{_command.Execute(_server)}</h1></body></html>";
+            var body =
+                _command.Json? _command.Execute(_server) :
+                $"<html lang=\"ru-RU\"><body><h1>{_command.Execute(_server)}</h1></body></html>";
             var res = $"{headerStr}\n\n{body}";
-            var buffer = Encoding.UTF8.GetBytes(res);
+            buffer = Encoding.UTF8.GetBytes(res);
             _client.GetStream().Write(buffer, 0, buffer.Length);
             _client.Close();
         }
@@ -164,13 +178,7 @@ namespace WebServer
     }
 }
 
-public enum WebCommandType
-{
-    GetParams,
-    GetModes,
-    SetParam,
-    SetMode
-}
+
 
 public class WebCommand
 {
@@ -182,6 +190,25 @@ public class WebCommand
 
         Type = (WebCommandType)Enum.Parse(typeof(WebCommandType),type);
         Params = @params;
+    }
+
+    public bool Json
+    {
+        get
+        {
+            switch (Type)
+            {
+                case WebCommandType.GetParams:
+                case WebCommandType.GetModes:
+                case WebCommandType.SetParam:
+                case WebCommandType.SetMode:
+                    return false;
+                case WebCommandType.GetModesJson:
+                    return true;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 
     public string Execute(IWebServer serv)
@@ -196,6 +223,8 @@ public class WebCommand
                 return serv.SetParameter(int.Parse(Params[0]), Params[1]);
             case WebCommandType.SetMode:
                 return serv.SetMode(int.Parse(Params[0]));
+            case WebCommandType.GetModesJson:
+                return serv.GetModesJson();
             default:
                 throw new ArgumentOutOfRangeException();
         }

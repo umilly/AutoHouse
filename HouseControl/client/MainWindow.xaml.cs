@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Facade;
+using View;
 using ViewModel;
 using VMBase;
 
@@ -23,7 +24,7 @@ namespace client
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class ClientMainWindow : Window
+    public partial class ClientMainWindow : Window, INotifyPropertyChanged
     {
         private ContentControl _currentConent;
         private readonly IServiceContainer _container = new Container();
@@ -64,5 +65,10 @@ namespace client
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void HomeClick(object sender, RoutedEventArgs e)
+        {
+            CurrentContent = _container.Use<IViewService>().CreateView<ClientModesView>();
+        }
     }
 }

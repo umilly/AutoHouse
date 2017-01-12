@@ -18,6 +18,7 @@ namespace Facade
         IViewModel ViewModel { get; set; }
         Type VmType { get; }
         void OnClose();
+        void OnVMSet();
     }
 
     public interface IWrapper
@@ -33,6 +34,7 @@ namespace Facade
         string GetModes();
         string SetParameter(int paramId, string value);
         string SetMode(int modeId);
+        string GetModesJson();
     }
     public interface IViewService : IService
     {
@@ -74,6 +76,8 @@ namespace Facade
         IPStatus Ping(string address);
         string SyncRequest(string url);
         Task<string> AsyncRequest(string url);
+        T Deserialize<T>(string json);
+        string Serilize<T>(T obj);
     }
 
     public interface ILog : IService
@@ -96,6 +100,7 @@ namespace Facade
         void SaveDB();
         void Delete();
         bool CompareModel(IHaveID id);
+        void AddedToPool();
     }
     public interface ITimerSerivce:IService {
         void Subsctibe(object key, Action action,int waitMilliSeconds,bool repeat=false);
@@ -142,5 +147,13 @@ namespace Facade
         {
             
         }
+    }
+    public enum WebCommandType
+    {
+        GetParams,
+        GetModes,
+        SetParam,
+        SetMode,
+        GetModesJson,
     }
 }

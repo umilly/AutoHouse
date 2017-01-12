@@ -75,6 +75,7 @@ namespace ViewModelBase
             DB.Set(dbVmTypes[type]).Add(newModel);
             var res = (IEntytyObjectVM)Activator.CreateInstance(type, Container, DB,newModel);
             _pool[type].Add(res);
+            res.AddedToPool();
             return res;
         }
 

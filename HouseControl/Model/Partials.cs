@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Facade;
@@ -199,6 +200,32 @@ namespace Model
                 RegiterUpdate(Guid.Parse("AABAB4FA-1155-474B-855F-828A4C7C59A7"), @"", FillParameters);
                 RegiterUpdate(Guid.Parse("9974EEE0-E905-4BCF-B2C7-AAD0F5F7A3CD"), ParamsCommandUpdate, FillParameterCategories);
                 RegiterUpdate(Guid.Parse("9A8F722D-1E46-4924-962B-CCCF1CD8D10F"), AddFields);
+                RegiterUpdate(Guid.Parse("AD4874E8-FD62-4F90-BA16-225E10356ABB"), AddParameterChainLink,AdditionalParamCategory);
+            }
+
+            public const string AddParameterChainLink =
+                @"
+SET QUOTED_IDENTIFIER OFF;
+USE [house];
+
+ALTER TABLE [dbo].[Parameter]
+ADD [NextParameterId] int  NULL;
+
+ALTER TABLE [dbo].[Parameter]
+ADD CONSTRAINT [FK_ParameterParameter]
+    FOREIGN KEY ([NextParameterId])
+    REFERENCES [dbo].[Parameter]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+CREATE INDEX [IX_FK_ParameterParameter]
+ON [dbo].[Parameter]
+    ([NextParameterId]);
+";
+
+            private void AdditionalParamCategory()
+            {
+                _context.ParameterCategories.Add(new ParameterCategory() { Id = (int)Category.Control, Name = "Учёт" });
             }
 
             public const string AddFields = @"
@@ -605,6 +632,7 @@ ON [dbo].[ParametrSetCommands]
         Climat=2,
         Door=3,
         Media=4,
+        Control=5
     }
     public class TypeAssociationAttribute : Attribute
     {
@@ -624,5 +652,28 @@ ON [dbo].[ParametrSetCommands]
             TypeMap[member] = ((TypeAssociationAttribute)res.GetCustomAttributes(typeof(TypeAssociationAttribute), true).Single())._type;
             return TypeMap[member];
         }
+    }
+
+    [DataContract]
+    public class ModeProxy
+    {
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public int ID { get; set; }
+        [DataMember]
+        public bool IsSelected { get; set; }
+
+        public static ModeProxy FromDBMode(Mode mode)
+        {
+            return new ModeProxy() {ID = mode.ID,Name = mode.Name,IsSelected = mode.IsSelected};
+        }
+    }
+    [DataContract]
+
+    public class Modes
+    {
+        [DataMember]
+        public List<ModeProxy> ModeList { get; set; }
     }
 }

@@ -38,20 +38,8 @@ namespace ViewModel
         
         public void InitSettings()
         {
-            var settings = Use<IPool>().GetOrCreateVM<SettingsVM>(1);
-            try
-            {
-                var serializer=new DataContractJsonSerializer(typeof(Settings));
-                var stream = new FileStream("settings.ini", FileMode.Open);
-                var settings2 =(Settings)  serializer.ReadObject(stream);
-                stream.Close();
-                stream.Dispose();
-                settings.Apply(settings2);
-            }
-            catch (Exception)
-            {
-                settings.RelayCount = 13;
-            }
+            var settings = Use<IPool>().GetOrCreateVM<ClientOptionsViewModel>(1);
+            settings.ReadOptions();
         }
     }
 }

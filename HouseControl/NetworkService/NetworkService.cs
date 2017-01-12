@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,6 +13,46 @@ namespace ViewModelBase
 {
     public class NetworkService : ServiceBase, INetworkService
     {
+        public T Deserialize<T>(string json)
+        {
+            var serializer = new DataContractJsonSerializer(typeof (T));
+            var stream = new MemoryStream(Encoding.ASCII.GetBytes(json));
+            try
+            {
+                return (T) serializer.ReadObject(stream);
+            }
+            finally
+            {
+                stream.Close();
+                stream.Dispose();
+            }
+        }
+
+        public string Serilize<T>(T obj)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(T));
+            var stream=new MemoryStream();
+            try
+            {
+                serializer.WriteObject(stream, obj);
+                var bytes = stream.ToArray();
+                var res = Encoding.ASCII.GetString(bytes);
+                return res;
+            }
+            finally
+            {
+                stream.Close();
+                stream.Dispose();
+            }
+        }
+
+        public override void OnContainerSet()
+        {
+            base.OnContainerSet();
+            ServicePointManager.Expect100Continue = false;
+            ServicePointManager.MaxServicePointIdleTime = 2000;
+        }
+
         public IPStatus Ping(string address)
         {
             Ping p = null;
@@ -81,7 +123,12 @@ namespace ViewModelBase
             request.ReadWriteTimeout = Timeout;
             request.ContinueTimeout = Timeout;
             request.KeepAlive = false;
+            request.Method = "GET";
+            request.Accept = @"Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+            request.UserAgent =
+                @"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36 OPR/42.0.2393.94";
             var res = request.GetResponseAsync();
+            request.ProtocolVersion=new Version(1,1);
             var steps = Timeout/StepTime;
             for (int i = 0; i < steps; i++)
             {

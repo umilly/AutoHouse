@@ -27,11 +27,13 @@ namespace Model
         public int ParameterTypeId { get; set; }
         public bool IsPublic { get; set; }
         public byte[] Image { get; set; }
+        public Nullable<int> NextParameterId { get; set; }
     
         public virtual ParameterType ParameterType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ComandParameterLink> ComandParameterLinks { get; set; }
         public virtual ParameterCategory ParameterCategory { get; set; }
         public virtual Sensor Sensor { get; set; }
+        public virtual Parameter NextParameter { get; set; }
     }
 }

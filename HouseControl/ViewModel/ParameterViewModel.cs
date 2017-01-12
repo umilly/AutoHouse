@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Facade;
 using Model;
 using ViewModelBase;
@@ -13,6 +14,14 @@ namespace ViewModel
         {
             if(!IsFake && Model.ID == Parameter.CurrentTimeId)
                 Use<ITimerSerivce>().Subsctibe(this,UpdateTime,1000,true);
+        }
+
+        public override void AddedToPool()
+        {
+            base.AddedToPool();
+            if (IsFake)
+                return;
+            Use<IPool>().GetViewModels<ParameterViewModel>().ForEach(a => a.OnParamsChanged());
         }
 
         public Type ValueType => ParamType.Type;
@@ -103,6 +112,41 @@ namespace ViewModel
             }
         }
 
+        public IConditionSource NextParam
+        {
+            get
+            {
+                return Model.NextParameter == null
+                    ? (IConditionSource) EmptyValue.Instance
+                    : Use<IPool>().GetDBVM<ParameterViewModel>(Model.NextParameter);
+            }
+            set
+            {
+                if (value == EmptyValue.Instance)
+                    Model.NextParameter = null;
+                else
+                    Model.NextParameter = (value as ParameterViewModel).Model;
+                OnPropertyChanged(()=>NextParam);
+            }
+        }
+
+        public void OnParamsChanged()
+        {
+            OnPropertyChanged(()=>AllParams);
+        }
+        public IEnumerable<IConditionSource> AllParams
+        {
+            get
+            {
+                return
+                    Use<IPool>()
+                        .GetViewModels<ParameterViewModel>()
+                        .Cast<IConditionSource>()
+                        .Except(new[] {this})
+                        .Union(new[] {EmptyValue.Instance});
+            }
+        }
+
         public void LinkDeviceParam(ComandParameterLink model)
         {
             model.Parameter = Model;
@@ -120,6 +164,12 @@ namespace ViewModel
         public void LinkSrcSetParam2(ParametrSetCommand model)
         {
             model.SrcParameter2 = Model;
+        }
+
+        public override void Delete()
+        {
+            base.Delete();
+            Use<IPool>().GetViewModels<ParameterViewModel>().ForEach(a => a.OnParamsChanged());
         }
     }
 }

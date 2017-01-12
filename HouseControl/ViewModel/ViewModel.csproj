@@ -52,6 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientModesViewModel.cs" />
+    <Compile Include="ClientModeViewModel.cs" />
+    <Compile Include="ClientOptionsViewModel.cs" />
+    <Compile Include="ClientSettings.cs" />
     <Compile Include="CommandParamLinkVm.cs" />
     <Compile Include="CommandViewModel.cs" />
     <Compile Include="ConditionTypeViewModel.cs" />

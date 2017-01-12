@@ -24,6 +24,7 @@
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0" Text="{Binding Name , Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
@@ -31,7 +32,8 @@
                         <TextBox Grid.Column="2" IsEnabled="{Binding IsEditable}" Text="{Binding Value, Mode=TwoWay}"></TextBox>
                         <ComboBox Grid.Column="3"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding Category}" ItemsSource="{Binding Categories}" DisplayMemberPath="Name"/>
                         <ComboBox Grid.Column="4"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding Sensor}" ItemsSource="{Binding Sensors}" DisplayMemberPath="Name"/>
-                        <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="5" IsEnabled="{Binding IsEditable}" IsChecked="{Binding IsPublic}"></CheckBox>
+                        <ComboBox Grid.Column="5"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding NextParam}" ItemsSource="{Binding AllParams}" DisplayMemberPath="Name"/>
+                        <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="6" IsEnabled="{Binding IsEditable}" IsChecked="{Binding IsPublic}"></CheckBox>
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

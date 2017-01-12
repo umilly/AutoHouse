@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/06/2016 22:11:18
+-- Date Created: 01/12/2017 16:00:24
 -- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -103,6 +103,9 @@ IF OBJECT_ID(N'[dbo].[FK_ParametrSetCommandSensor]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ParametrSetCommandParameter2]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ParametrSetCommands] DROP CONSTRAINT [FK_ParametrSetCommandParameter2];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ParametrSetCommandReaction]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ParametrSetCommands] DROP CONSTRAINT [FK_ParametrSetCommandReaction];
 GO
 IF OBJECT_ID(N'[dbo].[FK_Sensor_inherits_Device]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Devices_Sensor] DROP CONSTRAINT [FK_Sensor_inherits_Device];
@@ -311,6 +314,7 @@ CREATE TABLE [dbo].[Parameter] (
     [ParameterTypeId] int  NOT NULL,
     [IsPublic] bit  NOT NULL,
     [Image] varbinary(max)  NULL,
+    [NextParameterId] int  NULL,
     [ParameterCategory_Id] int  NULL,
     [Sensor_Id] int  NULL
 );
@@ -983,6 +987,21 @@ GO
 CREATE INDEX [IX_FK_ParametrSetCommandReaction]
 ON [dbo].[ParametrSetCommands]
     ([Reaction_Id]);
+GO
+
+-- Creating foreign key on [NextParameterId] in table 'Parameter'
+ALTER TABLE [dbo].[Parameter]
+ADD CONSTRAINT [FK_ParameterParameter]
+    FOREIGN KEY ([NextParameterId])
+    REFERENCES [dbo].[Parameter]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ParameterParameter'
+CREATE INDEX [IX_FK_ParameterParameter]
+ON [dbo].[Parameter]
+    ([NextParameterId]);
 GO
 
 -- Creating foreign key on [Id] in table 'Devices_Sensor'

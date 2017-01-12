@@ -173,7 +173,7 @@
       </Grid.RowDefinitions>
         <Menu>
           <MenuItem Header="File">
-            <MenuItem Header="Control" Click="ControlMenuClick"></MenuItem>
+            <MenuItem Margin="5" Header="Control" Click="ControlMenuClick"></MenuItem>
             <MenuItem Header="Settings" Click="SettingsMenuClick"></MenuItem>
             <MenuItem Header="Save" Click="SaveClick"></MenuItem>
             <MenuItem Header="Load" Click="LoadClick"></MenuItem>
