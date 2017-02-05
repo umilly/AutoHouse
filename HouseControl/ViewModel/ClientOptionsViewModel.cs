@@ -7,6 +7,9 @@ namespace ViewModel
 {
     public class ClientOptionsViewModel : ViewModelBase.ViewModelBase
     {
+        private string _serverIp;
+        private int _serverPort;
+
         public ClientOptionsViewModel(IServiceContainer container) : base(container)
         {
 
@@ -41,11 +44,26 @@ namespace ViewModel
             }
         }
 
-        public override int ID { get; set; }
+        public override int ID { get { return 1; } set {} }
 
-        public string ServerIP { get;private set; }
-        public int ServerPort { get;private set; }
+        public string ServerIP
+        {
+            get { return _serverIp; }
+            set
+            {
+                _serverIp = value; 
+                OnPropertyChanged();
+            }
+        }
 
-
+        public int ServerPort
+        {
+            get { return _serverPort; }
+            set
+            {
+                _serverPort = value; 
+                OnPropertyChanged();
+            }
+        }
     }
 }

@@ -33,14 +33,14 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Click="HomeClick">Домой</Button>
-            <Button Grid.Column="1">Общий</Button>
+            <Button Grid.Column="1" Click="CommonParams">Общий</Button>
             <Button Grid.Column="2">Климат</Button>
             <Button Grid.Column="3">Свет</Button>
             <Button Grid.Column="4">Oборудование</Button>
             <Button Grid.Column="5">Камеры</Button>
             <Button Grid.Column="6">СКУД</Button>
             <Button Grid.Column="7">Учет</Button>
-            <Button Grid.Column="8">ОбНастройкищий</Button>
+            <Button Grid.Column="8" Click="OptionsClick">Настройки</Button>
         </Grid>
         <ContentControl Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding Path=CurrentContent}"></ContentControl>
     </Grid>

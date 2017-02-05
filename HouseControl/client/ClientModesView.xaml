@@ -22,7 +22,7 @@
                             <ColumnDefinition Width="10*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <ToggleButton Height="70" Background="CadetBlue" HorizontalContentAlignment="Left" Margin="5" Foreground="Black" BindingGroup="{Binding}" Content="{Binding Name}" IsChecked="{Binding IsSelected}"></ToggleButton>
+                        <ToggleButton Height="70" Background="CadetBlue" HorizontalContentAlignment="Left" Margin="5" Foreground="Black" BindingGroup="{Binding}" Content="{Binding Name}" IsChecked="{Binding IsSelected}" Click="ButtonBase_OnClick"></ToggleButton>
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

@@ -70,5 +70,15 @@ namespace client
         {
             CurrentContent = _container.Use<IViewService>().CreateView<ClientModesView>();
         }
+
+        private void OptionsClick(object sender, RoutedEventArgs e)
+        {
+            CurrentContent = _container.Use<IViewService>().CreateView<ClienOptions>(1);
+        }
+
+        private void CommonParams(object sender, RoutedEventArgs e)
+        {
+            CurrentContent = _container.Use<IViewService>().CreateView<ClientParametersView>(1);
+        }
     }
 }

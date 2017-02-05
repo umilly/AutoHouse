@@ -55,6 +55,8 @@
     <Compile Include="ClientModesViewModel.cs" />
     <Compile Include="ClientModeViewModel.cs" />
     <Compile Include="ClientOptionsViewModel.cs" />
+    <Compile Include="ClientParametersViewModel.cs" />
+    <Compile Include="ClientParameterViewModel.cs" />
     <Compile Include="ClientSettings.cs" />
     <Compile Include="CommandParamLinkVm.cs" />
     <Compile Include="CommandViewModel.cs" />

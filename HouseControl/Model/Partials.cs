@@ -670,10 +670,44 @@ ON [dbo].[ParametrSetCommands]
         }
     }
     [DataContract]
+    public class ParameterProxy
+    {
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public int ID { get; set; }
+        [DataMember]
+        public int NextParam { get; set; }
+        [DataMember]
+        public ParameterTypeValue ParamType { get; set; }
+        [DataMember]
+        public string Value { get; set; }
+        [DataMember]
+        public Category? Category{ get; set; }
+        public static ParameterProxy FromDBParameter(Parameter parameter)
+        {
+            return new ParameterProxy()
+            {
+                ID = parameter.ID,
+                Name = parameter.Name,
+                NextParam = parameter.NextParameter?.ID ?? -1,
+                ParamType = (ParameterTypeValue) parameter.ParameterTypeId,
+                Value = parameter.Value,
+                Category = parameter.ParameterCategory == null ? null : (Category?) parameter.ParameterCategory.ID
+            };
+        }
+    }
+    [DataContract]
 
     public class Modes
     {
         [DataMember]
         public List<ModeProxy> ModeList { get; set; }
+    }
+    [DataContract]
+    public class Parameters
+    {
+        [DataMember]
+        public List<ParameterProxy> ParamList { get; set; }
     }
 }

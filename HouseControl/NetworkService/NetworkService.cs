@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading;
@@ -16,7 +17,7 @@ namespace ViewModelBase
         public T Deserialize<T>(string json)
         {
             var serializer = new DataContractJsonSerializer(typeof (T));
-            var stream = new MemoryStream(Encoding.ASCII.GetBytes(json));
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
             try
             {
                 return (T) serializer.ReadObject(stream);
@@ -36,7 +37,7 @@ namespace ViewModelBase
             {
                 serializer.WriteObject(stream, obj);
                 var bytes = stream.ToArray();
-                var res = Encoding.ASCII.GetString(bytes);
+                var res = Encoding.UTF8.GetString(bytes);
                 return res;
             }
             finally
@@ -100,9 +101,14 @@ namespace ViewModelBase
             try
             {
                 var response = (HttpWebResponse) await GetResponseTask(url);
-                var reader = new StreamReader(response.GetResponseStream());
+                var stream = response.GetResponseStream();
+                var reader = new StreamReader(stream,Encoding.UTF8);
                 res = reader.ReadToEnd();
+                stream.Dispose();
+                reader.Dispose();
                 response.Dispose();
+                return res;
+
             }
             catch (Exception e)
             {

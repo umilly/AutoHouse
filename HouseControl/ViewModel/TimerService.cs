@@ -98,12 +98,13 @@ namespace ViewModel
         public void Check()
         {
             var reacts=Use<IPool>().GetViewModels<ReactionViewModel>();
-            var mode = Use<IGlobalParams>().CurrentModeId;
-            if (mode.HasValue)
+            var mode = Use<IPool>().GetViewModels<ModeViewModel>().SingleOrDefault(a => a.IsSelected);
+            if (mode!=null)
             {
-                reacts = reacts.Where(a => a.Scenario.Parent.ID == mode.Value);
+                reacts = reacts.Where(a => a.Scenario.Parent.ID == mode.ID);
+                reacts.ForEach(a => a.Check());
             }
-            reacts.ForEach(a=>a.Check());
+            
         }
     }
 

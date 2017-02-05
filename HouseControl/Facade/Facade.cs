@@ -35,6 +35,7 @@ namespace Facade
         string SetParameter(int paramId, string value);
         string SetMode(int modeId);
         string GetModesJson();
+        string GetParametersJson();
     }
     public interface IViewService : IService
     {
@@ -155,5 +156,6 @@ namespace Facade
         SetParam,
         SetMode,
         GetModesJson,
+        GetParamsJson
     }
 }

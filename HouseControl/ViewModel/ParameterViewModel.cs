@@ -171,5 +171,10 @@ namespace ViewModel
             base.Delete();
             Use<IPool>().GetViewModels<ParameterViewModel>().ForEach(a => a.OnParamsChanged());
         }
+
+        public ParameterProxy GetProxy()
+        {
+            return ParameterProxy.FromDBParameter(Model);
+        }
     }
 }

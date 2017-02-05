@@ -1,4 +1,8 @@
+using System;
+using System.Linq;
+using System.Net;
 using System.Net.Sockets;
+using System.Security.Policy;
 using Facade;
 using Model;
 using ViewModelBase;
@@ -22,8 +26,20 @@ namespace ViewModel
 
         private void SelectMode(bool value)
         {
-            
+            if (value)
+            {
+                Use<INetworkService>().SyncRequest(Url);
+                Use<IPool>().GetViewModels<ClientModesViewModel>().Single().AskModes();
+            }
+        }
 
+        public string Url
+        {
+            get
+            {
+                return
+                    $"http://{Use<IPool>().GetViewModels<ClientOptionsViewModel>().Single().ServerIP}:{Use<IPool>().GetViewModels<ClientOptionsViewModel>().Single().ServerPort}/SetMode?{ID}";
+            }
         }
 
 

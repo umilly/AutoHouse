@@ -97,6 +97,15 @@ namespace WebServer
             }
             return Use<INetworkService>().Serilize(res);
         }
+        public string GetParametersJson()
+        {
+            var res = new Parameters() { ParamList = new List<ParameterProxy>() };
+            foreach (var modeViewModel in Use<IPool>().GetViewModels<ParameterViewModel>().Where(a=>a.IsPublic))
+            {
+                res.ParamList.Add(modeViewModel.GetProxy());
+            }
+            return Use<INetworkService>().Serilize(res);
+        }
     }
 
     public class Client:IDisposable
@@ -204,6 +213,7 @@ public class WebCommand
                 case WebCommandType.SetMode:
                     return false;
                 case WebCommandType.GetModesJson:
+                case WebCommandType.GetParamsJson:
                     return true;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -225,6 +235,8 @@ public class WebCommand
                 return serv.SetMode(int.Parse(Params[0]));
             case WebCommandType.GetModesJson:
                 return serv.GetModesJson();
+            case WebCommandType.GetParamsJson:
+                return serv.GetParametersJson();
             default:
                 throw new ArgumentOutOfRangeException();
         }
