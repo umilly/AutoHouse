@@ -7,40 +7,136 @@
         mc:Ignorable="d"
         Title="MainWindow"
         ResizeMode="NoResize"
-        WindowState="Maximized"
+        WindowState="Normal"
         Topmost="False"
         WindowStyle="None"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Width="1280"
+        Height="800"
         >
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <Grid Background="White">
         <Grid.RowDefinitions>
+            <RowDefinition Height="138" ></RowDefinition>
             <RowDefinition Height="*" ></RowDefinition>
-            <RowDefinition Height="4*" ></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Background="DimGray" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Image Grid.Row="0"  Grid.RowSpan="2" Source="Resources/mainBG.png" Stretch="Fill"></Image>
+        <Grid Background="Transparent" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="42"></ColumnDefinition>
+                <ColumnDefinition Width="398"></ColumnDefinition>
+                <ColumnDefinition Width="120"></ColumnDefinition>
+                <ColumnDefinition Width="120"></ColumnDefinition>
+                <ColumnDefinition Width="120"></ColumnDefinition>
+                <ColumnDefinition Width="120"></ColumnDefinition>
+                <ColumnDefinition Width="120"></ColumnDefinition>
+                <ColumnDefinition Width="120"></ColumnDefinition>
+                <ColumnDefinition Width="120"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Click="HomeClick">Домой</Button>
-            <Button Grid.Column="1" Click="CommonParams">Общий</Button>
-            <Button Grid.Column="2">Климат</Button>
-            <Button Grid.Column="3">Свет</Button>
-            <Button Grid.Column="4">Oборудование</Button>
-            <Button Grid.Column="5">Камеры</Button>
-            <Button Grid.Column="6">СКУД</Button>
-            <Button Grid.Column="7">Учет</Button>
-            <Button Grid.Column="8" Click="OptionsClick">Настройки</Button>
+            <Grid.Resources>
+                <Style x:Key="MenuRadio" TargetType="RadioButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="RadioButton">
+                                <ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource Mode=TemplatedParent}}"></ContentPresenter>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                    <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <local:BoolToBrushConverter x:Key="BoolToBrush"></local:BoolToBrushConverter>
+            </Grid.Resources>
+            <TextBlock Grid.Column="1" Text="{Binding MainVM.Mode}" FontSize="48" VerticalAlignment="Center" Foreground="#1d87c9"/>
+            <!--<Button Grid.Column="0" Click="HomeClick">Домой</Button>-->
+            <RadioButton Style="{DynamicResource MenuRadio}" Grid.Column="2" Click="HomeClick">
+                <StackPanel Orientation="Vertical">
+                    <Rectangle Width="100" Height="100" Stretch="Fill" 
+                               Fill="{Binding Path= IsChecked, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=RadioButton }, Converter={StaticResource BoolToBrush}}"
+                               >
+                        <Rectangle.OpacityMask>
+                            <ImageBrush ImageSource="Resources/home.png"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Foreground="#1d87c9" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16">Главная</TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Style="{DynamicResource MenuRadio}" Grid.Column="4" Click="ClimaxClick">
+                <StackPanel Orientation="Vertical">
+                    <Rectangle Width="100" Height="100" Stretch="Fill" 
+                               Fill="{Binding Path= IsChecked, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=RadioButton }, Converter={StaticResource BoolToBrush}}"
+                               >
+                        <Rectangle.OpacityMask>
+                            <ImageBrush ImageSource="Resources/thermometerMenu.png"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Foreground="#1d87c9" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16">Климат</TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton  Style="{DynamicResource MenuRadio}" Grid.Column="3" Click="LightClick">
+                <StackPanel Orientation="Vertical">
+                    <Rectangle Width="100" Height="100" Stretch="Fill" 
+                               Fill="{Binding Path= IsChecked, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=RadioButton }, Converter={StaticResource BoolToBrush}}"
+                               >
+                        <Rectangle.OpacityMask>
+                            <ImageBrush ImageSource="Resources/lamp.png"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Foreground="#1d87c9" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16">Свет</TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Grid.Column="5"  Style="{DynamicResource MenuRadio}" Click="RemoteClick">
+                <StackPanel Orientation="Vertical">
+                    <Rectangle Width="100" Height="100" Stretch="Fill" 
+                               Fill="{Binding Path= IsChecked, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=RadioButton }, Converter={StaticResource BoolToBrush}}"
+                               >
+                        <Rectangle.OpacityMask>
+                            <ImageBrush ImageSource="Resources/remote.png"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Foreground="#1d87c9" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16">Оборудование</TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Grid.Column="6" IsEnabled="False"  Style="{DynamicResource MenuRadio}" >
+                <StackPanel Orientation="Vertical">
+                    <Rectangle Width="100" Height="100" Stretch="Fill" 
+                               Fill="{Binding Path= IsChecked, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=RadioButton }, Converter={StaticResource BoolToBrush}}"
+                               >
+                        <Rectangle.OpacityMask>
+                            <ImageBrush ImageSource="Resources/camera.png"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Foreground="#1d87c9" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16">Камеры</TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Grid.Column="7" IsEnabled="False"  Style="{DynamicResource MenuRadio}" >
+                <StackPanel Orientation="Vertical">
+                    <Rectangle Width="100" Height="100" Stretch="Fill" 
+                               Fill="{Binding Path= IsChecked, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=RadioButton }, Converter={StaticResource BoolToBrush}}"
+                               >
+                        <Rectangle.OpacityMask>
+                            <ImageBrush ImageSource="Resources/lock.png"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Foreground="#1d87c9" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16">Oхрана</TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Grid.Column="8" Click="OptionsClick"  Style="{DynamicResource MenuRadio}" >
+                <StackPanel Orientation="Vertical">
+                    <Rectangle Width="100" Height="100" Stretch="Fill" 
+                               Fill="{Binding Path= IsChecked, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=RadioButton }, Converter={StaticResource BoolToBrush}}"
+                               >
+                        <Rectangle.OpacityMask>
+                            <ImageBrush ImageSource="Resources/settings.png"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Foreground="#1d87c9" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16">Настройки</TextBlock>
+                </StackPanel>
+            </RadioButton>
         </Grid>
         <ContentControl Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding Path=CurrentContent}"></ContentControl>
     </Grid>

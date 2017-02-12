@@ -174,7 +174,9 @@ namespace ViewModel
 
         public ParameterProxy GetProxy()
         {
-            return ParameterProxy.FromDBParameter(Model);
+            var param = ParameterProxy.FromDBParameter(Model);
+            param.ActualValue = Sensor==null?string.Empty:Sensor.Value;
+            return param;
         }
     }
 }

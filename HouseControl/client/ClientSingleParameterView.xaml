@@ -1,0 +1,67 @@
+﻿<vmBase:CustomViewBase x:TypeArguments="viewModel:ClientParameterViewModel" x:Class="View.ClientSingleParameterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:View"
+             xmlns:vmBase="clr-namespace:VMBase;assembly=VMBase"
+             xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+                       DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <!--<Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="Aqua" StrokeThickness="2" Fill="Transparent"></Rectangle>-->
+
+        <Grid>
+            <Grid.Resources>
+                <Style x:Key="Flag" TargetType="ToggleButton">
+                    <Style.Triggers>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Foreground" Value="DarkOrange"/>
+                            <Setter Property="Background" Value="DarkOrange"/>
+                        </Trigger>
+                    </Style.Triggers>
+
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="Transparent"/>
+
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <!--<Border BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="Transparent"
+                                CornerRadius="20">-->
+                                
+                                    <ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <!--</Border>-->
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Padding="10" TextAlignment="Justify" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Column="0"  Width="150" Margin="5" Foreground="Black" BindingGroup="{Binding}" Text="{Binding ViewModel.Name}" Visibility="{Binding ViewModel.IsFirst, Converter= {StaticResource BoolToVis} }"/>
+            <!--<Rectangle Grid.Column="1" Width="45" Height="45" Stroke="Red" StrokeThickness="2" Fill="Transparent"></Rectangle>-->
+            <Image Grid.Column="1" Width="45" Height="45" Stretch="Uniform"
+                               Margin="0"
+                               Visibility="{Binding ViewModel.ImageIsVisible, Converter={StaticResource BoolToVis}}"
+                               Source="{Binding RelativeSource={RelativeSource AncestorType=local:ClientSingleParameterView},Path=Image1}"/>
+            <TextBlock Grid.Column="2"  Width="30" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Justify" FontSize="25" Margin="5" Foreground="Black" BindingGroup="{Binding}" Text="{Binding ViewModel.Value}" ></TextBlock>
+            <ToggleButton Style="{DynamicResource Flag}"  Width="45" Height="45"  Grid.Column="3" Visibility="{Binding ViewModel.ToggleIsVisible, Converter={StaticResource BoolToVis}}" IsChecked="{Binding ToggleValue}">
+                <Image  Source="{Binding RelativeSource={RelativeSource AncestorType=local:ClientSingleParameterView},Path=RadioButton}"/>
+            </ToggleButton>
+            <Slider Width="150" Grid.Column="4" Minimum="{Binding ViewModel.SliderMin}" Maximum="{Binding ViewModel.SliderMax}" Value="{Binding ViewModel.SliderValue}" Visibility="{Binding ViewModel.SliderIsVisible, Converter={StaticResource BoolToVis}}"></Slider>
+        </Grid>
+    </Grid>
+</vmBase:CustomViewBase>

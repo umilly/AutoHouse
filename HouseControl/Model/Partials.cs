@@ -670,6 +670,18 @@ ON [dbo].[ParametrSetCommands]
         }
     }
     [DataContract]
+    public class ZoneProxy
+    {
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public int ID { get; set; }
+        public static ZoneProxy FromDBZone(Zone zone)
+        {
+            return new ZoneProxy() { ID = zone.ID, Name = zone.Name};
+        }
+    }
+    [DataContract]
     public class ParameterProxy
     {
         [DataMember]
@@ -684,8 +696,23 @@ ON [dbo].[ParametrSetCommands]
         public string Value { get; set; }
         [DataMember]
         public Category? Category{ get; set; }
+        [DataMember]
+        public SensorProxy Sensor { get; set; }
+        [DataMember]
+        public string ActualValue { get; set; }
         public static ParameterProxy FromDBParameter(Parameter parameter)
         {
+            SensorProxy sensor = null;
+            if (parameter.Sensor != null)
+            {
+                sensor=new SensorProxy()
+                {
+                    ID = parameter.Sensor.ID,
+                    Name = parameter.Sensor.Name,
+                    ValueType = (ParameterTypeValue)parameter.Sensor.SensorType.Id,
+                    Zone = new ZoneProxy() { ID = parameter.Sensor.Zone.ID,Name = parameter.Sensor.Zone.Name}
+                };
+            }
             return new ParameterProxy()
             {
                 ID = parameter.ID,
@@ -693,12 +720,30 @@ ON [dbo].[ParametrSetCommands]
                 NextParam = parameter.NextParameter?.ID ?? -1,
                 ParamType = (ParameterTypeValue) parameter.ParameterTypeId,
                 Value = parameter.Value,
-                Category = parameter.ParameterCategory == null ? null : (Category?) parameter.ParameterCategory.ID
+                Category = parameter.ParameterCategory == null ? null : (Category?) parameter.ParameterCategory.ID,
+                Sensor = sensor
             };
         }
     }
-    [DataContract]
 
+    [DataContract]
+    public class SensorProxy
+    {
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public int ID { get; set; }
+        [DataMember]
+        public ParameterTypeValue ValueType { get; set; }
+        [DataMember]
+        public int MinValue { get; set; }
+        [DataMember]
+        public int MaxValue { get; set; }
+        [DataMember]
+        public ZoneProxy Zone { get; set; }
+
+    }
+    [DataContract]
     public class Modes
     {
         [DataMember]

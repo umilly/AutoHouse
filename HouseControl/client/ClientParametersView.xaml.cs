@@ -33,16 +33,16 @@ namespace View
             InitializeComponent();
         }
 
+        public List<ClientParameterContainerView> ParameterViewList
+        {
+            get { return ViewModel?.Parameters.Select(a => _viewService.CreateView<ClientParameterContainerView>(a)).ToList(); }
+        }
+
         public override void OnVMSet()
         {
             base.OnVMSet();
-            ViewModel.AskParams();
-            //ImageBox.Source = new BitmapImage(new Uri(ViewModel.ImagePath));
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            
+            ViewModel.AskParams(()=>OnPropertyChanged("ParameterViewList"));
+            OnPropertyChanged("ParameterViewList");
         }
     }
 }

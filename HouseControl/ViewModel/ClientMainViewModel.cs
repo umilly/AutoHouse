@@ -15,6 +15,8 @@ namespace ViewModel
 {
     public class ClientMainViewModel : ViewModelBase.ViewModelBase
     {
+        private Page _page;
+
         public ClientMainViewModel(IServiceContainer container) : base(container)
         {
             container.RegisterType<IPool, VMFactory>();
@@ -35,7 +37,50 @@ namespace ViewModel
             get { return 1; }
             set { }
         }
-        
+
+        public string Mode
+        {
+            get
+            {
+                switch (Page)
+                {
+                    case Page.Main:
+                        return "Главная";
+                        break;
+                    case Page.Climax:
+                        return "Климат";
+                        break;
+                    case Page.Light:
+                        return "Свет";
+                        break;
+                    case Page.Remote:
+                        return "Оборудование";
+                        break;
+                    case Page.Cameras:
+                        return "Камеры";
+                        break;
+                    case Page.Access:
+                        return "Охрана";
+                        break;
+                    case Page.Settings:
+                        return "Настройки";
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        public Page Page
+        {
+            get { return _page; }
+            set
+            {
+                _page = value; 
+                OnPropertyChanged(()=>Mode);
+            }
+        }
+
         public void InitSettings()
         {
             var settings = Use<IPool>().GetOrCreateVM<ClientOptionsViewModel>(1);

@@ -80,6 +80,7 @@ namespace ViewModelBase
             try
             {
                 var request = WebRequest.Create(url);
+                request.Timeout = 1000;
                 request.Credentials = CredentialCache.DefaultCredentials;
                 using (var response = (HttpWebResponse) request.GetResponse())
                 {

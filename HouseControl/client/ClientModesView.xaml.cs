@@ -33,11 +33,15 @@ namespace View
             InitializeComponent();
         }
 
+        BitmapImage image = null;
+
         public override void OnVMSet()
         {
             base.OnVMSet();
             ViewModel.AskModes();
-            ImageBox.Source = new BitmapImage(new Uri(ViewModel.ImagePath));
+            if(image==null)
+                image=new BitmapImage(new Uri(ViewModel.ImagePath, UriKind.Relative));
+            ImageBox.Source = image; //new BitmapImage(new Uri(ViewModel.ImagePath,UriKind.RelativeOrAbsolute));
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
