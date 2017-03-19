@@ -206,7 +206,6 @@ namespace Model
             public const string AddParameterChainLink =
                 @"
 SET QUOTED_IDENTIFIER OFF;
-USE [house];
 
 ALTER TABLE [dbo].[Parameter]
 ADD [NextParameterId] int  NULL;
@@ -710,7 +709,11 @@ ON [dbo].[ParametrSetCommands]
                     ID = parameter.Sensor.ID,
                     Name = parameter.Sensor.Name,
                     ValueType = (ParameterTypeValue)parameter.Sensor.SensorType.Id,
-                    Zone = new ZoneProxy() { ID = parameter.Sensor.Zone.ID,Name = parameter.Sensor.Zone.Name}
+                    Zone = new ZoneProxy() { ID = parameter.Sensor.Zone.ID,Name = parameter.Sensor.Zone.Name},
+                    MinValue=parameter.Sensor.SensorType.MinValue,
+                    MaxValue = parameter.Sensor.SensorType.MaxValue
+
+                    
                 };
             }
             return new ParameterProxy()

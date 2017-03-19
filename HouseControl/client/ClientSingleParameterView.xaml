@@ -9,6 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
                        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -58,8 +59,8 @@
                                Visibility="{Binding ViewModel.ImageIsVisible, Converter={StaticResource BoolToVis}}"
                                Source="{Binding RelativeSource={RelativeSource AncestorType=local:ClientSingleParameterView},Path=Image1}"/>
             <TextBlock Grid.Column="2"  Width="30" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Justify" FontSize="25" Margin="5" Foreground="Black" BindingGroup="{Binding}" Text="{Binding ViewModel.Value}" ></TextBlock>
-            <ToggleButton Style="{DynamicResource Flag}"  Width="45" Height="45"  Grid.Column="3" Visibility="{Binding ViewModel.ToggleIsVisible, Converter={StaticResource BoolToVis}}" IsChecked="{Binding ToggleValue}">
-                <Image  Source="{Binding RelativeSource={RelativeSource AncestorType=local:ClientSingleParameterView},Path=RadioButton}"/>
+            <ToggleButton Style="{DynamicResource Flag}"  Width="45" Height="45"  Grid.Column="3" Visibility="{Binding ViewModel.ToggleIsVisible, Converter={StaticResource BoolToVis}}" IsChecked="{Binding ViewModel.TogggleValue, Mode=TwoWay}">
+                <Image  Source="{Binding RelativeSource={RelativeSource AncestorType=local:ClientSingleParameterView},Path=ViewModel.TogggleValue, Converter={StaticResource RadioButtonToImage}}"/>
             </ToggleButton>
             <Slider Width="150" Grid.Column="4" Minimum="{Binding ViewModel.SliderMin}" Maximum="{Binding ViewModel.SliderMax}" Value="{Binding ViewModel.SliderValue}" Visibility="{Binding ViewModel.SliderIsVisible, Converter={StaticResource BoolToVis}}"></Slider>
         </Grid>

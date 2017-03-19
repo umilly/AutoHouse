@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Facade;
 using Model;
 using ViewModelBase;
@@ -25,15 +26,39 @@ namespace ViewModel
                 while (next!=null)
                 {
                     res.Add(next);
-                    next = Use<IPool>().GetViewModels<ClientParameterViewModel>().FirstOrDefault(a => a.ID == next.NextParam); ;
+                    next = Use<IPool>().GetViewModels<ClientParameterViewModel>().FirstOrDefault(a => a.ID>=0&& a.ID == next.NextParam); ;
                 }
                 return res;
             }
         }
-        public ParameterProxy Param { get; set; }
+
+        public ParameterProxy Param
+        {
+            get { return _param; }
+            set
+            {
+                _param = value;
+                OnValueChanged();
+            }
+        }
+
+        private void OnValueChanged()
+        {
+            OnPropertyChanged(() => TogggleValue);
+            OnPropertyChanged(() => SliderValue);
+            OnPropertyChanged(() => Chain);
+            OnPropertyChanged(() => Name);
+            OnPropertyChanged(() => ZoneName);
+            OnPropertyChanged(() => CategoryName);
+            OnPropertyChanged(() => Value);
+            OnPropertyChanged(() => TogggleValue);
+            OnPropertyChanged(() => SliderValue);
+            OnPropertyChanged(() => NewValue);
+        }
+
         public override int ID
         {
-            get { return Param.ID; }
+            get { return Param?.ID ?? -1; }
             set {  }
         }
 
@@ -44,7 +69,7 @@ namespace ViewModel
         public int ZontId => Param.Sensor?.Zone.ID?? -1;
         public string ZoneName => Param.Sensor?.Zone.Name ?? "Не назначено";
         public string Name => Param.Name;
-        public int NextParam => Param.NextParam;
+        public int NextParam => Param?.NextParam??-1;
         public string Url
         {
             get
@@ -61,16 +86,16 @@ namespace ViewModel
             {
                 _newValue = value;
                 Use<INetworkService>().SyncRequest(Url);
+                OnValueChanged();
             }
         }
 
-        public bool TogggleValue { get; set; }
-        public bool TogggleValue1
+        //public bool TogggleValue { get; set; }
+        public bool TogggleValue
         {
             get
             {
-                return false;
-                //Param.ActualValue=="1"; 
+                return Param.ActualValue=="1"; 
             }
             set
             {
@@ -83,6 +108,8 @@ namespace ViewModel
         {
             get
             {
+                if (Param == null)
+                    return false;
                 if (!_isFirst.HasValue)
                 {
                     _isFirst = Use<IPool>().GetViewModels<ClientParameterViewModel>().All(a => a.NextParam != ID);
@@ -102,6 +129,7 @@ namespace ViewModel
         public int _currentSliderValue = 0;
         private bool _togggleValue;
         private string _newValue;
+        private ParameterProxy _param;
 
         public int SliderValue
         {

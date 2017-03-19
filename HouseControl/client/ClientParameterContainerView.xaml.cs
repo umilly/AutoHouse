@@ -29,10 +29,32 @@ namespace View
         {
             InitializeComponent();
         }
+
+        private readonly List<ClientSingleParameterView> _children=new List<ClientSingleParameterView>();
         public List<ClientSingleParameterView> ParameterViewList
         {
-            get { return ViewModel?.Chain.Select(a => _viewService.CreateView<ClientSingleParameterView>(a)).ToList(); }
+            get
+            {
+                PrepareChildren();
+                return _children;
+                //return ViewModel?.Chain?.Select(a => _viewService.CreateView<ClientSingleParameterView>(a)).ToList();
+            }
         }
+
+        private void PrepareChildren()
+        {
+            if (ViewModel?.Chain == null)
+            {
+                _children.Clear();
+                return;
+            }
+            _children.FullFill(ViewModel.Chain.Count(), () => _viewService.CreateView<ClientSingleParameterView>(null));
+            for (int i = 0; i < _children.Count; i++)
+            {
+                _children[i].ViewModel = ViewModel.Chain[i];
+            }
+        }
+
         public ClientParameterContainerView(ViewService viewService) : base(viewService)
         {
             InitializeComponent();

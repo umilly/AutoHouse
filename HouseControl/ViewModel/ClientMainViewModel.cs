@@ -78,9 +78,11 @@ namespace ViewModel
             {
                 _page = value; 
                 OnPropertyChanged(()=>Mode);
+                OnPropertyChanged(() => BGVisible);
             }
         }
 
+        public bool BGVisible => _page == Page.Main;
         public void InitSettings()
         {
             var settings = Use<IPool>().GetOrCreateVM<ClientOptionsViewModel>(1);

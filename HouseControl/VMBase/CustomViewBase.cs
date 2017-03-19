@@ -11,6 +11,7 @@ namespace VMBase
     public class CustomViewBase<T> : UserControl,INotifyPropertyChanged, IView where T : IViewModel
     {
         protected ViewService _viewService;
+        private T _viewModel;
 
         public CustomViewBase(ViewService viewService)
         {
@@ -34,14 +35,26 @@ namespace VMBase
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public T ViewModel { get; set; }
+
+        public T ViewModel
+        {
+            get { return _viewModel; }
+            set
+            {
+                if(Object.Equals(value,_viewModel))
+                    return;
+                _viewModel = value;
+                OnVMSet();
+                OnPropertyChanged();
+            }
+        }
+
         IViewModel IView.ViewModel
         {
             get { return ViewModel; }
             set
             {
                 ViewModel = (T)value; 
-                OnPropertyChanged();
             }
         }
 

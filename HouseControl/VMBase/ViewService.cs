@@ -68,13 +68,11 @@ namespace VMBase
         {
             var res = Activator.CreateInstance(type, this) as IView;
             res.ViewModel = Use<IPool>().GetOrCreateVM(res.VmType,Id);
-            AfeterCreate(res);
             return res;
         }
 
         private void AfeterCreate(IView res)
         {
-            res.OnVMSet();
             NextView = res;
         }
 

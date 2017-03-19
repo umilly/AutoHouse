@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Cache;
 using System.Text;
@@ -67,6 +68,23 @@ namespace View
                 ? null
                 : new BitmapImage(new Uri(ViewModel.ParamImage));
             OnPropertyChanged("Image1");
+        }
+    }
+
+    public class RadioButtonValueToImageConverter : IValueConverter
+    {
+        static BitmapImage on = new BitmapImage(new Uri("pack://application:,,,/Resources/radioOn.png"));
+        static BitmapImage off = new BitmapImage(new Uri("pack://application:,,,/Resources/radioOff.png"));
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if ((bool) value)
+                return @on;
+            return off;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

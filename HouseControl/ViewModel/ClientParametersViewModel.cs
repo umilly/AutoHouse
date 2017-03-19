@@ -38,12 +38,15 @@ namespace ViewModel
             if (string.IsNullOrEmpty(paramSS))
                 return;
             var des = Use<INetworkService>().Deserialize<Parameters>(paramSS);
-            Use<IPool>().GetViewModels<ClientParameterViewModel>().ForEach(a => a.Delete());
+            var oldParams=Use<IPool>().GetViewModels<ClientParameterViewModel>().ToList();
             foreach (var parameterProxy in des.ParamList)
             {
-                var para = Use<IPool>().CreateVM<ClientParameterViewModel>();
+                var para = Use<IPool>().GetOrCreateVM<ClientParameterViewModel>(parameterProxy.ID);
                 para.Param = parameterProxy;
+                if (oldParams.Contains(para))
+                    oldParams.Remove(para);
             }
+            oldParams.ForEach(a => a.Delete());
             OnPropertyChanged(() => Parameters);
             OnPropertyChanged(() => Groups);
             _onReceiveParams?.Invoke();
