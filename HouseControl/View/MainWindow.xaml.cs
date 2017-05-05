@@ -61,8 +61,8 @@ namespace WpfApplication
 
         private void SettingsMenuClick(object sender, RoutedEventArgs e)
         {
-            _container.Use<IViewService>().CreateView<SettingsView>(1);
-            OnNextView(null, null);
+            CurrentContent = _container.Use<IViewService>().CreateView<SettingsView>(1);
+            //OnNextView(null, null);
         }
 
         private void ControlMenuClick(object sender, RoutedEventArgs e)
@@ -82,8 +82,8 @@ namespace WpfApplication
 
         private void ShowDevicesClick(object sender, RoutedEventArgs e)
         {
-            _container.Use<IViewService>().CreateView<DevicesNavigationView>();
-            OnNextView(null, null);
+            CurrentContent=_container.Use<IViewService>().CreateView<DevicesNavigationView>();
+            //OnNextView(null, null);
         }
 
         private void AddControllerClick(object sender, RoutedEventArgs e)
@@ -94,20 +94,20 @@ namespace WpfApplication
 
         private void ShowReactionsClick(object sender, RoutedEventArgs e)
         {
-            _container.Use<IViewService>().CreateView<ReactionNavigationView>();
-            OnNextView(null, null);
+            CurrentContent = _container.Use<IViewService>().CreateView<ReactionNavigationView>();
+            //OnNextView(null, null);
         }
 
         private void ShowParametersList(object sender, RoutedEventArgs e)
         {
-            _container.Use<IViewService>().CreateView<ParametersListView>();
-            OnNextView(null, null);
+            CurrentContent = _container.Use<IViewService>().CreateView<ParametersListView>();
+            //OnNextView(null, null);
         }
 
         private void ShowZoneList(object sender, RoutedEventArgs e)
         {
-            _container.Use<IViewService>().CreateView<ZoneListView>();
-            OnNextView(null, null);
+            CurrentContent = _container.Use<IViewService>().CreateView<ZoneListView>();
+            //OnNextView(null, null);
         }private void ExitClick(object sender, RoutedEventArgs e)
         {
             Close();

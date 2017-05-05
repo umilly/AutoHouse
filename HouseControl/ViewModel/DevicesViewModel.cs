@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Facade;
+using Model;
 using ViewModel;
 using ViewModelBase;
 
@@ -10,6 +11,7 @@ public class DevicesViewModel : ViewModelBase.ViewModelBase, ITreeNode
     public DevicesViewModel(IServiceContainer container) : base(container)
     {
         _contextMenu.Add(new CustomContextMenuItem("Добавить контроллер", new CommandHandler(AddController)));
+        _contextMenu.Add(new CustomContextMenuItem("Добавить контроллер modbus", new CommandHandler(AddControllerMB)));
     }
 
     public override int ID
@@ -39,6 +41,12 @@ public class DevicesViewModel : ViewModelBase.ViewModelBase, ITreeNode
     {
         var newMode = Use<IPool>().CreateDBObject<ControllerVM>();
         newMode.Name = "Контроллер";
+        OnPropertyChanged(() => Children);
+    }
+    private void AddControllerMB(bool obj)
+    {
+        var newMode = Use<IPool>().CreateDBObject<ModbusControllerViewModel>();
+        newMode.Name = "Контроллер ModBus";
         OnPropertyChanged(() => Children);
     }
 }

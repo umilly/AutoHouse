@@ -40,7 +40,7 @@ namespace View
                 //return ViewModel?.Chain?.Select(a => _viewService.CreateView<ClientSingleParameterView>(a)).ToList();
             }
         }
-
+        //public string ContainerGroupName { get { return "группа х"; } }
         private void PrepareChildren()
         {
             if (ViewModel?.Chain == null)
@@ -63,7 +63,7 @@ namespace View
         public override void OnVMSet()
         {
             base.OnVMSet();
-            OnPropertyChanged("ParameterViewList");
+            OnPropertyChanged(()=> ParameterViewList);
         }
     }
 }

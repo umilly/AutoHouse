@@ -28,6 +28,8 @@
     <EntitySet Name="Devices_Sensor" EntityType="ApplicationModel.Store.Devices_Sensor" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_Controller" EntityType="ApplicationModel.Store.Devices_Controller" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_CustomDevice" EntityType="ApplicationModel.Store.Devices_CustomDevice" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Devices_ModBusController" EntityType="ApplicationModel.Store.Devices_ModBusController" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Devices_ModBusDevice" EntityType="ApplicationModel.Store.Devices_ModBusDevice" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ZoneScenario" EntityType="ApplicationModel.Store.ZoneScenario" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_Users_Role" Association="ApplicationModel.Store.FK_Users_Role">
       <End Role="Role" EntitySet="Roles" />
@@ -164,6 +166,14 @@
     <AssociationSet Name="FK_CustomDevice_inherits_Device" Association="ApplicationModel.Store.FK_CustomDevice_inherits_Device">
       <End Role="Device" EntitySet="Devices" />
       <End Role="CustomDevice" EntitySet="Devices_CustomDevice" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ModBusController_inherits_Controller" Association="ApplicationModel.Store.FK_ModBusController_inherits_Controller">
+      <End Role="Controller" EntitySet="Devices_Controller" />
+      <End Role="ModBusController" EntitySet="Devices_ModBusController" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ModBusDevice_inherits_CustomDevice" Association="ApplicationModel.Store.FK_ModBusDevice_inherits_CustomDevice">
+      <End Role="CustomDevice" EntitySet="Devices_CustomDevice" />
+      <End Role="ModBusDevice" EntitySet="Devices_ModBusDevice" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Contents">
@@ -362,6 +372,22 @@
     <Property Name="CommandPath" Type="nvarchar(max)" Nullable="false" DefaultValue="" />
     <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="Controller_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Devices_ModBusController">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="ComPort" Type="smallint" Nullable="true" DefaultValue="1" />
+    <Property Name="SpeedType" Type="smallint" Nullable="true" />
+    <Property Name="Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Devices_ModBusDevice">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="IsCoil" Type="bit" Nullable="true" />
+    <Property Name="Address" Type="smallint" Nullable="true" />
+    <Property Name="Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ZoneScenario">
     <Key>
@@ -781,6 +807,34 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="CustomDevice">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ModBusController_inherits_Controller">
+    <End Role="Controller" Type="ApplicationModel.Store.Devices_Controller" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ModBusController" Type="ApplicationModel.Store.Devices_ModBusController" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Controller">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ModBusController">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ModBusDevice_inherits_CustomDevice">
+    <End Role="CustomDevice" Type="ApplicationModel.Store.Devices_CustomDevice" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ModBusDevice" Type="ApplicationModel.Store.Devices_ModBusDevice" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="CustomDevice">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ModBusDevice">
         <PropertyRef Name="Id" />
       </Dependent>
     </ReferentialConstraint>
@@ -1339,6 +1393,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ModBusController" BaseType="ApplicationModel.Controller" >
+          <Property Name="ComPort" Type="Int16" DefaultValue="1" Nullable="true" />
+          <Property Name="SpeedType" Type="Int16" Nullable="true" />
+        </EntityType>
+        <EntityType Name="ModBusDevice" BaseType="ApplicationModel.CustomDevice" >
+          <Property Name="IsCoil" Type="Boolean" Nullable="true" />
+          <Property Name="Address" Type="Int16" Nullable="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1481,6 +1543,20 @@
         <MappingFragment StoreEntitySet="Devices_CustomDevice">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CommandPath" ColumnName="CommandPath" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.ModBusController)">
+        <MappingFragment StoreEntitySet="Devices_ModBusController">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ComPort" ColumnName="ComPort" />
+          <ScalarProperty Name="SpeedType" ColumnName="SpeedType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.ModBusDevice)">
+        <MappingFragment StoreEntitySet="Devices_ModBusDevice">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IsCoil" ColumnName="IsCoil" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

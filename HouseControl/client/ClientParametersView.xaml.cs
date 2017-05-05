@@ -62,9 +62,9 @@ namespace View
             base.OnVMSet();
             ViewModel.AskParams(() =>
             {
-                OnPropertyChanged("ParameterViewList");
+                OnPropertyChanged(()=>ParameterViewList);
             });
-            OnPropertyChanged("ParameterViewList");
+            OnPropertyChanged(() => ParameterViewList);
         }
     }
 

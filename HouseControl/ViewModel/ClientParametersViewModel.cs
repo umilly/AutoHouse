@@ -12,8 +12,8 @@ namespace ViewModel
     {
         public ClientParametersViewModel(IServiceContainer container) : base(container)
         {
-            _groupingService.Id = proxy => proxy.CategoryId;
-            _groupingService.Name= proxy => proxy.CategoryName;
+            _groupingService.Id = proxy => proxy.ZontId;
+            _groupingService.Name= proxy => proxy.ZoneName;
         }
         public override int ID { get { return 1; } set {} }
         readonly GroupBy<ClientParameterViewModel>  _groupingService=new GroupBy<ClientParameterViewModel>();

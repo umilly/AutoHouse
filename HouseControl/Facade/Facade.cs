@@ -149,6 +149,8 @@ namespace Facade
             
         }
     }
+
+    
     public enum WebCommandType
     {
         GetParams,

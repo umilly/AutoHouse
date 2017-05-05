@@ -10,16 +10,19 @@
              d:DesignHeight="300" d:DesignWidth="300"
                        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Grid>
-        <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-            <Expander.HeaderTemplate>
-                <DataTemplate>
-                    <Grid Background="CornflowerBlue" HorizontalAlignment="Stretch">
-                        <TextBlock FontSize="16" Foreground="White">Группа 2</TextBlock>
+        <ItemsControl  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" Name="ParamsList" ItemsSource="{Binding ViewModel.Groups, Mode=OneWay }">
+            <ItemsControl.ItemTemplate>
+                <ItemContainerTemplate DataType="Group">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="41"></RowDefinition>
+                            <RowDefinition Height="30"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Button Padding="30,0,0,0" Foreground="White" FontSize="22" HorizontalContentAlignment="Left" Name="GroupBtn"  Background="#0979be" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding Name}"></Button>
+                        <!--<ContentPresenter Grid.Row="1" Content="{Binding Content}"></ContentPresenter>-->
                     </Grid>
-                </DataTemplate>
-            </Expander.HeaderTemplate>
-            <ItemsControl  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" Name="ParamsList" ItemsSource="{Binding ParameterViewList, Mode=OneWay }">
-            </ItemsControl>
-        </Expander>
+                </ItemContainerTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </vmBase:CustomViewBase>

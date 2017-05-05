@@ -38,7 +38,7 @@ namespace ViewModel
 
         private void PreparePool()
         {
-            var types = GetType().Assembly.GetTypes().Where(type => typeof (IEntytyObjectVM).IsAssignableFrom(type));
+            var types = GetType().Assembly.GetTypes().Where(type => typeof (IEntytyObjectVM).IsAssignableFrom(type)&&!type.IsAbstract);
             Use<IPool>().FillPool(types.ToArray());
         }
 

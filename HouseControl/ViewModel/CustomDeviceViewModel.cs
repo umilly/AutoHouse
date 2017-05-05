@@ -7,10 +7,18 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class CustomDeviceViewModel : LinkedObjectVM<CustomDevice>
+    public class CustomDeviceViewModel : DeviceViewModelBase<CustomDevice>
+    {
+        public CustomDeviceViewModel(IServiceContainer container, Models dataBase, CustomDevice model) : base(container, dataBase, model)
+        {
+        }
+
+    }
+
+    public abstract class DeviceViewModelBase<T> :  LinkedObjectVM<T>, ICustomDevice where T:CustomDevice
     {
         
-        public CustomDeviceViewModel(IServiceContainer container, Models dataBase, CustomDevice model) : base(container, dataBase, model)
+        public DeviceViewModelBase(IServiceContainer container, Models dataBase, T model) : base(container, dataBase, model)
         {
             
         }
@@ -78,7 +86,7 @@ namespace ViewModel
             link.Order = ParameterTypes.Count();
             link.ParamType = pt;
             link.Name = "Параметр";
-            link.Device = this;
+            link.Device = this as CustomDeviceViewModel;
             OnPropertyChanged(()=>ParameterTypes);
         }
 
@@ -107,5 +115,10 @@ namespace ViewModel
             model.CustomDevice = Model;
             Model.DeviceParameterTypeLinks.Add(model);
         }
+    }
+    public interface ICustomDevice : IViewModel
+    {
+        void LinkTo(Controller model);
+        string Name { get; set; }
     }
 }

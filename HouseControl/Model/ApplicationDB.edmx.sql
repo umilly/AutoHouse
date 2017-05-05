@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 01/12/2017 16:00:24
+-- Date Created: 03/25/2017 14:22:12
 -- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -106,6 +106,9 @@ IF OBJECT_ID(N'[dbo].[FK_ParametrSetCommandParameter2]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ParametrSetCommandReaction]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ParametrSetCommands] DROP CONSTRAINT [FK_ParametrSetCommandReaction];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ParameterParameter]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parameter] DROP CONSTRAINT [FK_ParameterParameter];
 GO
 IF OBJECT_ID(N'[dbo].[FK_Sensor_inherits_Device]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Devices_Sensor] DROP CONSTRAINT [FK_Sensor_inherits_Device];
@@ -392,6 +395,22 @@ CREATE TABLE [dbo].[Devices_CustomDevice] (
 );
 GO
 
+-- Creating table 'Devices_ModBusController'
+CREATE TABLE [dbo].[Devices_ModBusController] (
+    [ComPort] smallint  NULL,
+    [SpeedType] smallint  NULL,
+    [Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'Devices_ModBusDevice'
+CREATE TABLE [dbo].[Devices_ModBusDevice] (
+    [IsCoil] bit  NULL,
+    [Address] smallint  NULL,
+    [Id] int  NOT NULL
+);
+GO
+
 -- Creating table 'ZoneScenario'
 CREATE TABLE [dbo].[ZoneScenario] (
     [Zones_Id] int  NOT NULL,
@@ -532,6 +551,18 @@ GO
 -- Creating primary key on [Id] in table 'Devices_CustomDevice'
 ALTER TABLE [dbo].[Devices_CustomDevice]
 ADD CONSTRAINT [PK_Devices_CustomDevice]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Devices_ModBusController'
+ALTER TABLE [dbo].[Devices_ModBusController]
+ADD CONSTRAINT [PK_Devices_ModBusController]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Devices_ModBusDevice'
+ALTER TABLE [dbo].[Devices_ModBusDevice]
+ADD CONSTRAINT [PK_Devices_ModBusDevice]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1027,6 +1058,24 @@ ALTER TABLE [dbo].[Devices_CustomDevice]
 ADD CONSTRAINT [FK_CustomDevice_inherits_Device]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Devices]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Id] in table 'Devices_ModBusController'
+ALTER TABLE [dbo].[Devices_ModBusController]
+ADD CONSTRAINT [FK_ModBusController_inherits_Controller]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Devices_Controller]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Id] in table 'Devices_ModBusDevice'
+ALTER TABLE [dbo].[Devices_ModBusDevice]
+ADD CONSTRAINT [FK_ModBusDevice_inherits_CustomDevice]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Devices_CustomDevice]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO

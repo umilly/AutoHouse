@@ -112,6 +112,12 @@
     <Compile Include="DeviceParameterTypeLink.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="ModBusController.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModBusDevice.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Mode.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>

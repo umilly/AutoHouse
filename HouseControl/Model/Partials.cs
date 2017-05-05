@@ -201,7 +201,54 @@ namespace Model
                 RegiterUpdate(Guid.Parse("9974EEE0-E905-4BCF-B2C7-AAD0F5F7A3CD"), ParamsCommandUpdate, FillParameterCategories);
                 RegiterUpdate(Guid.Parse("9A8F722D-1E46-4924-962B-CCCF1CD8D10F"), AddFields);
                 RegiterUpdate(Guid.Parse("AD4874E8-FD62-4F90-BA16-225E10356ABB"), AddParameterChainLink,AdditionalParamCategory);
+                RegiterUpdate(Guid.Parse("D8649F0B-A473-4846-9786-3FE1FB993C11"), CreateModbusControllerAndDevices);
             }
+
+            public const string CreateModbusControllerAndDevices = @"
+SET QUOTED_IDENTIFIER OFF;
+-- Creating table 'Devices_ModBusController'
+CREATE TABLE [dbo].[Devices_ModBusController] (
+    [ComPort] smallint  NULL,
+    [SpeedType] smallint  NULL,
+    [Id] int  NOT NULL
+);
+
+-- Creating table 'Devices_ModBusDevice'
+CREATE TABLE [dbo].[Devices_ModBusDevice] (
+    [IsCoil] bit  NULL,
+    [Address] smallint  NULL,
+    [Id] int  NOT NULL
+);
+
+-- Creating primary key on [Id] in table 'Devices_ModBusController'
+ALTER TABLE [dbo].[Devices_ModBusController]
+ADD CONSTRAINT [PK_Devices_ModBusController]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+
+-- Creating primary key on [Id] in table 'Devices_ModBusDevice'
+ALTER TABLE [dbo].[Devices_ModBusDevice]
+ADD CONSTRAINT [PK_Devices_ModBusDevice]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+
+-- Creating foreign key on [Id] in table 'Devices_ModBusController'
+ALTER TABLE [dbo].[Devices_ModBusController]
+ADD CONSTRAINT [FK_ModBusController_inherits_Controller]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Devices_Controller]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+
+
+-- Creating foreign key on [Id] in table 'Devices_ModBusDevice'
+ALTER TABLE [dbo].[Devices_ModBusDevice]
+ADD CONSTRAINT [FK_ModBusDevice_inherits_CustomDevice]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Devices_CustomDevice]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+
+
+";
 
             public const string AddParameterChainLink =
                 @"

@@ -58,6 +58,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControllerBase.cs" />
+    <Compile Include="ModbusControllerViewModel.cs" />
     <Compile Include="ClientModesViewModel.cs" />
     <Compile Include="ClientModeViewModel.cs" />
     <Compile Include="ClientOptionsViewModel.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="DeviceTreeVM.cs" />
     <Compile Include="ClientMainViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="ModBusDeviceViewModel.cs" />
     <Compile Include="ModeViewModel.cs" />
     <Compile Include="ParameterCategoryVm.cs" />
     <Compile Include="ParameterSetCommandVm.cs" />

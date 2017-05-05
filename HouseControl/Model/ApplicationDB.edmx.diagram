@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0d9c479b01f0405cb4e709d397f8aea8" Name="Diagram1" ZoomLevel="106">
+      <Diagram DiagramId="0d9c479b01f0405cb4e709d397f8aea8" Name="Diagram1" ZoomLevel="103">
         <EntityTypeShape EntityType="ApplicationModel.Content" Width="1.5" PointX="19.375" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ApplicationModel.Role" Width="1.5" PointX="19.5" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ApplicationModel.User" Width="1.5" PointX="19.25" PointY="6.375" IsExpanded="true" />
         <AssociationConnector Association="ApplicationModel.FK_Users_Role" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="ApplicationModel.Controller" Width="1.5" PointX="2.625" PointY="15.375" />
+        <EntityTypeShape EntityType="ApplicationModel.Controller" Width="1.5" PointX="0.5" PointY="16.375" />
         <EntityTypeShape EntityType="ApplicationModel.Sensor" Width="1.5" PointX="2.75" PointY="9.25" />
-        <EntityTypeShape EntityType="ApplicationModel.SensorType" Width="1.5" PointX="8.75" PointY="5.5" />
+        <EntityTypeShape EntityType="ApplicationModel.SensorType" Width="1.5" PointX="1.5" PointY="13" />
         <EntityTypeShape EntityType="ApplicationModel.DBVersion" Width="1.5" PointX="5.125" PointY="9.75" />
         <EntityTypeShape EntityType="ApplicationModel.Mode" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="ApplicationModel.Scenario" Width="1.5" PointX="1.5" PointY="3" IsExpanded="true" />
@@ -21,12 +21,17 @@
         <EntityTypeShape EntityType="ApplicationModel.ConditionType" Width="1.5" PointX="6.5" PointY="0.75" />
         <AssociationConnector Association="ApplicationModel.ConditionTypeCondition" />
         <AssociationConnector Association="ApplicationModel.ReactionCondition" />
-        <EntityTypeShape EntityType="ApplicationModel.Command" Width="1.5" PointX="8" PointY="8.75" />
+        <EntityTypeShape EntityType="ApplicationModel.Command" Width="1.5" PointX="8" PointY="8.625" />
         <EntityTypeShape EntityType="ApplicationModel.Device" Width="1.5" PointX="0.75" PointY="7" />
         <InheritanceConnector EntityType="ApplicationModel.Sensor" />
-        <InheritanceConnector EntityType="ApplicationModel.Controller" />
-        <EntityTypeShape EntityType="ApplicationModel.Parameter" Width="1.5" PointX="11" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ApplicationModel.ParameterType" Width="1.5" PointX="8.75" PointY="17.875" />
+        <InheritanceConnector EntityType="ApplicationModel.Controller" ManuallyRouted="true" >
+          <ConnectorPoint PointX="1.5" PointY="8.4033821614583335" />
+          <ConnectorPoint PointX="1.5" PointY="8.8851780344094671" />
+          <ConnectorPoint PointX="1.25" PointY="8.8851780344094671" />
+          <ConnectorPoint PointX="1.25" PointY="16.375" />
+        </InheritanceConnector>
+        <EntityTypeShape EntityType="ApplicationModel.Parameter" Width="1.5" PointX="11.875" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ApplicationModel.ParameterType" Width="1.5" PointX="9.5" PointY="16.75" IsExpanded="true" />
         <AssociationConnector Association="ApplicationModel.ParameterTypeParameter" />
         <AssociationConnector Association="ApplicationModel.SensorTypeSensor" />
         <AssociationConnector Association="ApplicationModel.SensorController" />
@@ -39,7 +44,13 @@
         <InheritanceConnector EntityType="ApplicationModel.CustomDevice" />
         <AssociationConnector Association="ApplicationModel.CommandCustomDevice" />
         <AssociationConnector Association="ApplicationModel.ConditionCondition" />
-        <AssociationConnector Association="ApplicationModel.CustomDeviceController" />
+        <AssociationConnector Association="ApplicationModel.CustomDeviceController" ManuallyRouted="true" >
+          <ConnectorPoint PointX="4.7187475" PointY="14.662985026041666" />
+          <ConnectorPoint PointX="4.7187475" PointY="17.661455370384623" />
+          <ConnectorPoint PointX="2.29607160275" PointY="17.661455370384623" />
+          <ConnectorPoint PointX="2.29607160275" PointY="16.7031225" />
+          <ConnectorPoint PointX="2" PointY="16.7031225" />
+        </AssociationConnector>
         <AssociationConnector Association="ApplicationModel.ConditionSensor" />
         <AssociationConnector Association="ApplicationModel.ConditionParameter1" />
         <AssociationConnector Association="ApplicationModel.ConditionParameter2" />
@@ -61,6 +72,11 @@
         <AssociationConnector Association="ApplicationModel.ParametrSetCommandParameter2" />
         <AssociationConnector Association="ApplicationModel.ParametrSetCommandReaction" />
         <AssociationConnector Association="ApplicationModel.ParameterParameter" />
+        <EntityTypeShape EntityType="ApplicationModel.ModBusController" Width="1.5" PointX="0.5" PointY="19.625" />
+        <InheritanceConnector EntityType="ApplicationModel.ModBusController" />
+        <EntityTypeShape EntityType="ApplicationModel.ModBusDevice" Width="1.5" PointX="4.375" PointY="20.125" />
+        <InheritanceConnector EntityType="ApplicationModel.ModBusDevice" ManuallyRouted="false" >
+        </InheritanceConnector>
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
