@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/25/2017 14:22:12
+-- Date Created: 05/05/2017 18:14:57
 -- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -119,6 +119,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_CustomDevice_inherits_Device]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Devices_CustomDevice] DROP CONSTRAINT [FK_CustomDevice_inherits_Device];
 GO
+IF OBJECT_ID(N'[dbo].[FK_ModBusController_inherits_Controller]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Devices_ModBusController] DROP CONSTRAINT [FK_ModBusController_inherits_Controller];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ModBusDevice_inherits_CustomDevice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Devices_ModBusDevice] DROP CONSTRAINT [FK_ModBusDevice_inherits_CustomDevice];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -189,6 +195,12 @@ IF OBJECT_ID(N'[dbo].[Devices_Controller]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Devices_CustomDevice]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Devices_CustomDevice];
+GO
+IF OBJECT_ID(N'[dbo].[Devices_ModBusController]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Devices_ModBusController];
+GO
+IF OBJECT_ID(N'[dbo].[Devices_ModBusDevice]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Devices_ModBusDevice];
 GO
 IF OBJECT_ID(N'[dbo].[ZoneScenario]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ZoneScenario];
@@ -318,6 +330,7 @@ CREATE TABLE [dbo].[Parameter] (
     [IsPublic] bit  NOT NULL,
     [Image] varbinary(max)  NULL,
     [NextParameterId] int  NULL,
+    [Description] nvarchar(max)  NULL,
     [ParameterCategory_Id] int  NULL,
     [Sensor_Id] int  NULL
 );

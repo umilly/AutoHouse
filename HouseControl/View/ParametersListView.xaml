@@ -12,32 +12,61 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="500"/>
         </Grid.RowDefinitions>
-        <ItemsControl Grid.Row="1" Name="ParamsList" ItemsSource="{Binding ViewModel.Parameters, Mode=OneWay }">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="viewModel:ParameterViewModel">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="30"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Text="{Binding Name , Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
-                        <ComboBox Grid.Column="1"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding ParamType}" ItemsSource="{Binding ParamTypes}" />
-                        <TextBox Grid.Column="2" IsEnabled="{Binding IsEditable}" Text="{Binding Value, Mode=TwoWay}"></TextBox>
-                        <ComboBox Grid.Column="3"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding Category}" ItemsSource="{Binding Categories}" DisplayMemberPath="Name"/>
-                        <ComboBox Grid.Column="4"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding Sensor}" ItemsSource="{Binding Sensors}" DisplayMemberPath="Name"/>
-                        <ComboBox Grid.Column="5"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding NextParam}" ItemsSource="{Binding AllParams}" DisplayMemberPath="Name"/>
-                        <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="6" IsEnabled="{Binding IsEditable}" IsChecked="{Binding IsPublic}"></CheckBox>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <Button Grid.Row="0" Click="AddParamsClick">Сгенерировать парметры</Button>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" Grid.Row="1">ID</Label>
+        <Label Grid.Column="1" Grid.Row="1">Name </Label>
+        <Label Grid.Column="2" Grid.Row="1">Description</Label>
+        <Label Grid.Column="3" Grid.Row="1">Type</Label>
+        <Label Grid.Column="4" Grid.Row="1">Value</Label>
+        <Label Grid.Column="5" Grid.Row="1">Categroty</Label>
+        <Label Grid.Column="6" Grid.Row="1">Sensor</Label>
+        <Label Grid.Column="7" Grid.Row="1">Link</Label>
+        <Label Grid.Column="8" Grid.Row="1">Public</Label>
+        <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" >
+            <ItemsControl Name="ParamsList" ItemsSource="{Binding ViewModel.Parameters, Mode=OneWay }">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="viewModel:ParameterViewModel">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="70"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding ID , Mode=TwoWay}" IsEnabled="False"/>
+                            <TextBox Grid.Column="1" Text="{Binding Name , Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
+                            <TextBox Grid.Column="2" Text="{Binding Description , Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
+                            <ComboBox Grid.Column="3"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding ParamType}" ItemsSource="{Binding ParamTypes}" />
+                            <TextBox Grid.Column="4" IsEnabled="{Binding IsEditable}" Text="{Binding Value, Mode=TwoWay}"></TextBox>
+                            <ComboBox Grid.Column="5"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding Category}" ItemsSource="{Binding Categories}" DisplayMemberPath="Name"/>
+                            <ComboBox Grid.Column="6"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding Sensor}" ItemsSource="{Binding Sensors}" DisplayMemberPath="Name"/>
+                            <ComboBox Grid.Column="7"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding NextParam}" ItemsSource="{Binding AllParams}" DisplayMemberPath="Name"/>
+                            <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="8" IsEnabled="{Binding IsEditable}" IsChecked="{Binding IsPublic}"></CheckBox>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <Button Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="0" Click="AddParamsClick">Сгенерировать парметры</Button>
     </Grid>
 </vmBase:CustomViewBase>

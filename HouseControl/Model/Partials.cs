@@ -202,7 +202,16 @@ namespace Model
                 RegiterUpdate(Guid.Parse("9A8F722D-1E46-4924-962B-CCCF1CD8D10F"), AddFields);
                 RegiterUpdate(Guid.Parse("AD4874E8-FD62-4F90-BA16-225E10356ABB"), AddParameterChainLink,AdditionalParamCategory);
                 RegiterUpdate(Guid.Parse("D8649F0B-A473-4846-9786-3FE1FB993C11"), CreateModbusControllerAndDevices);
+                RegiterUpdate(Guid.Parse("08E7A232-440A-451D-B88A-03E3B9F100C0"), CreateParamsDescription);
             }
+
+            public const string CreateParamsDescription= @"
+SET QUOTED_IDENTIFIER OFF;
+
+ALTER TABLE [dbo].[Parameter]
+ADD [Description] nvarchar(max)  NULL;
+";
+
 
             public const string CreateModbusControllerAndDevices = @"
 SET QUOTED_IDENTIFIER OFF;
@@ -733,6 +742,8 @@ ON [dbo].[ParametrSetCommands]
         [DataMember]
         public string Name { get; set; }
         [DataMember]
+        public string Description { get; set; }
+        [DataMember]
         public int ID { get; set; }
         [DataMember]
         public int NextParam { get; set; }
@@ -771,7 +782,8 @@ ON [dbo].[ParametrSetCommands]
                 ParamType = (ParameterTypeValue) parameter.ParameterTypeId,
                 Value = parameter.Value,
                 Category = parameter.ParameterCategory == null ? null : (Category?) parameter.ParameterCategory.ID,
-                Sensor = sensor
+                Sensor = sensor,
+                Description = parameter.Description
             };
         }
     }

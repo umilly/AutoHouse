@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApplication"
         xmlns:view="clr-namespace:View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1000"
+        Title="MainWindow" Height="700" Width="1200"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         >
     <Window.Resources>

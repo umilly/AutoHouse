@@ -85,6 +85,15 @@ namespace ViewModel
                 OnPropertyChanged();
             }
         }
+        public string Description
+        {
+            get { return Model.Description; }
+            set
+            {
+                Model.Description = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsEditable => Model.ID != Parameter.CurrentTimeId;
 
