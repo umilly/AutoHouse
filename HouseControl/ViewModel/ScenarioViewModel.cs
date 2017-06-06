@@ -83,6 +83,31 @@ namespace ViewModel
         public void LinkZone(ZoneViewModel zone, bool value)
         {
             zone.LinkWithScenario(Model, value);
+            ClearSensorsForNotValidZones();
+        }
+
+        private void ClearSensorsForNotValidZones()
+        {
+            var revalidateConditions= Use<IPool>().GetViewModels<ConditionViewModel>().Where(a => a.CurrentScenario == this);
+            foreach (var conditionViewModel in revalidateConditions)
+            {
+                if (conditionViewModel.LeftParam is SensorViewModel
+                    && !HaveZone((conditionViewModel.LeftParam as SensorViewModel).Zone))
+                {
+                    conditionViewModel.LeftParam=EmptyValue.Instance;
+                }
+            }
+            var revalidateCommands = Use<IPool>().GetViewModels<ParameterSetCommandVm>().Where(a => a.Reaction.Scenario == this);
+            foreach (var command in revalidateCommands)
+            {
+                if (command.Sensor !=null
+                    && !HaveZone((command.Sensor).Zone))
+                {
+                    command.Sensor = null;
+                }
+            }
+
+
         }
     }
 }

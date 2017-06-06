@@ -102,11 +102,25 @@ namespace ViewModel
             get
             {
                 return Use<IPool>().GetViewModels<SensorViewModel>()
+                    .Where(a => a.Zone != null&& a.Zone.IsGlobal|| CurrentScenario.HaveZone(a.Zone))
                     .Cast<IConditionSource>()
                     .Union(Use<IPool>().GetViewModels<ParameterViewModel>())
                     .Union(new[] { EmptyValue.Instance});
             }
         }
+
+        public ScenarioViewModel CurrentScenario
+        {
+            get
+            {
+                if (Reaction != null)
+                    return Reaction.Scenario;
+                if(ParentCondition==null)
+                    throw new ArgumentOutOfRangeException("CurrentScenario", "условие не привязано ни к родительскому условию ни к реакции");
+                return (ParentCondition as ConditionViewModel).CurrentScenario;
+            }
+        }
+
         public IEnumerable<IConditionSource> RightParamSource
         {
             get

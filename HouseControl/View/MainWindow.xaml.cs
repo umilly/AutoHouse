@@ -29,8 +29,8 @@ namespace WpfApplication
             MainVM.InitSettings();
             InitializeComponent();
             CommandBindings.Add(new CommandBinding(ShowNextViewCommand.Instance, OnNextView));
-            
             ShowDevicesClick(null,null);
+            Closed += (sender, args) => ShutDown(false);
         }
 
         
@@ -108,11 +108,23 @@ namespace WpfApplication
         {
             CurrentContent = _container.Use<IViewService>().CreateView<ZoneListView>();
             //OnNextView(null, null);
-        }private void ExitClick(object sender, RoutedEventArgs e)
+        }
+        private void ExitClick(object sender, RoutedEventArgs e)
         {
-            Close();
+            ShutDown();
+        }
+
+        private void ShutDown(bool needClose=true)
+        {
+            if(needClose)
+                Close();
             Application.Current.Shutdown();
             _container.Use<ITimerSerivce>().Exit();
+        }
+
+        private void ShowCategoryList(object sender, RoutedEventArgs e)
+        {
+            CurrentContent = _container.Use<IViewService>().CreateView<CategoryEditor>();
         }
     }
 }

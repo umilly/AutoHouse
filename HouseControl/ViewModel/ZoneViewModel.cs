@@ -27,6 +27,11 @@ namespace ViewModel
             }
         }
 
+        public bool IsGlobal
+        {
+            get { return Model.ID == 1; } 
+        }
+
         public override bool Validate()
         {
             return !string.IsNullOrEmpty(Model.Name);

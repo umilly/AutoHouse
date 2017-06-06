@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using Facade;
 using Model;
@@ -19,7 +20,7 @@ namespace ViewModel
         public override IEnumerable<ITreeNode> Children { get; }
         public override string Value { get; set; }
         public override bool? IsConnected { get; set; }
-
+        public ReactionViewModel Reaction { get { return Parent as ReactionViewModel;} }
         public override bool Validate()
         {
             return true;
@@ -126,7 +127,8 @@ namespace ViewModel
         }
 
         public IEnumerable<ParameterViewModel> AllParams => Use<IPool>().GetViewModels<ParameterViewModel>();
-        public IEnumerable<SensorViewModel> AllSensors => Use<IPool>().GetViewModels<SensorViewModel>();
+        public IEnumerable<SensorViewModel> AllSensors => Use<IPool>().GetViewModels<SensorViewModel>()
+            .Where(a=>a.Zone.IsGlobal||(Reaction!=null&& Reaction.Scenario.HaveZone(a.Zone)));
         private DateTime ExecuteTime=DateTime.MinValue;
         public void Execute()
         {

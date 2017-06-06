@@ -64,8 +64,8 @@ namespace ViewModel
 
         public string Value => Param.Value;
         public ParameterTypeValue Type => Param.ParamType;
-        public int CategoryId => Param.Category.HasValue? (int)Param.Category.Value:-1;
-        public string CategoryName => Param.Category?.ToString() ?? "Не назначено";
+        public int CategoryId => Param.Category!=null? (int)Param.Category.ID:-1;
+        public string CategoryName => Param.Category?.Name ?? "Не назначено";
         public int ZontId => Param.Sensor?.Zone.ID?? -1;
         public string ZoneName => Param.Sensor?.Zone.Name ?? "Не назначено";
         public string Name => Param.Name;

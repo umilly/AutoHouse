@@ -95,6 +95,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CategoryEditor.xaml.cs">
+      <DependentUpon>CategoryEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ParamSetCommandEditor.xaml.cs">
       <DependentUpon>ParamSetCommandEditor.xaml</DependentUpon>
     </Compile>
@@ -113,6 +116,10 @@
     <Compile Include="ParametersListView.xaml.cs">
       <DependentUpon>ParametersListView.xaml</DependentUpon>
     </Compile>
+    <Page Include="CategoryEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ParamSetCommandEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

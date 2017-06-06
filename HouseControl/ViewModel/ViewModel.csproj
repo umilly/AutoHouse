@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoryViewModel.cs" />
     <Compile Include="ControllerBase.cs" />
     <Compile Include="ModbusControllerViewModel.cs" />
     <Compile Include="ClientModesViewModel.cs" />

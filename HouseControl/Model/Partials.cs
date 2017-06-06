@@ -280,7 +280,7 @@ ON [dbo].[Parameter]
 
             private void AdditionalParamCategory()
             {
-                _context.ParameterCategories.Add(new ParameterCategory() { Id = (int)Category.Control, Name = "Учёт" });
+                _context.ParameterCategories.Add(new ParameterCategory() { Id = 5, Name = "Учёт" });
             }
 
             public const string AddFields = @"
@@ -310,10 +310,10 @@ ON [dbo].[ParametrSetCommands]
 
             private void FillParameterCategories()
             {
-                _context.ParameterCategories.Add(new ParameterCategory() {Id = (int) Category.Light, Name = "Свет"});
-                _context.ParameterCategories.Add(new ParameterCategory() { Id = (int)Category.Climat, Name = "Климат" });
-                _context.ParameterCategories.Add(new ParameterCategory() { Id = (int)Category.Door, Name = "СКУД" });
-                _context.ParameterCategories.Add(new ParameterCategory() { Id = (int)Category.Media, Name = "Медиа" });
+                _context.ParameterCategories.Add(new ParameterCategory() {Id = 1, Name = "Свет"});
+                _context.ParameterCategories.Add(new ParameterCategory() { Id = 2, Name = "Климат" });
+                _context.ParameterCategories.Add(new ParameterCategory() { Id = 3, Name = "СКУД" });
+                _context.ParameterCategories.Add(new ParameterCategory() { Id = 4, Name = "Медиа" });
             }
 
             public const string ParamsCommandUpdate = @"
@@ -681,14 +681,14 @@ ON [dbo].[ParametrSetCommands]
         Time = 5,
     }
 
-    public enum Category
-    {
-        Light=1,
-        Climat=2,
-        Door=3,
-        Media=4,
-        Control=5
-    }
+    //public enum Category
+    //{
+    //    Light=1,
+    //    Climat=2,
+    //    Door=3,
+    //    Media=4,
+    //    Control=5
+    //}
     public class TypeAssociationAttribute : Attribute
     {
         private readonly Type _type;
@@ -736,6 +736,16 @@ ON [dbo].[ParametrSetCommands]
             return new ZoneProxy() { ID = zone.ID, Name = zone.Name};
         }
     }
+
+    [DataContract]
+    public class CategoryProxy
+    {
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public int ID { get; set; }
+    }
+
     [DataContract]
     public class ParameterProxy
     {
@@ -752,7 +762,7 @@ ON [dbo].[ParametrSetCommands]
         [DataMember]
         public string Value { get; set; }
         [DataMember]
-        public Category? Category{ get; set; }
+        public CategoryProxy Category{ get; set; }
         [DataMember]
         public SensorProxy Sensor { get; set; }
         [DataMember]
@@ -781,7 +791,7 @@ ON [dbo].[ParametrSetCommands]
                 NextParam = parameter.NextParameter?.ID ?? -1,
                 ParamType = (ParameterTypeValue) parameter.ParameterTypeId,
                 Value = parameter.Value,
-                Category = parameter.ParameterCategory == null ? null : (Category?) parameter.ParameterCategory.ID,
+                Category = parameter.ParameterCategory == null ? null : new CategoryProxy() {ID =  parameter.ParameterCategory.ID,Name = parameter.ParameterCategory.Name } ,
                 Sensor = sensor,
                 Description = parameter.Description
             };

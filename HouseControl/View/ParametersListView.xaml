@@ -36,7 +36,7 @@
         <Label Grid.Column="6" Grid.Row="1">Sensor</Label>
         <Label Grid.Column="7" Grid.Row="1">Link</Label>
         <Label Grid.Column="8" Grid.Row="1">Public</Label>
-        <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" >
+        <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" VerticalScrollBarVisibility="Auto">
             <ItemsControl Name="ParamsList" ItemsSource="{Binding ViewModel.Parameters, Mode=OneWay }">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="viewModel:ParameterViewModel">

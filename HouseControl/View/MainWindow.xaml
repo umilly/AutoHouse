@@ -184,6 +184,7 @@
             <MenuItem Header="Реакции" Click="ShowReactionsClick"/>
             <MenuItem Header="Параметры" Click="ShowParametersList"/>
             <MenuItem Header="Зоны" Click="ShowZoneList"/>
+            <MenuItem Header="Категории" Click="ShowCategoryList"/>
         </Menu>
         <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Content="{Binding Path=CurrentContent}"></ContentControl>
     </Grid>
