@@ -25,6 +25,19 @@ namespace ViewModel
         public ReactionViewModel Reaction
             => Model.Reaction!=null ? Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction) : null;
 
+        public override void LinklToParent(ITreeNode newParent)
+        {
+            if (newParent is ConditionViewModel)
+            {
+                Model.ParentCondition = (newParent as ConditionViewModel).Model;
+                OnPropertyChanged(() => Children);
+            }
+            if (newParent is ReactionViewModel)
+            {
+               (newParent as ReactionViewModel).LinkCondition(Model);
+            }
+        }
+
         public override ITreeNode Parent => Reaction ?? ParentCondition;
         public ITreeNode ParentCondition => Use<IPool>().GetDBVM<ConditionViewModel>(Model.ParentCondition);
 

@@ -118,6 +118,9 @@ namespace Facade
         bool? IsConnected { get; }
         List<IContexMenuItem> ContextMenu { get; }
         void OnChildDelete(ITreeNode node);
+        ITreeNode Copy();
+        void LinklToParent(ITreeNode Parent);
+
     }
 
     public interface IContexMenuItem

@@ -37,6 +37,11 @@ namespace ViewModel
             Context.SensorTypes.ForEach(a => _cahedTypes[a.Key] = a);
         }
 
+        public override void LinklToParent(ITreeNode Parent)
+        {
+            throw new NotImplementedException();
+        }
+
         public override ITreeNode Parent => Use<IPool>().GetViewModels<DevicesViewModel>().FirstOrDefault();
 
         public override IEnumerable<ITreeNode> Children
@@ -102,6 +107,8 @@ namespace ViewModel
         public static int i = 0;
         public async void Update()
         {
+            if(string.IsNullOrEmpty(IP)||Port<=0||Port>65535)
+                return;
             i++;
             using (var task = Use<INetworkService>().AsyncRequest(Url))
             {

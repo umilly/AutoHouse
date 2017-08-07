@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.EntityClient;
@@ -122,6 +123,29 @@ namespace ViewModelBase
             Delete();
         }
 
+        public virtual ITreeNode Copy()
+        {
+            var res=Use<IPool>().CreateDBObject(GetType()) as ITreeNode;
+            var newModel = (res as LinkedObjectVM<T>).Model;
+            foreach (var property in newModel.GetType().GetProperties())
+            {
+                if(property.GetSetMethod()==null|| property.PropertyType.IsGenericType)
+                    continue;
+                var val = property.GetValue(Model);
+                property.SetValue(newModel,val,null);
+            }
+            if (Children == null)
+                return res;
+            var list = Children.ToList();
+            foreach (var treeNode in list)
+            {
+                var vm = treeNode.Copy();
+                vm.LinklToParent(res);
+            }
+            return res;
+        }
+
+        public abstract void LinklToParent(ITreeNode Parent);
         public abstract ITreeNode Parent { get; }
         public abstract IEnumerable<ITreeNode> Children { get; }
         public abstract string Name { get;  set; }

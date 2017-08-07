@@ -16,6 +16,18 @@ namespace ViewModel
         {
             _contextMenu = base.ContextMenu;
             _contextMenu.Add(new CustomContextMenuItem("Добавить сценарий", new CommandHandler(AddScenario)));
+            _contextMenu.Add(new CustomContextMenuItem("Копировать", new CommandHandler(CopyMode)));
+        }
+
+        private void CopyMode(bool obj)
+        {
+            Copy();
+            (Parent as SystemViewModel).OnChildDelete(this);
+        }
+
+        public override void LinklToParent(ITreeNode Parent)
+        {
+            throw new System.NotImplementedException();
         }
 
         public override ITreeNode Parent => Use<IPool>().GetOrCreateVM<SystemViewModel>(-1);
@@ -85,6 +97,11 @@ namespace ViewModel
         public override bool Validate()
         {
             return !string.IsNullOrEmpty(Model.Name) && !string.IsNullOrEmpty(Model.Description);
+        }
+
+        public void LinkChildScenario(Scenario model)
+        {
+            model.Mode = Model;
         }
     }
 }

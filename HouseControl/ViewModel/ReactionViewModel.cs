@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Facade;
 using Model;
@@ -42,6 +43,11 @@ namespace ViewModel
             OnPropertyChanged(() => Children);
         }
 
+        public void LinkCondition(Condition model)
+        {
+            model.Reaction = Model;
+            OnPropertyChanged(() => Children);
+        }
         public ScenarioViewModel Scenario
         {
             get { return Use<IPool>().GetDBVM<ScenarioViewModel>(Model.Scenario); }
@@ -61,6 +67,14 @@ namespace ViewModel
                 OnPropertyChanged();
             }
         }
+
+        public override void LinklToParent(ITreeNode newParent)
+        {
+            if (!(newParent is ScenarioViewModel))
+                throw new InvalidEnumArgumentException("reaction's parent must be scenario");
+            (newParent as ScenarioViewModel).LinkChildReaction(Model);
+        }
+
         public override ITreeNode Parent => Scenario;
 
         public override IEnumerable<ITreeNode> Children
@@ -116,6 +130,18 @@ namespace ViewModel
                 .Where(a => a.Parent == this)
                 .ForEach(a => a.Execute());
 
+        }
+
+        public void LinkChildCommand(Command model)
+        {
+            model.Reaction = Model;
+            OnPropertyChanged(() => Children);
+        }
+
+        public void LinkChildParamCommand(ParametrSetCommand model)
+        {
+            model.Reaction = Model;
+            OnPropertyChanged(() => Children);
         }
     }
 }

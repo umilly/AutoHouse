@@ -25,6 +25,11 @@ namespace ViewModel
                 ;
         }
 
+        public override void LinklToParent(ITreeNode Parent)
+        {
+            throw new NotImplementedException();
+        }
+
         public override ITreeNode Parent => Use<IPool>().GetDBVM<ControllerVM>(Model.Controller);
 
 

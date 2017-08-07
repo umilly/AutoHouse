@@ -37,6 +37,16 @@ public class SystemViewModel : ViewModelBase.ViewModelBase, ITreeNode
         OnPropertyChanged(() => Children);
     }
 
+    public ITreeNode Copy()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void LinklToParent(ITreeNode Parent)
+    {
+        throw new NotImplementedException();
+    }
+
     private void AddMode(bool obj)
     {
         var newMode=Use<IPool>().CreateDBObject<ModeViewModel>();

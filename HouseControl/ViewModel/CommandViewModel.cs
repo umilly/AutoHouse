@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
@@ -20,6 +21,13 @@ namespace ViewModel
         }
 
         public ReactionViewModel Reaction => Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction);
+
+        public override void LinklToParent(ITreeNode newParent)
+        {
+            if (!(newParent is ReactionViewModel))
+                throw new InvalidEnumArgumentException("comand's parent must ve scenario");
+            (newParent as ReactionViewModel).LinkChildCommand(Model);
+        }
 
         public override ITreeNode Parent => Reaction;
         public override IEnumerable<ITreeNode> Children { get; }
@@ -55,6 +63,13 @@ namespace ViewModel
                 CreateCommandLinks();
                 OnPropertyChanged();
             }
+        }
+
+        public override ITreeNode Copy()
+        {
+            var res=base.Copy() as CommandViewModel;
+            res.CreateCommandLinks();
+            return res;
         }
 
         public override void Delete()

@@ -60,5 +60,10 @@ namespace ViewModel
         {
             model.Zone = Model;
         }
+
+        public void UnlinkScenario(Scenario model)
+        {
+            Model.Scenarios.Remove(model);
+        }
     }
 }

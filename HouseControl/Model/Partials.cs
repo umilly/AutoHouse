@@ -141,7 +141,7 @@ namespace Model
             _connectinsStrings["vlad"] =
                 @"Data Source=UMILLY;Initial Catalog=house;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
             _connectinsStrings["tima"] =
-                @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\TIMA\Documents\house.mdf;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
+                @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\work\autohouse\DB\house.mdf;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
         }
 
         public Models(string connectionString) : base(BuildEntityConnectionStringFromAppSettings(connectionString))

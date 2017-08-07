@@ -37,6 +37,16 @@ public class DevicesViewModel : ViewModelBase.ViewModelBase, ITreeNode
         OnPropertyChanged(() => Children);
     }
 
+    public ITreeNode Copy()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void LinklToParent(ITreeNode Parent)
+    {
+        throw new System.NotImplementedException();
+    }
+
     private void AddController(bool obj)
     {
         var newMode = Use<IPool>().CreateDBObject<ControllerVM>();

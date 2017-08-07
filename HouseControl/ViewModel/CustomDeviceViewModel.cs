@@ -13,6 +13,10 @@ namespace ViewModel
         {
         }
 
+        public override void LinklToParent(ITreeNode Parent)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public abstract class DeviceViewModelBase<T> :  LinkedObjectVM<T>, ICustomDevice where T:CustomDevice
@@ -26,6 +30,11 @@ namespace ViewModel
         public override bool Validate()
         {
             return Model.Controller != null&&!string.IsNullOrEmpty(Model.Name);
+        }
+
+        public override void LinklToParent(ITreeNode Parent)
+        {
+            throw new NotImplementedException();
         }
 
         public override ITreeNode Parent => Controller;

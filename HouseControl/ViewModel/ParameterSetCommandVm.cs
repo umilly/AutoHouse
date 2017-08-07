@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Cryptography;
 using Facade;
@@ -14,6 +15,13 @@ namespace ViewModel
         public ParameterSetCommandVm(IServiceContainer container, Models dataBase, ParametrSetCommand model)
             : base(container, dataBase, model)
         {
+        }
+
+        public override void LinklToParent(ITreeNode newParent)
+        {
+            if (!(newParent is ReactionViewModel))
+                throw new InvalidEnumArgumentException("comand's parent must ve scenario");
+            (newParent as ReactionViewModel).LinkChildParamCommand(Model);
         }
 
         public override ITreeNode Parent => Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction);

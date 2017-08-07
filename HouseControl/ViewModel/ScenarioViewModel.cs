@@ -16,6 +16,13 @@ namespace ViewModel
             _contextMenu.Add(new CustomContextMenuItem("Добавить реакцию", new CommandHandler(AddReaction)));
         }
 
+        public override void LinklToParent(ITreeNode newParent)
+        {
+            if (!(newParent is ModeViewModel))
+                throw new InvalidEnumArgumentException("scenario's parent must be mode");
+            (newParent as ModeViewModel).LinkChildScenario(Model);
+        }
+
         public override ITreeNode Parent
             => Model.Mode == null ? null : Use<IPool>().GetDBVM<ModeViewModel>(Model.Mode);
 
@@ -57,7 +64,9 @@ namespace ViewModel
             }
         }
 
-        public IEnumerable<ZoneForScenario>  Zones => Use<IPool>().GetViewModels<ZoneViewModel>().Select(a=>new ZoneForScenario(this,a));
+        public IEnumerable<ZoneForScenario> Zones => Use<IPool>()
+            .GetViewModels<ZoneViewModel>()
+            .Select(a => new ZoneForScenario(this, a));
 
         public string Description
         {
@@ -88,26 +97,43 @@ namespace ViewModel
 
         private void ClearSensorsForNotValidZones()
         {
-            var revalidateConditions= Use<IPool>().GetViewModels<ConditionViewModel>().Where(a => a.CurrentScenario == this);
+            var revalidateConditions = Use<IPool>()
+                .GetViewModels<ConditionViewModel>()
+                .Where(a => a.CurrentScenario == this);
             foreach (var conditionViewModel in revalidateConditions)
             {
                 if (conditionViewModel.LeftParam is SensorViewModel
                     && !HaveZone((conditionViewModel.LeftParam as SensorViewModel).Zone))
                 {
-                    conditionViewModel.LeftParam=EmptyValue.Instance;
+                    conditionViewModel.LeftParam = EmptyValue.Instance;
                 }
             }
-            var revalidateCommands = Use<IPool>().GetViewModels<ParameterSetCommandVm>().Where(a => a.Reaction.Scenario == this);
+            var revalidateCommands = Use<IPool>()
+                .GetViewModels<ParameterSetCommandVm>()
+                .Where(a => a.Reaction.Scenario == this);
             foreach (var command in revalidateCommands)
             {
-                if (command.Sensor !=null
+                if (command.Sensor != null
                     && !HaveZone((command.Sensor).Zone))
                 {
                     command.Sensor = null;
                 }
             }
+        }
 
+        public override void Delete()
+        {
+            foreach (var zoneForScenario in Zones)
+            {
+                zoneForScenario.Zone.UnlinkScenario(Model);
+            }
+            base.Delete();
+        }
 
+        public void LinkChildReaction(Reaction model)
+        {
+            model.Scenario = Model;
+            OnPropertyChanged(()=>Children);
         }
     }
 }
