@@ -65,7 +65,7 @@ namespace ViewModelBase
             }
             catch (Exception e)
             {
-                Use<ILog>().Log(LogCategory.Network,"Ping: " + e.Message);
+                Use<ILog>().Log(LogCategory.Network,e);
                 return IPStatus.Unknown;
             }
             finally
@@ -90,7 +90,8 @@ namespace ViewModelBase
             }
             catch (Exception e)
             {
-                Use<ILog>().Log(LogCategory.Network,$"Sync request to {url}:\r\n {e.Message}");
+                var prefix = $"Sync request to {url} Exception:\r\n ";
+                Use<ILog>().LogNetException(e, prefix);
                 return string.Empty;
             }
             return res;
@@ -113,11 +114,15 @@ namespace ViewModelBase
             }
             catch (Exception e)
             {
-                Use<ILog>().Log(LogCategory.Network, $"async request to url:{url} \r\n {e.Message}");
+                var prefix = $"ASync request to {url} Exception:\r\n ";
+                Use<ILog>().LogNetException(e, prefix);
                 return string.Empty;
             }
             return res;
         }
+
+        
+
         private const int Timeout = 1000;
         private const int StepTime = 100;
 

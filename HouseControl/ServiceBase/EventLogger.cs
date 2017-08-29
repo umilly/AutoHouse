@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Facade;
@@ -32,5 +34,34 @@ namespace Common
             if(showMessageBox)
                 Use<IViewService>().ShowMessage(show);
         }
+
+        public void Log(LogCategory network, Exception e, bool showMesageBox = false)
+        {
+            var excep = e;
+            var str = "__________________________________________________________________________________________________________________\r\n";
+            while (e!=null)
+            {
+                str += $"{e.Message}\r\n {e.StackTrace}\r\n_________________________________\r\n";
+                e = e.InnerException;
+            }
+            str += "__________________________________________________________________________________________________________________\r\n";
+
+            Log(network, str, showMesageBox);
+        }
+
+        public void LogNetException(Exception e, string prefix)
+        {
+            if (e is AggregateException && e.InnerException is WebException &&
+                e.InnerException.InnerException != null && e.InnerException.InnerException is SocketException)
+            {
+                Log(LogCategory.Network, prefix + e.InnerException.InnerException.Message);
+            }
+            else
+            {
+                Log(LogCategory.Network, prefix);
+                Log(LogCategory.Network, e);
+            }
+        }
+
     }
 }

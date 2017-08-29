@@ -137,21 +137,22 @@ namespace Model
         private static Dictionary<string, string> _connectinsStrings = new Dictionary<string, string>();
         static Models()
         {
-            _connectinsStrings["local"] = File.ReadAllText("constr");
-            _connectinsStrings["vlad"] =
-                @"Data Source=UMILLY;Initial Catalog=house;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
-            _connectinsStrings["tima"] =
-                @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\work\autohouse\DB\house.mdf;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
         }
-
+        
         public Models(string connectionString) : base(BuildEntityConnectionStringFromAppSettings(connectionString))
         {
+
             var migration=new MigrationService(this);
             migration.Migrate();
         }
 
         public static string BuildEntityConnectionStringFromAppSettings(string nameOfConnectionString)
         {
+            _connectinsStrings["1"] = File.ReadAllText("constr");
+            _connectinsStrings["vlad"] = @"Data Source=UMILLY;Initial Catalog=house;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
+            _connectinsStrings["tima"] = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\work\autohouse\DB\house.mdf;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
+           if(!_connectinsStrings.ContainsKey(nameOfConnectionString))
+                throw new ArgumentException($"expected '{nameOfConnectionString}' but not found, strings count = {_connectinsStrings.Count} ");
             var shortConnectionString = _connectinsStrings[nameOfConnectionString];
 
             // Specify the provider name, server and database. 

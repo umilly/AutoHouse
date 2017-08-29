@@ -202,7 +202,8 @@ namespace ViewModel
             }
             catch (Exception ex)
             {
-                Use<ILog>().Log(LogCategory.Configuration, $"Condition {Name} CheckFail: \r\n {ex.Message}" );
+                Use<ILog>().Log(LogCategory.Configuration, $"Condition {Name} CheckFail: \r\n" );
+                Use<ILog>().Log(LogCategory.Configuration, ex);
                 _isComplete = false;
             }
             OnPropertyChanged(() => Value);
@@ -212,6 +213,8 @@ namespace ViewModel
 
         private bool TypedCompare()
         {
+            if(CondtionType==null)
+                throw new ArgumentException("Тип условия должен быть определён");
             switch (CondtionType.TypeValue)
             {
                 case ConditionTypeValue.And:

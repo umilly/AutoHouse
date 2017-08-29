@@ -74,10 +74,8 @@ public class RelayViewModel : ViewModelBase.ViewModelBase
         }
         catch (Exception e)
         {
-            if (Use<IPool>().GetViewModels<SettingsVM>().Single().IsDebug)
-            {
-                Use<IViewService>().ShowMessage(e.ToString());
-            }
+
+            Use<ILog>().Log(LogCategory.Command, e, Use<IPool>().GetViewModels<SettingsVM>().Single().IsDebug);
             return false;
         }
     }

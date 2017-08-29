@@ -75,7 +75,10 @@ namespace WebServer
             }
             catch (Exception e)
             {
-                return "Fail set param";
+                var prefix = "Fail set param";
+                Use<ILog>().Log(LogCategory.Data, prefix);
+                Use<ILog>().Log(LogCategory.Data, e);
+                return prefix;
             }
         }
 
@@ -171,7 +174,8 @@ namespace WebServer
             }
             catch (Exception e)
             {
-                _logger.Log(LogCategory.MobileWebServer, $"Client request handle error:\r\n{e.Message}");
+                _logger.Log(LogCategory.MobileWebServer, $"Client request handle error:\r\n");
+                _logger.Log(LogCategory.MobileWebServer, e);
             }
             finally
             {

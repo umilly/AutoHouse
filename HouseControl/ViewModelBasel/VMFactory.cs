@@ -24,10 +24,11 @@ namespace ViewModelBase
             var ensureDLLIsCopied = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
             try
             {
-                DB = new Models("local");
+                DB = new Models("1");
             }
             catch (Exception e)
             {
+                Use<ILog>().Log(LogCategory.Configuration, e, true);
                 throw e;
             }
         }
@@ -149,7 +150,8 @@ namespace ViewModelBase
             {
                 if(e is DbEntityValidationException)
                     e = new FormattedDbEntityValidationException(e as DbEntityValidationException);
-                Use<ILog>().Log(LogCategory.Data, $"Validation fail:\r\n {e.Message}");
+                Use<ILog>().Log(LogCategory.Data, $"Validation fail:\r\n ");
+                Use<ILog>().Log(LogCategory.Data, e);
                 Use<IViewService>().ShowMessage("ИЗМЕНЕНИЯ НЕ БЫЛИ СОХРАНЕНЫ.\r\n В конфигурации была обнаружена ошибка, возможно какая-то сущность была настроена не полностью. ");
             }
         }

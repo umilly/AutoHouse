@@ -84,6 +84,8 @@ namespace Facade
     public interface ILog : IService
     {
         void Log(LogCategory network, string message,bool showMesageBox=false);
+        void Log(LogCategory network, Exception e, bool showMesageBox = false);
+        void LogNetException(Exception e, string prefix);
     }
 
     public enum LogCategory
@@ -91,7 +93,8 @@ namespace Facade
         Network,
         Data,
         Configuration,
-        MobileWebServer
+        MobileWebServer,
+        Command
     }
 
     public interface IEntytyObjectVM:IViewModel
