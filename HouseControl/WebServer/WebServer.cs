@@ -128,10 +128,14 @@ namespace WebServer
             _logger = logger;
         }
 
-        public void Parse()
+        private void Parse()
         {
             int count;
             var bytes = new byte[1024];
+            if(_client==null)
+                throw new ArgumentException("клиент не может быть null");
+            if (_client.Client.Blocking)
+                throw new ArgumentException($"{_client.Client.RemoteEndPoint} сокет заблокирован");
             while ((count = _client.GetStream().Read(bytes, 0, bytes.Length)) > 0)
             {
                 _request += Encoding.ASCII.GetString(bytes, 0, count);
@@ -140,19 +144,30 @@ namespace WebServer
                     break;
                 }
             }
-            var body = _request.Split('\r')[0].Split(' ')[1];
-            var splitBody = body.Split('?','/');
-            var command = splitBody[1];
-            var comParams = new List<string>();
-            for (int i = 2; i < splitBody.Length; i++)
+            try
             {
-                comParams.Add(splitBody[i]);
+                var body = _request.Split('\r')[0].Split(' ')[1];
+                var splitBody = body.Split('?', '/');
+                var command = splitBody[1];
+                var comParams = new List<string>();
+                for (int i = 2; i < splitBody.Length; i++)
+                {
+                    comParams.Add(splitBody[i]);
+                }
+                _command = new WebCommand(command, comParams);
             }
-            _command = new WebCommand(command, comParams);
+            catch (Exception e)
+            {
+                _logger.Log(LogCategory.Network, $"Reqeuetst parse error: \r\n {_request} \r\n Url{((IPEndPoint)_client.Client.RemoteEndPoint).Address}");
+                _logger.Log(LogCategory.Network, e);
+            }
+            
         }
 
-        public void Response()
+        private void Response()
         {
+            if(_command==null)
+                return;
             byte[] buffer = null;
             const string headerStr = "HTTP/1.1 200 OK\nContent-type: text/html;charset=utf-8\n";
             var body =
@@ -161,7 +176,6 @@ namespace WebServer
             var res = $"{headerStr}\n\n{body}";
             buffer = Encoding.UTF8.GetBytes(res);
             _client.GetStream().Write(buffer, 0, buffer.Length);
-            _client.Close();
         }
 
 
@@ -186,7 +200,8 @@ namespace WebServer
 
         public void Dispose()
         {
-            //_client.Dispose();
+            _client.Close();
+            _client.Dispose();
         }
     }
 }
