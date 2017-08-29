@@ -8,9 +8,13 @@
              xmlns:vmBase="clr-namespace:VMBase;assembly=VMBase"
              xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
              xmlns:view="clr-namespace:View"
+             xmlns:viewTools="clr-namespace:ViewTools"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
             DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="Btv"/>
+    </UserControl.Resources>
     <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Black" BorderThickness="2">
         <Grid>
             <Grid.RowDefinitions>
@@ -45,6 +49,7 @@
             <ComboBox Grid.Row="7" Grid.Column="5" ItemsSource="{Binding ViewModel.AllSensors}" SelectedValue="{Binding ViewModel.Sensor, Mode=TwoWay}" DisplayMemberPath="Name"></ComboBox>
             <Label Grid.Row="9" Grid.Column="1" Content="Задержка(сек)" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <TextBox Grid.Row="9" Grid.Column="3"  Text="{Binding ViewModel.CooldownString, Mode=TwoWay}"></TextBox>
+            <CheckBox x:Name="checkBox"  IsChecked="{Binding ViewModel.Invert}" Visibility="{Binding ViewModel.InvertAvail, Converter={StaticResource Btv}}" Grid.ColumnSpan="2" Content="!" Grid.Column="5" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="5" VerticalAlignment="Top"/>
             <!--<ItemsControl Grid.Row="7" Grid.Column="3" ItemsSource="{Binding ViewModel.Parameters}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="viewModel:CommandParamLinkVm">

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/05/2017 18:14:57
+-- Date Created: 06/06/2017 15:42:24
 -- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -374,6 +374,7 @@ CREATE TABLE [dbo].[ParametrSetCommands] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [Cooldown] int  NOT NULL,
+    [Invert] bit  NOT NULL,
     [DestParameter_Id] int  NOT NULL,
     [SrcParameter1_Id] int  NULL,
     [Sensor_Id] int  NULL,

@@ -18,11 +18,13 @@ namespace Model
         public ParametrSetCommand()
         {
             this.Name = "";
+            this.Invert = false;
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public int Cooldown { get; set; }
+        public bool Invert { get; set; }
     
         public virtual Parameter DestParameter { get; set; }
         public virtual Parameter SrcParameter1 { get; set; }

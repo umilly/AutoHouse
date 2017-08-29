@@ -342,6 +342,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" DefaultValue="" />
     <Property Name="Cooldown" Type="int" Nullable="false" />
+    <Property Name="Invert" Type="bit" Nullable="false" DefaultValue="false" />
     <Property Name="DestParameter_Id" Type="int" Nullable="false" />
     <Property Name="SrcParameter1_Id" Type="int" Nullable="true" />
     <Property Name="Sensor_Id" Type="int" Nullable="true" />
@@ -1362,6 +1363,7 @@
           <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
           <Property Name="Cooldown" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Reaction" Relationship="ApplicationModel.ParametrSetCommandReaction" FromRole="ParametrSetCommand" ToRole="Reaction" />
+          <Property Name="Invert" Type="Boolean" Nullable="false" DefaultValue="False" />
         </EntityType>
         <Association Name="ParametrSetCommandParameter">
           <End Type="ApplicationModel.ParametrSetCommand" Role="ParametrSetCommand" Multiplicity="*" />
@@ -1614,6 +1616,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Cooldown" ColumnName="Cooldown" />
+          <ScalarProperty Name="Invert" ColumnName="Invert" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -138,11 +138,11 @@ namespace Model
         static Models()
         {
         }
-        
+
         public Models(string connectionString) : base(BuildEntityConnectionStringFromAppSettings(connectionString))
         {
 
-            var migration=new MigrationService(this);
+            var migration = new MigrationService(this);
             migration.Migrate();
         }
 
@@ -151,7 +151,7 @@ namespace Model
             _connectinsStrings["1"] = File.ReadAllText("constr");
             _connectinsStrings["vlad"] = @"Data Source=UMILLY;Initial Catalog=house;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
             _connectinsStrings["tima"] = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\work\autohouse\DB\house.mdf;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
-           if(!_connectinsStrings.ContainsKey(nameOfConnectionString))
+            if (!_connectinsStrings.ContainsKey(nameOfConnectionString))
                 throw new ArgumentException($"expected '{nameOfConnectionString}' but not found, strings count = {_connectinsStrings.Count} ");
             var shortConnectionString = _connectinsStrings[nameOfConnectionString];
 
@@ -204,7 +204,13 @@ namespace Model
                 RegiterUpdate(Guid.Parse("AD4874E8-FD62-4F90-BA16-225E10356ABB"), AddParameterChainLink,AdditionalParamCategory);
                 RegiterUpdate(Guid.Parse("D8649F0B-A473-4846-9786-3FE1FB993C11"), CreateModbusControllerAndDevices);
                 RegiterUpdate(Guid.Parse("08E7A232-440A-451D-B88A-03E3B9F100C0"), CreateParamsDescription);
+                RegiterUpdate(Guid.Parse("4C6BFC34-A0DB-4526-AAB2-1FFB285ACE08"), AddInvertField);
             }
+
+            public const string AddInvertField = @"
+ALTER TABLE [dbo].[ParametrSetCommands]
+ADD  [Invert] bit  NOT NULL DEFAULT(0);
+";
 
             public const string CreateParamsDescription= @"
 SET QUOTED_IDENTIFIER OFF;

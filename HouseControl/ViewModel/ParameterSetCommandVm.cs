@@ -16,14 +16,12 @@ namespace ViewModel
             : base(container, dataBase, model)
         {
         }
-
         public override void LinklToParent(ITreeNode newParent)
         {
             if (!(newParent is ReactionViewModel))
                 throw new InvalidEnumArgumentException("comand's parent must ve scenario");
             (newParent as ReactionViewModel).LinkChildParamCommand(Model);
         }
-
         public override ITreeNode Parent => Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction);
         public override IEnumerable<ITreeNode> Children { get; }
         public override string Value { get; set; }
@@ -54,6 +52,7 @@ namespace ViewModel
             {
                 value.LinkDestSetParam(Model);
                 OnPropertyChanged();
+                OnPropertyChanged(()=>InvertAvail);
             }
         }
 
@@ -137,6 +136,20 @@ namespace ViewModel
         public IEnumerable<ParameterViewModel> AllParams => Use<IPool>().GetViewModels<ParameterViewModel>();
         public IEnumerable<SensorViewModel> AllSensors => Use<IPool>().GetViewModels<SensorViewModel>()
             .Where(a=>a.Zone.IsGlobal||(Reaction!=null&& Reaction.Scenario.HaveZone(a.Zone)));
+
+        public bool Invert
+        {
+            get {return Model.Invert; }
+            set
+            {
+                Model.Invert = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool InvertAvail
+        {
+            get { return Model.DestParameter!=null&&Model.DestParameter.ParameterType.ID== (int)ParameterTypeValue.Bool; }
+        }
         private DateTime ExecuteTime=DateTime.MinValue;
         public void Execute()
         {
@@ -144,6 +157,10 @@ namespace ViewModel
             if ((now - ExecuteTime).TotalSeconds > Cooldown)
             {
                 DestParameter.Value = SrcParameter1 != null ? SrcParameter1.Value : Sensor?.Value;
+                if (InvertAvail&&Invert)
+                {
+                    DestParameter.Value = DestParameter.Value == "1" ? "0" : "1";
+                }
                 ExecuteTime = now;
             }
         }
