@@ -118,7 +118,6 @@ namespace ViewModelBase
                 Use<ILog>().LogNetException(e, prefix);
                 return string.Empty;
             }
-            return res;
         }
 
         
@@ -150,6 +149,33 @@ namespace ViewModelBase
             }
             request.Abort();
             throw new TimeoutException("No Response");
+        }
+    }
+
+    public class CopyService : ServiceBase,ICopyService
+    {
+        private ITreeNode _copyObject;
+        public void SetCopyObject(ITreeNode copyObject)
+        {
+            _copyObject = copyObject;
+            CopyObjChanged?.Invoke();
+        }
+
+        public event Action CopyObjChanged;
+
+        public bool AllowPasteOn(ITreeNode parent)
+        {
+            if (_copyObject == null)
+                return false;
+            if (_copyObject.ParentType == null)
+                return false;
+            return _copyObject.ParentType == parent.GetType();
+        }
+
+        public void PasteTo(ITreeNode parent)
+        {
+            var newO=_copyObject.Copy();
+            newO.LinklToParent(parent);
         }
     }
 }

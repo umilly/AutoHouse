@@ -1,6 +1,24 @@
 using System;
 using System.Windows.Input;
+using Facade;
 
+public class PasteCommandHandler : CommandHandler
+{
+    private readonly ICopyService _copyService;
+    private readonly ITreeNode _self;
+
+    public PasteCommandHandler(Action<bool> action,ICopyService copyService,ITreeNode self) : base(action)
+    {
+        _copyService = copyService;
+        _self = self;
+        _copyService.CopyObjChanged += () => { base.Executable = this.Executable; };
+    }
+
+    public override bool Executable
+    {
+        get { return _copyService.AllowPasteOn(_self); }
+    }
+}
 public class CommandHandler : ICommand
 {
     private Action<bool> _action;
@@ -12,7 +30,7 @@ public class CommandHandler : ICommand
         _action = action;
     }
 
-    public bool Executable
+    public virtual bool Executable
     {
         get { return _executable; }
         set

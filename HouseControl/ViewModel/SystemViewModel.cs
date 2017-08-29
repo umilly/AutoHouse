@@ -20,6 +20,7 @@ public class SystemViewModel : ViewModelBase.ViewModelBase, ITreeNode
         set { }
     }
 
+    public Type ParentType => null;
     public ITreeNode Parent => null;
 
     public IEnumerable<ITreeNode> Children => Use<IPool>().GetViewModels<ModeViewModel>();

@@ -10,6 +10,11 @@ namespace ViewModel
         {
         }
 
+        public override Type ParentType
+        {
+            get { return typeof(ModbusControllerViewModel); }
+        }
+
         public ModbusDevType Type
         {
             get

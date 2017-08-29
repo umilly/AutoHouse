@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Text.RegularExpressions;
 using Facade;
 using Model;
@@ -11,6 +12,8 @@ namespace ViewModel
         public ControllerVM(IServiceContainer container, Models dataBase, Controller controller) : base(container, dataBase, controller)
         {
         }
+
+        public override Type ParentType { get { return null; } }
 
         protected override ICustomDevice CreateChildDev()
         {

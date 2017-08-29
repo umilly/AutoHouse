@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Facade;
@@ -16,7 +17,7 @@ namespace ViewModel
         {
             _contextMenu = base.ContextMenu;
             _contextMenu.Add(new CustomContextMenuItem("Добавить сценарий", new CommandHandler(AddScenario)));
-            _contextMenu.Add(new CustomContextMenuItem("Копировать", new CommandHandler(CopyMode)));
+            
         }
 
         private void CopyMode(bool obj)
@@ -24,6 +25,8 @@ namespace ViewModel
             Copy();
             (Parent as SystemViewModel).OnChildDelete(this);
         }
+
+        public override Type ParentType { get { return typeof(SystemViewModel); } }
 
         public override void LinklToParent(ITreeNode Parent)
         {

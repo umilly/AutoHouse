@@ -9,7 +9,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ReactionViewModel : LinkedObjectVM<Reaction>, ITreeNode
+    public class ReactionViewModel : LinkedObjectVM<Reaction>, ITreeNode, IConditionParent
     {
         public ReactionViewModel(IServiceContainer container, Models dataBase, Reaction model)
             : base(container, dataBase, model)
@@ -18,6 +18,8 @@ namespace ViewModel
             _contextMenu.Add(new CustomContextMenuItem("Добавить команду", new CommandHandler(AddCommand)));
             _contextMenu.Add(new CustomContextMenuItem("Добавить команду управления параметром", new CommandHandler(AddCommandParam)));
         }
+
+        public override Type ParentType { get { return typeof(ScenarioViewModel); } }
 
         private void AddCommandParam(bool obj)
         {

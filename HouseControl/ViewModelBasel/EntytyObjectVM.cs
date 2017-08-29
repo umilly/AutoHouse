@@ -115,7 +115,21 @@ namespace ViewModelBase
         protected LinkedObjectVM(IServiceContainer container, Models dataBase, T model) : base(container, dataBase, model)
         {
             _contextMenu=new List<IContexMenuItem>();
+            if (IsFake)
+                return;
             _contextMenu.Add(new CustomContextMenuItem("Удалить", new CommandHandler(Delete)));
+            _contextMenu.Add(new CustomContextMenuItem("Копировать", new CommandHandler(CopyTo)));
+            _contextMenu.Add(new CustomContextMenuItem("Вставить", new PasteCommandHandler(PasteTo,Use<ICopyService>(),this)));
+        }
+
+        private void PasteTo(bool obj)
+        {
+            Use<ICopyService>().PasteTo(this);
+        }
+
+        private void CopyTo(bool obj)
+        {
+            Use<ICopyService>().SetCopyObject(this);
         }
 
         private void Delete(bool obj)
@@ -146,6 +160,7 @@ namespace ViewModelBase
         }
 
         public abstract void LinklToParent(ITreeNode Parent);
+        public abstract Type ParentType { get; }
         public abstract ITreeNode Parent { get; }
         public abstract IEnumerable<ITreeNode> Children { get; }
         public abstract string Name { get;  set; }

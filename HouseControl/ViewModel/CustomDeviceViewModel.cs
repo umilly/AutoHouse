@@ -37,6 +37,8 @@ namespace ViewModel
             throw new NotImplementedException();
         }
 
+        public override Type ParentType { get { return typeof(ControllerVM); } }
+
         public override ITreeNode Parent => Controller;
         public override IEnumerable<ITreeNode> Children { get; }
 

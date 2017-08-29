@@ -28,6 +28,7 @@ namespace ViewModel
                 throw new InvalidEnumArgumentException("comand's parent must ve scenario");
             (newParent as ReactionViewModel).LinkChildCommand(Model);
         }
+        public override Type ParentType { get { return typeof(ReactionViewModel); } }
 
         public override ITreeNode Parent => Reaction;
         public override IEnumerable<ITreeNode> Children { get; }

@@ -16,6 +16,9 @@ namespace ViewModel
             : base(container, dataBase, model)
         {
         }
+
+        public override Type ParentType { get; }
+
         public override void LinklToParent(ITreeNode newParent)
         {
             if (!(newParent is ReactionViewModel))

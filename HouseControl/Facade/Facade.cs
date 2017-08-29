@@ -123,6 +123,7 @@ namespace Facade
         void OnChildDelete(ITreeNode node);
         ITreeNode Copy();
         void LinklToParent(ITreeNode Parent);
+        Type ParentType { get; }
 
     }
 
@@ -165,5 +166,13 @@ namespace Facade
         SetMode,
         GetModesJson,
         GetParamsJson
+    }
+
+    public interface ICopyService:IService
+    {
+        void SetCopyObject(ITreeNode copyObject);
+        bool AllowPasteOn(ITreeNode parent);
+        void PasteTo(ITreeNode parent);
+        event Action CopyObjChanged;
     }
 }

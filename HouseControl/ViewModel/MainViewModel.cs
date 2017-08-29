@@ -17,9 +17,10 @@ namespace ViewModel
     {
         public MainViewModel(IServiceContainer container) : base(container)
         {
-            container.RegisterType<IPool, VMFactory>();
             container.RegisterType<ILog, EventLogger>();
+            container.RegisterType<IPool, VMFactory>();
             container.Use<IPool>().Init();
+            container.RegisterType<ICopyService, CopyService>();
             container.RegisterType<INetworkService, NetworkService>();
             container.RegisterType<ITimerSerivce, TimerService>();
             container.RegisterType<IReactionService, ReactionService>();

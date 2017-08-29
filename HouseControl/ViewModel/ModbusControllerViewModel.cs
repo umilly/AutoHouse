@@ -19,6 +19,8 @@ namespace ViewModel
             IP = string.Empty;
         }
 
+        public override Type ParentType { get { return null; } }
+
         public short? ComPort
         {
             get

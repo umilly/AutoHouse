@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace ViewModel
                 throw new InvalidEnumArgumentException("scenario's parent must be mode");
             (newParent as ModeViewModel).LinkChildScenario(Model);
         }
+        public override Type ParentType { get { return typeof(ModeViewModel); } }
 
         public override ITreeNode Parent
             => Model.Mode == null ? null : Use<IPool>().GetDBVM<ModeViewModel>(Model.Mode);

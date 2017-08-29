@@ -8,7 +8,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ConditionViewModel : LinkedObjectVM<Condition>
+    public class ConditionViewModel : LinkedObjectVM<Condition>,IConditionParent
     {
         private readonly CommandHandler _addCondition;
 
@@ -39,6 +39,7 @@ namespace ViewModel
         }
 
         public override ITreeNode Parent => Reaction ?? ParentCondition;
+        public override Type ParentType { get { return typeof(IConditionParent); } }
         public ITreeNode ParentCondition => Use<IPool>().GetDBVM<ConditionViewModel>(Model.ParentCondition);
 
         public override IEnumerable<ITreeNode> Children => Use<IPool>().GetViewModels<ConditionViewModel>().Where(a=>a.Parent==this);
@@ -279,6 +280,10 @@ namespace ViewModel
         {
             Model.Reaction = model;
         }
+    }
+
+    public interface IConditionParent
+    {
     }
 
     public class EmptyValue : IConditionSource

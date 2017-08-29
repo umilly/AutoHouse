@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Facade;
 using Model;
@@ -46,6 +47,8 @@ public class DevicesViewModel : ViewModelBase.ViewModelBase, ITreeNode
     {
         throw new System.NotImplementedException();
     }
+
+    public Type ParentType { get { return null; } }
 
     private void AddController(bool obj)
     {
