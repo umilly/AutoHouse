@@ -7,7 +7,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ParameterViewModel : EntytyObjectVM<Parameter>,IConditionSource
+    public class ParameterViewModel : EntytyObjectVM<Parameter>,IConditionSource, IPublicParam
     {
         public ParameterViewModel(IServiceContainer container, Models dataBase, Parameter model)
             : base(container, dataBase, model)
@@ -156,6 +156,8 @@ namespace ViewModel
             }
         }
 
+        public string Ident => ID.ToString();
+
         public void LinkDeviceParam(ComandParameterLink model)
         {
             model.Parameter = Model;
@@ -187,5 +189,24 @@ namespace ViewModel
             param.ActualValue = Sensor==null?Value:Sensor.Value;
             return param;
         }
+    }
+
+    public interface IPublicParam
+    {
+        Type ValueType { get; }
+        string Value { get; set; }
+        IEnumerable<ParameterTypeViewModel> ParamTypes { get; }
+        IEnumerable<ParameterCategoryVm> Categories { get; }
+        IEnumerable<SensorViewModel> Sensors { get; }
+        ParameterTypeViewModel ParamType { get; set; }
+        ParameterCategoryVm Category { get; set; }
+        SensorViewModel Sensor { get; set; }
+        string Name { get; set; }
+        string Description { get; set; }
+        bool IsEditable { get; }
+        bool IsPublic { get; set; }
+        IConditionSource NextParam { get; set; }
+        IEnumerable<IConditionSource> AllParams { get; }
+        string Ident { get; }
     }
 }

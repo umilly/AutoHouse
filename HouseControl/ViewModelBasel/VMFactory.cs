@@ -24,7 +24,7 @@ namespace ViewModelBase
             var ensureDLLIsCopied = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
             try
             {
-                DB = new Models("locFile");
+                DB = new Models("");
             }
             catch (Exception e)
             {

@@ -35,5 +35,10 @@ namespace View
         {
             ViewModel.CreateParams();
         }
+
+        private void ClearFilter(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ClearFilter();
+        }
     }
 }

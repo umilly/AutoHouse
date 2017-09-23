@@ -134,27 +134,21 @@ namespace Model
 
     public partial class Models
     {
-        private static Dictionary<string, string> _connectinsStrings = new Dictionary<string, string>();
-        static Models()
+        public Models(string a) : base(BuildEntityConnectionStringFromAppSettings())
         {
-        }
-
-        public Models(string connectionString) : base(BuildEntityConnectionStringFromAppSettings(connectionString))
-        {
-
             var migration = new MigrationService(this);
             migration.Migrate();
         }
-
-        public static string BuildEntityConnectionStringFromAppSettings(string nameOfConnectionString)
+        public static string BuildEntityConnectionStringFromAppSettings()
         {
-            if(File.Exists("constr"))
-                _connectinsStrings["1"] = File.ReadAllText("constr");
-            _connectinsStrings["vlad"] = @"Data Source=UMILLY;Initial Catalog=house;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
-            _connectinsStrings["locFile"] = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\hs\db\house.mdf;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
-            if (!_connectinsStrings.ContainsKey(nameOfConnectionString))
-                throw new ArgumentException($"expected '{nameOfConnectionString}' but not found, strings count = {_connectinsStrings.Count} ");
-            var shortConnectionString = _connectinsStrings[nameOfConnectionString];
+            var dbFile = @"D:\hs\db\house.mdf";
+            string shortConnectionString=string.Empty;
+            if (File.Exists("constr"))
+                shortConnectionString = File.ReadAllText("constr");
+            if (File.Exists(dbFile))
+                shortConnectionString = $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={dbFile};Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
+            //_connectinsStrings["vlad"] = @"Data Source=UMILLY;Initial Catalog=house;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
+            
 
             // Specify the provider name, server and database. 
             string providerName = "System.Data.SqlClient";

@@ -10,13 +10,22 @@ namespace ViewModel
     {
         public ParametersListViewModel(IServiceContainer container) : base(container)
         {
+            Filter.OnFilterChanged += () => { OnPropertyChanged(() => Parameters); };
         }
 
+        private ParameterFilterVM Filter => Use<IPool>().GetOrCreateVM<ParameterFilterVM>(-1);
         public override int ID { get; set; }
-        private readonly Func<ParameterViewModel,bool> _filterCiteria = vm => true;
-        public IEnumerable<ParameterViewModel> Parameters
+        
+        public IEnumerable<IPublicParam> Parameters
         {
-            get { return Use<IPool>().GetViewModels<ParameterViewModel>().Where(a=>_filterCiteria(a)); }
+            get
+            {
+                var f = Filter;
+                return
+                    new[] {Filter}.Union(
+                    Use<IPool>().GetViewModels<ParameterViewModel>().Where(a => f.IsMatch(a))
+                    .Cast<IPublicParam>());
+            }
         }
 
         public void CreateParams()
@@ -27,6 +36,11 @@ namespace ViewModel
             newParam.ParamType = Use<IPool>().GetViewModels<ParameterTypeViewModel>().First();
             Use<IPool>().SaveDB();
             OnPropertyChanged(() => Parameters);
+        }
+
+        public void ClearFilter()
+        {
+            Filter.Clear();
         }
     }
 }

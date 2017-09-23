@@ -82,6 +82,7 @@
     <Compile Include="ModBusDeviceViewModel.cs" />
     <Compile Include="ModeViewModel.cs" />
     <Compile Include="ParameterCategoryVm.cs" />
+    <Compile Include="ParameterFilterVM.cs" />
     <Compile Include="ParameterSetCommandVm.cs" />
     <Compile Include="ParameterTypeViewModel.cs" />
     <Compile Include="ParameterViewModel.cs" />
