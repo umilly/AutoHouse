@@ -13,19 +13,19 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="500"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="15"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Grid.Row="1">ID</Label>
         <Label Grid.Column="1" Grid.Row="1">Name </Label>
@@ -36,22 +36,21 @@
         <Label Grid.Column="6" Grid.Row="1">Sensor</Label>
         <Label Grid.Column="7" Grid.Row="1">Link</Label>
         <Label Grid.Column="8" Grid.Row="1">Public</Label>
-        <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="10" VerticalScrollBarVisibility="Auto">
             <ItemsControl Name="ParamsList" ItemsSource="{Binding ViewModel.Parameters, Mode=OneWay }">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="viewModel:ParameterViewModel">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="70"/>
                             </Grid.ColumnDefinitions>
                             <TextBox Grid.Column="0" Text="{Binding ID , Mode=TwoWay}" IsEnabled="False"/>
                             <TextBox Grid.Column="1" Text="{Binding Name , Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
@@ -61,7 +60,7 @@
                             <ComboBox Grid.Column="5"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding Category}" ItemsSource="{Binding Categories}" DisplayMemberPath="Name"/>
                             <ComboBox Grid.Column="6"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding Sensor}" ItemsSource="{Binding Sensors}" DisplayMemberPath="Name"/>
                             <ComboBox Grid.Column="7"  IsEnabled="{Binding IsEditable}" SelectedValue="{Binding NextParam}" ItemsSource="{Binding AllParams}" DisplayMemberPath="Name"/>
-                            <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="8" IsEnabled="{Binding IsEditable}" IsChecked="{Binding IsPublic}"></CheckBox>
+                            <CheckBox Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Center"  IsEnabled="{Binding IsEditable}" IsChecked="{Binding IsPublic}"></CheckBox>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

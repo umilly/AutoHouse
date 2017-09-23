@@ -128,6 +128,15 @@ namespace ViewModel
             }
         }
 
+        public int DeviceId
+        {
+            get
+            {
+                var dev = Use<IPool>().GetDBVM<CustomDeviceViewModel>(Model.CustomDevice);
+                return dev.NumberOnController;
+            }
+        }
+
         public async void Execute()
         {
             try
@@ -135,7 +144,8 @@ namespace ViewModel
                 var sb = new StringBuilder();
                 sb.Append(
                     $"http://{Model.CustomDevice.Controller.IP}:{Model.CustomDevice.Controller.Port}/{Model.CustomDevice.CommandPath}");
-                Parameters.OrderBy(a=>a.Order).Select(a => a.Parameter.Value).ForEach(a => sb.Append("?" + a));
+                sb.Append($"?id={DeviceId}");
+                Parameters.OrderBy(a => a.Order).ForEach(c => sb.Append($"#val{c.Order}={c.Parameter.Value}"));
                 IsConnected = false;
                 var http = sb.ToString();
                 using (var res = Use<INetworkService>().AsyncRequest(http))

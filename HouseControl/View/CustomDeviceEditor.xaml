@@ -20,6 +20,8 @@
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="10"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="10"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="30"/>
@@ -33,12 +35,14 @@
                 <ColumnDefinition Width="20"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="1" Grid.Column="1" Content="Настройки устройства:" HorizontalAlignment="Left" VerticalAlignment="Stretch" Grid.ColumnSpan="3"/>
-            <Label Grid.Row="3" Grid.Column="1" Content="Имя устройства" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+            <Label Grid.Row="3" Grid.Column="1" Content="Имя устройства:" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
             <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Mode=TwoWay, Path=ViewModel.Name }" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
-            <Label Grid.Row="5" Grid.Column="1" Content="Код устройства" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+            <Label Grid.Row="5" Grid.Column="1" Content="Команда управления:" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
             <TextBox Grid.Row="5" Grid.Column="3" Text="{Binding Mode=TwoWay, Path=ViewModel.DeviceKey }" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
-            <Label Grid.Row="7" Grid.Column="1" Content="Список параметров"/>
-            <ItemsControl Grid.Row="7" Grid.Column="3" ItemsSource="{Binding ViewModel.ParameterTypes}" >
+            <Label Grid.Row="7" Grid.Column="1" Content="Id на контроллере:" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+            <TextBlock Grid.Row="7" Grid.Column="3" Text="{Binding Path=ViewModel.NumberOnController}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+            <Label Grid.Row="9" Grid.Column="1" Content="Список параметров:"/>
+            <ItemsControl Grid.Row="9" Grid.Column="3" ItemsSource="{Binding ViewModel.ParameterTypes}" >
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="viewModel:DeviceParamLinkVM">
                         <Grid>
@@ -54,7 +58,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Grid Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="4">
+            <Grid Grid.Column="1" Grid.Row="11" Grid.ColumnSpan="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="60"></ColumnDefinition>
                     <ColumnDefinition Width="10"></ColumnDefinition>

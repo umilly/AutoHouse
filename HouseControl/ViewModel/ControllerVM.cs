@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Facade;
@@ -11,6 +12,15 @@ namespace ViewModel
     {
         public ControllerVM(IServiceContainer container, Models dataBase, Controller controller) : base(container, dataBase, controller)
         {
+        }
+
+        public override void OnChildDelete(ITreeNode node)
+        {
+            base.OnChildDelete(node);
+            foreach (var customDeviceViewModel in Children.OfType<CustomDeviceViewModel>())
+            {
+                customDeviceViewModel.OnControllerLinked();
+            }
         }
 
         public override Type ParentType { get { return null; } }

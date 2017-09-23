@@ -11,11 +11,28 @@ namespace ViewModel
     {
         public CustomDeviceViewModel(IServiceContainer container, Models dataBase, CustomDevice model) : base(container, dataBase, model)
         {
+            if(IsFake)
+                return;
         }
+
+        public override void AddedToPool()
+        {
+            base.AddedToPool();
+            if (Model != null && Model.Controller != null)
+                OnControllerLinked();
+        }
+
+        public int NumberOnController { get;private set; }
 
         public override void LinklToParent(ITreeNode Parent)
         {
             throw new NotImplementedException();
+        }
+
+        public override void OnControllerLinked()
+        {
+            base.OnControllerLinked();
+            NumberOnController = Model.Controller.CustomDevices.ToList().IndexOf(Model);
         }
     }
 
@@ -87,9 +104,15 @@ namespace ViewModel
 
         public void LinkTo(Controller model)
         {
+            model.CustomDevices.Add(Model);
             Model.Controller = model;
+            OnControllerLinked();
         }
 
+        public virtual void OnControllerLinked()
+        {
+            
+        }
         public void AddParam()
         {
             var pt = Use<IPool>().GetViewModels<ParameterTypeViewModel>().First();

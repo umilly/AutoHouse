@@ -169,7 +169,7 @@ namespace ViewModelBase
 
         public List<IContexMenuItem> ContextMenu => _contextMenu;
 
-        public void OnChildDelete(ITreeNode node)
+        public virtual void OnChildDelete(ITreeNode node)
         {
             OnPropertyChanged(()=>Children);
         }

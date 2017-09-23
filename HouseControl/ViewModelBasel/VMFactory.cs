@@ -24,7 +24,7 @@ namespace ViewModelBase
             var ensureDLLIsCopied = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
             try
             {
-                DB = new Models("1");
+                DB = new Models("locFile");
             }
             catch (Exception e)
             {
@@ -102,6 +102,10 @@ namespace ViewModelBase
             _pool[dbVmType] = new List<IViewModel>();
             var task= DB.Set(dbVmTypes[dbVmType]).ForEachAsync(model=>AddEntityFromDB(dbVmType,model));
             task.Wait();
+            foreach (var vm in _pool[dbVmType])
+            {
+                ((IEntytyObjectVM)vm).AddedToPool();
+            }
         }
 
         private void AddEntityFromDB(Type dbVmType, object model)

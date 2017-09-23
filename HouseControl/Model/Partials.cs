@@ -148,9 +148,10 @@ namespace Model
 
         public static string BuildEntityConnectionStringFromAppSettings(string nameOfConnectionString)
         {
-            _connectinsStrings["1"] = File.ReadAllText("constr");
+            if(File.Exists("constr"))
+                _connectinsStrings["1"] = File.ReadAllText("constr");
             _connectinsStrings["vlad"] = @"Data Source=UMILLY;Initial Catalog=house;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
-            _connectinsStrings["tima"] = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\work\autohouse\DB\house.mdf;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
+            _connectinsStrings["locFile"] = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\hs\db\house.mdf;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;App=EntityFramework";
             if (!_connectinsStrings.ContainsKey(nameOfConnectionString))
                 throw new ArgumentException($"expected '{nameOfConnectionString}' but not found, strings count = {_connectinsStrings.Count} ");
             var shortConnectionString = _connectinsStrings[nameOfConnectionString];
