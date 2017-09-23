@@ -145,7 +145,7 @@ namespace ViewModel
                 sb.Append(
                     $"http://{Model.CustomDevice.Controller.IP}:{Model.CustomDevice.Controller.Port}/{Model.CustomDevice.CommandPath}");
                 sb.Append($"?id={DeviceId}");
-                Parameters.OrderBy(a => a.Order).ForEach(c => sb.Append($"#val{c.Order}={c.Parameter.Value}"));
+                Parameters.OrderBy(a => a.Order).ForEach(c => sb.Append($"&val{c.Order}={c.Parameter.Value}"));
                 IsConnected = false;
                 var http = sb.ToString();
                 using (var res = Use<INetworkService>().AsyncRequest(http))
