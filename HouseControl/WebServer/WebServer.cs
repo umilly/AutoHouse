@@ -134,8 +134,8 @@ namespace WebServer
             var bytes = new byte[1024];
             if(_client==null)
                 throw new ArgumentException("клиент не может быть null");
-            if (_client.Client.Blocking)
-                throw new ArgumentException($"{_client.Client.RemoteEndPoint} сокет заблокирован");
+            //if (_client.Client.Blocking)
+            //    throw new ArgumentException($"{_client.Client.RemoteEndPoint} сокет заблокирован");
             while ((count = _client.GetStream().Read(bytes, 0, bytes.Length)) > 0)
             {
                 _request += Encoding.ASCII.GetString(bytes, 0, count);
