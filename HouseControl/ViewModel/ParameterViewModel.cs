@@ -158,6 +158,15 @@ namespace ViewModel
 
         public string Ident => ID.ToString();
 
+        public string ButtonDescription
+        {
+            get => Model.ButtonDescription; set
+            {
+                Model.ButtonDescription = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void LinkDeviceParam(ComandParameterLink model)
         {
             model.Parameter = Model;
@@ -203,6 +212,8 @@ namespace ViewModel
         SensorViewModel Sensor { get; set; }
         string Name { get; set; }
         string Description { get; set; }
+        string ButtonDescription { get; set; }
+
         bool IsEditable { get; }
         bool IsPublic { get; set; }
         IConditionSource NextParam { get; set; }

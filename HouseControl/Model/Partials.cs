@@ -200,7 +200,15 @@ namespace Model
                 RegiterUpdate(Guid.Parse("D8649F0B-A473-4846-9786-3FE1FB993C11"), CreateModbusControllerAndDevices);
                 RegiterUpdate(Guid.Parse("08E7A232-440A-451D-B88A-03E3B9F100C0"), CreateParamsDescription);
                 RegiterUpdate(Guid.Parse("4C6BFC34-A0DB-4526-AAB2-1FFB285ACE08"), AddInvertField);
+                RegiterUpdate(Guid.Parse("5E2E511F-36A7-4394-A02F-ECE1869DCA74"), CreateParamButtonDescription);
             }
+
+            public const string CreateParamButtonDescription = @"
+SET QUOTED_IDENTIFIER OFF;
+
+ALTER TABLE [dbo].[Parameter]
+ADD [ButtonDescription] nvarchar(max)  NULL;
+";
 
             public const string AddInvertField = @"
 ALTER TABLE [dbo].[ParametrSetCommands]
@@ -756,6 +764,8 @@ ON [dbo].[ParametrSetCommands]
         [DataMember]
         public string Description { get; set; }
         [DataMember]
+        public string ButtonDescription { get; set; }
+        [DataMember]
         public int ID { get; set; }
         [DataMember]
         public int NextParam { get; set; }
@@ -795,7 +805,8 @@ ON [dbo].[ParametrSetCommands]
                 Value = parameter.Value,
                 Category = parameter.ParameterCategory == null ? null : new CategoryProxy() {ID =  parameter.ParameterCategory.ID,Name = parameter.ParameterCategory.Name } ,
                 Sensor = sensor,
-                Description = parameter.Description
+                Description = parameter.Description,
+                ButtonDescription= parameter.ButtonDescription
             };
         }
     }

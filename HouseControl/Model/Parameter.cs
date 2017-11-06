@@ -29,6 +29,7 @@ namespace Model
         public byte[] Image { get; set; }
         public Nullable<int> NextParameterId { get; set; }
         public string Description { get; set; }
+        public string ButtonDescription { get; set; }
     
         public virtual ParameterType ParameterType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

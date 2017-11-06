@@ -15,6 +15,7 @@ namespace ViewModel
         private SensorViewModel _sensor;
         private string _name;
         private string _description;
+        private string _buttonDescription;
         private bool _isPublic;
         private IConditionSource _nextParam;
         public event Action OnFilterChanged;
@@ -103,6 +104,16 @@ namespace ViewModel
         public string Description
         {
             get { return _description; }
+            set
+            {
+                _description = value;
+                OnPropertyChanged();
+                FilterChanded();
+            }
+        }
+        public string ButtonDescription
+        {
+            get { return _buttonDescription; }
             set
             {
                 _description = value;

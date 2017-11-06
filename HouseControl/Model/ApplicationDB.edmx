@@ -299,6 +299,7 @@
     <Property Name="Image" Type="varbinary(max)" Nullable="true" />
     <Property Name="NextParameterId" Type="int" Nullable="true" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ButtonDescription" Type="nvarchar(max)" Nullable="true" />
     <Property Name="ParameterCategory_Id" Type="int" Nullable="true" />
     <Property Name="Sensor_Id" Type="int" Nullable="true" />
   </EntityType>
@@ -1184,6 +1185,7 @@
           <NavigationProperty Name="NextParameter" Relationship="ApplicationModel.ParameterParameter" FromRole="Parameter1" ToRole="Parameter" />
           <Property Name="NextParameterId" Type="Int32" Nullable="true" />
           <Property Name="Description" Type="String" Nullable="true" />
+          <Property Name="ButtonDescription" Type="String" Nullable="true" />
         </EntityType>
         <EntityType Name="ParameterType">
           <Key>
@@ -1575,6 +1577,7 @@
           <ScalarProperty Name="Image" ColumnName="Image" />
           <ScalarProperty Name="NextParameterId" ColumnName="NextParameterId" />
           <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ButtonDescription" ColumnName="ButtonDescription" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

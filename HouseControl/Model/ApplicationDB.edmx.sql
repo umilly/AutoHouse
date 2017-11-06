@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/06/2017 15:42:24
+-- Date Created: 11/06/2017 18:31:46
 -- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -331,6 +331,7 @@ CREATE TABLE [dbo].[Parameter] (
     [Image] varbinary(max)  NULL,
     [NextParameterId] int  NULL,
     [Description] nvarchar(max)  NULL,
+    [ButtonDescription] nvarchar(max)  NULL,
     [ParameterCategory_Id] int  NULL,
     [Sensor_Id] int  NULL
 );
