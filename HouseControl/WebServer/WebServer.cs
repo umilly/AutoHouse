@@ -149,12 +149,15 @@ namespace WebServer
                 var body = _request.Split('\r')[0].Split(' ')[1];
                 var splitBody = body.Split('?', '/');
                 var command = splitBody[1];
-                var comParams = new List<string>();
-                for (int i = 2; i < splitBody.Length; i++)
+                var comParams = ParseParamDict(splitBody[2]);
+                
+                if (comParams != null)
                 {
-                    comParams.Add(splitBody[i]);
+                    _command = new WebCommand(command, comParams);
+                    return;
                 }
-                _command = new WebCommand(command, comParams);
+                var comParamsOld = ParseParamList(splitBody);
+                _command = new WebCommand(command, comParamsOld);
             }
             catch (Exception e)
             {
@@ -162,6 +165,36 @@ namespace WebServer
                 _logger.Log(LogCategory.Network, e);
             }
             
+        }
+
+        private List<string> ParseParamList(string[] splitBody)
+        {
+            var res = new List<string>();
+            for (int i = 2; i < splitBody.Length; i++)
+            {
+                res.Add(splitBody[i]);
+            }
+            return res;
+        }
+
+        private Dictionary<string, string> ParseParamDict(string v)
+        {
+            try
+            {
+                var res = new Dictionary<string, string>();
+                foreach (var item in v.Split('&'))
+                {
+                    var name = item.Split('=')[0];
+                    var val = item.Split('=')[1];
+                    res[name] = val;
+                }
+                return res;
+            }
+            catch(Exception e) {
+                _logger.Log(LogCategory.Network, $"Canonic reqeuest  parse error: \r\n {_request} \r\n Url{((IPEndPoint)_client.Client.RemoteEndPoint).Address}");
+                _logger.Log(LogCategory.Network, e);
+            }
+            return null;
         }
 
         private void Response()
@@ -212,12 +245,19 @@ public class WebCommand
 {
     public WebCommandType Type { get;private set; }
     public List<string> Params { get; private set; }
+    public Dictionary<string, string> ParamDict { get; private set; }
 
     public WebCommand(string type, List<string> @params)
     {
 
         Type = (WebCommandType)Enum.Parse(typeof(WebCommandType),type);
         Params = @params;
+    }
+    public WebCommand(string type, Dictionary<string,string> @params)
+    {
+
+        Type = (WebCommandType)Enum.Parse(typeof(WebCommandType),type);
+        ParamDict = @params;
     }
 
     public bool Json
@@ -249,7 +289,14 @@ public class WebCommand
             case WebCommandType.GetModes:
                 return serv.GetModes();
             case WebCommandType.SetParam:
-                return serv.SetParameter(int.Parse(Params[0]), Params[1]);
+
+                if(Params!=null)
+                    return serv.SetParameter(int.Parse(Params[0]), Params[1]);
+                if (ParamDict != null)
+                    return serv.SetParameter(int.Parse(ParamDict["id"]), ParamDict["val"]);
+                else
+                    throw new ArgumentException($"Параметры команыды{Type}указаны не верно");
+                break;
             case WebCommandType.SetMode:
                 return serv.SetMode(int.Parse(Params[0]));
             case WebCommandType.GetModesJson:
