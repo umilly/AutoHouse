@@ -149,7 +149,8 @@ namespace WebServer
                 var body = _request.Split('\r')[0].Split(' ')[1];
                 var splitBody = body.Split('?', '/');
                 var command = splitBody[1];
-                var comParams = ParseParamDict(splitBody[2]);
+
+                var comParams = ParseParamDict(splitBody.Count()>2?splitBody[2]:string.Empty);
                 
                 if (comParams != null)
                 {
