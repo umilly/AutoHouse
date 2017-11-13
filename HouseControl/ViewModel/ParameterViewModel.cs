@@ -7,13 +7,13 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ParameterViewModel : EntytyObjectVM<Parameter>,IConditionSource, IPublicParam
+    public class ParameterViewModel : EntytyObjectVM<Parameter>, IConditionSource, IPublicParam
     {
         public ParameterViewModel(IServiceContainer container, Models dataBase, Parameter model)
             : base(container, dataBase, model)
         {
-            if(!IsFake && Model.ID == Parameter.CurrentTimeId)
-                Use<ITimerSerivce>().Subsctibe(this,UpdateTime,1000,true);
+            if (!IsFake && Model.ID == Parameter.CurrentTimeId)
+                Use<ITimerSerivce>().Subsctibe(this, UpdateTime, 1000, true);
         }
 
         public override void AddedToPool()
@@ -28,12 +28,12 @@ namespace ViewModel
 
         private void UpdateTime()
         {
-            OnPropertyChanged(()=>Value);
+            OnPropertyChanged(() => Value);
         }
 
         public override bool Validate()
         {
-            return !string.IsNullOrEmpty(Model.Name)&&Model.ParameterType!=null;
+            return !string.IsNullOrEmpty(Model.Name) && Model.ParameterType != null;
         }
 
         public string Value
@@ -48,7 +48,7 @@ namespace ViewModel
 
         public IEnumerable<ParameterTypeViewModel> ParamTypes => Use<IPool>().GetViewModels<ParameterTypeViewModel>();
         public IEnumerable<ParameterCategoryVm> Categories => Use<IPool>().GetViewModels<ParameterCategoryVm>();
-        public IEnumerable<SensorViewModel> Sensors => Use<IPool>().GetViewModels<SensorViewModel>();
+        public IEnumerable<IConditionSource> Sensors => Use<IPool>().GetViewModels<SensorViewModel>().Union(new[] { (IConditionSource)EmptyValue.Instance }) ;
 
         public ParameterTypeViewModel ParamType
         {
@@ -67,12 +67,19 @@ namespace ViewModel
                 OnPropertyChanged();
             }
         }
-        public SensorViewModel Sensor
+        public IConditionSource Sensor
         {
-            get { return Use<IPool>().GetDBVM<SensorViewModel>(Model.Sensor); }
+            get { return Model.Sensor==null?EmptyValue.Instance: (IConditionSource)Use<IPool>().GetDBVM<SensorViewModel>(Model.Sensor); }
             set
             {
-                value.LinkParam(Model);
+                if (value == EmptyValue.Instance)
+                {
+                    Model.Sensor = null;
+                }
+                else
+                {
+                    ((SensorViewModel)value).LinkParam(Model);
+                }
                 OnPropertyChanged();
             }
         }
@@ -206,10 +213,10 @@ namespace ViewModel
         string Value { get; set; }
         IEnumerable<ParameterTypeViewModel> ParamTypes { get; }
         IEnumerable<ParameterCategoryVm> Categories { get; }
-        IEnumerable<SensorViewModel> Sensors { get; }
+        IEnumerable<IConditionSource> Sensors { get; }
         ParameterTypeViewModel ParamType { get; set; }
         ParameterCategoryVm Category { get; set; }
-        SensorViewModel Sensor { get; set; }
+        IConditionSource Sensor { get; set; }
         string Name { get; set; }
         string Description { get; set; }
         string ButtonDescription { get; set; }

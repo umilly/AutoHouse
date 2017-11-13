@@ -12,7 +12,7 @@ namespace ViewModel
         private string _value;
         private ParameterTypeViewModel _paramType;
         private ParameterCategoryVm _category;
-        private SensorViewModel _sensor;
+        private IConditionSource _sensor;
         private string _name;
         private string _description;
         private string _buttonDescription;
@@ -55,7 +55,7 @@ namespace ViewModel
 
         public IEnumerable<ParameterTypeViewModel> ParamTypes => Use<IPool>().GetViewModels<ParameterTypeViewModel>();
         public IEnumerable<ParameterCategoryVm> Categories => Use<IPool>().GetViewModels<ParameterCategoryVm>();
-        public IEnumerable<SensorViewModel> Sensors => Use<IPool>().GetViewModels<SensorViewModel>();
+        public IEnumerable<IConditionSource> Sensors => Use<IPool>().GetViewModels<SensorViewModel>().Union(new[] { (IConditionSource)EmptyValue.Instance });
 
         public ParameterTypeViewModel ParamType
         {
@@ -79,7 +79,7 @@ namespace ViewModel
             }
         }
 
-        public SensorViewModel Sensor
+        public IConditionSource Sensor
         {
             get { return _sensor; }
             set
