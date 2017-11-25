@@ -61,7 +61,7 @@ namespace ViewModel
 
         public ParameterViewModel Parameter1 => Use<IPool>().GetDBVM<ParameterViewModel>(Model.Parameter1);
         public ParameterViewModel Parameter2 => Use<IPool>().GetDBVM<ParameterViewModel>(Model.Parameter2);
-        public SensorViewModel Sensor => Use<IPool>().GetDBVM<SensorViewModel>(Model.Sensor);
+        public ISensorVM Sensor => Use<IPool>().GetDBVM<ISensorVM>(Model.Sensor);
 
         public IEnumerable<ConditionTypeViewModel> CondtionTypes
         {
@@ -115,7 +115,7 @@ namespace ViewModel
         {
             get
             {
-                return Use<IPool>().GetViewModels<SensorViewModel>()
+                return Use<IPool>().GetViewModels<ISensorVM>()
                     .Where(a => a.Zone != null&& a.Zone.IsGlobal|| CurrentScenario.HaveZone(a.Zone))
                     .Cast<IConditionSource>()
                     .Union(Use<IPool>().GetViewModels<ParameterViewModel>())
@@ -153,7 +153,7 @@ namespace ViewModel
                 
                  Model.Parameter1 = null;
                  Model.Sensor = null;
-                (value as SensorViewModel)?.LinkCondition(Model);
+                (value as ISensorVM)?.LinkCondition(Model);
                 (value as ParameterViewModel)?.LinkCondition(Model,true);
             }
         }

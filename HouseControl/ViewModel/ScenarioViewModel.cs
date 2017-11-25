@@ -104,8 +104,8 @@ namespace ViewModel
                 .Where(a => a.CurrentScenario == this);
             foreach (var conditionViewModel in revalidateConditions)
             {
-                if (conditionViewModel.LeftParam is SensorViewModel
-                    && !HaveZone((conditionViewModel.LeftParam as SensorViewModel).Zone))
+                if (conditionViewModel.LeftParam is ISensorVM
+                    && !HaveZone((conditionViewModel.LeftParam as ISensorVM).Zone))
                 {
                     conditionViewModel.LeftParam = EmptyValue.Instance;
                 }

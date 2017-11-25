@@ -48,7 +48,7 @@ namespace ViewModel
 
         public IEnumerable<ParameterTypeViewModel> ParamTypes => Use<IPool>().GetViewModels<ParameterTypeViewModel>();
         public IEnumerable<ParameterCategoryVm> Categories => Use<IPool>().GetViewModels<ParameterCategoryVm>();
-        public IEnumerable<IConditionSource> Sensors => Use<IPool>().GetViewModels<SensorViewModel>().Union(new[] { (IConditionSource)EmptyValue.Instance }) ;
+        public IEnumerable<IConditionSource> Sensors => Use<IPool>().GetViewModels<ISensorVM>().Union(new[] { (IConditionSource)EmptyValue.Instance }) ;
 
         public ParameterTypeViewModel ParamType
         {
@@ -69,7 +69,7 @@ namespace ViewModel
         }
         public IConditionSource Sensor
         {
-            get { return Model.Sensor==null?EmptyValue.Instance: (IConditionSource)Use<IPool>().GetDBVM<SensorViewModel>(Model.Sensor); }
+            get { return Model.Sensor==null?EmptyValue.Instance: (IConditionSource)Use<IPool>().GetDBVM<ISensorVM>(Model.Sensor); }
             set
             {
                 if (value == EmptyValue.Instance)
@@ -78,7 +78,7 @@ namespace ViewModel
                 }
                 else
                 {
-                    ((SensorViewModel)value).LinkParam(Model);
+                    ((ISensorVM)value).LinkParam(Model);
                 }
                 OnPropertyChanged();
             }

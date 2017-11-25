@@ -46,7 +46,7 @@ namespace ViewModel
 
         public override IEnumerable<ITreeNode> Children
         {
-            get { return Use<IPool>().GetViewModels<SensorViewModel>()
+            get { return Use<IPool>().GetViewModels<ISensorVM>()
                 .Cast<ITreeNode>()
                 .Union(Use<IPool>().GetViewModels<CustomDeviceViewModel>())
                 .Where(a => a.Parent == this); }
@@ -162,10 +162,10 @@ namespace ViewModel
                     var sensorValues = line.Split('_');
                     var slotNum=  int.Parse(sensorValues[0]);
                     //var zoneNum = int.Parse(sensorValues[1]);
-                    var found = Use<IPool>().GetViewModels<SensorViewModel>().FirstOrDefault(a => a.Parent == this && a.Slot == slotNum);
+                    var found = Use<IPool>().GetViewModels<FirstTypeSensor>().FirstOrDefault(a => a.Parent == this && a.Slot == slotNum);
                     if (found==null)
                     {
-                        var newSensor = Use<IPool>().CreateDBObject<SensorViewModel>();
+                        var newSensor = Use<IPool>().CreateDBObject<FirstTypeSensor>();
                         var zone = Use<IPool>().GetDBVM<ZoneViewModel>(1);//GetOrCreateZone(zoneNum);
                         newSensor.Init(_cahedTypes[key], slotNum, Model, "Датчик " + ++num);
                         newSensor.Zone = zone;

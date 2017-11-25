@@ -8,9 +8,10 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class SensorViewModel : LinkedObjectVM<Sensor>, IConditionSource
+    
+    public abstract class SensorViewModel<T> : LinkedObjectVM<T>,ISensorVM where T: Sensor
     {
-        public SensorViewModel(IServiceContainer container, Models dataBase, Sensor model)
+        public SensorViewModel(IServiceContainer container, Models dataBase, T model)
             : base(container, dataBase, model)
         {
             Children = Enumerable.Empty<ITreeNode>();
@@ -115,5 +116,43 @@ namespace ViewModel
         {
             model.Sensor = Model;
         }
+
+    }
+
+    public interface ISensorVM: IConditionSource, IEntytyObjectVM
+    {
+        bool Validate();
+        void LinklToParent(ITreeNode Parent);
+        Type ParentType { get; }
+        ITreeNode Parent { get; }
+        IEnumerable<ITreeNode> Children { get; }
+        string Name { get; set; }
+        Type ValueType { get; }
+        string Value { get; set; }
+        bool? IsConnected { get; set; }
+        string SourceName { get; }
+        int Slot { get; }
+        ZoneViewModel Zone { get; set; }
+        string SensorType { get; }
+        string ValueRange { get; }
+        IEnumerable<ZoneViewModel> Zones { get; }
+        void Init(SensorType st, int slotNum, Controller controller, string name);
+        void UpdateValue();
+        void LinkCondition(Condition model);
+        void LinkSetComand(ParametrSetCommand model);
+        void LinkParam(Parameter model);
+    }
+
+    public class FirstTypeSensor : SensorViewModel<Sensor>
+    {
+        public FirstTypeSensor(IServiceContainer container, Models dataBase, Sensor model)
+            : base(container, dataBase, model) { }
+
+    }
+    public class SecondTypeSensor : SensorViewModel<CustomSensor>
+    {
+        public SecondTypeSensor(IServiceContainer container, Models dataBase, CustomSensor model)
+            : base(container, dataBase, model) { }
+
     }
 }

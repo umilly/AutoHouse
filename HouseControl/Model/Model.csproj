@@ -103,6 +103,9 @@
     <Compile Include="CustomDevice.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="CustomSensor.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBVersion.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>

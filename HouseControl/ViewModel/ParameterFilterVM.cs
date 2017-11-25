@@ -55,7 +55,7 @@ namespace ViewModel
 
         public IEnumerable<ParameterTypeViewModel> ParamTypes => Use<IPool>().GetViewModels<ParameterTypeViewModel>();
         public IEnumerable<ParameterCategoryVm> Categories => Use<IPool>().GetViewModels<ParameterCategoryVm>();
-        public IEnumerable<IConditionSource> Sensors => Use<IPool>().GetViewModels<SensorViewModel>().Union(new[] { (IConditionSource)EmptyValue.Instance });
+        public IEnumerable<IConditionSource> Sensors => Use<IPool>().GetViewModels<ISensorVM>().Union(new[] { (IConditionSource)EmptyValue.Instance });
 
         public ParameterTypeViewModel ParamType
         {

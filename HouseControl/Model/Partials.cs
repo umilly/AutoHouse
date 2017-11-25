@@ -15,6 +15,7 @@ using Facade;
 
 namespace Model
 {
+
     public partial class Controller : IHaveID
     {
         public int ID
@@ -201,8 +202,29 @@ namespace Model
                 RegiterUpdate(Guid.Parse("08E7A232-440A-451D-B88A-03E3B9F100C0"), CreateParamsDescription);
                 RegiterUpdate(Guid.Parse("4C6BFC34-A0DB-4526-AAB2-1FFB285ACE08"), AddInvertField);
                 RegiterUpdate(Guid.Parse("5E2E511F-36A7-4394-A02F-ECE1869DCA74"), CreateParamButtonDescription);
+                RegiterUpdate(Guid.Parse("F439FC8D-C225-4A0A-8910-CA588A3C48F1"), CreateCustomSensors);
             }
 
+public const string CreateCustomSensors = @"
+SET QUOTED_IDENTIFIER OFF;
+CREATE TABLE [dbo].[Devices_CustomSensor] (
+    [LastValue] nvarchar(max)  NULL,
+    [ValueChangeDate] datetime  NOT NULL,
+    [Id] int  NOT NULL
+);
+
+ALTER TABLE [dbo].[Devices_CustomSensor]
+ADD CONSTRAINT [PK_Devices_CustomSensor]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+
+ALTER TABLE [dbo].[Devices_CustomSensor]
+ADD CONSTRAINT [FK_CustomSensor_inherits_Sensor]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Devices_Sensor]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+
+";
             public const string CreateParamButtonDescription = @"
 SET QUOTED_IDENTIFIER OFF;
 
@@ -840,4 +862,5 @@ ON [dbo].[ParametrSetCommands]
         [DataMember]
         public List<ParameterProxy> ParamList { get; set; }
     }
+    
 }

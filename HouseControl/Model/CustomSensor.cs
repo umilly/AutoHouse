@@ -15,12 +15,12 @@ namespace Model
 using System;
     using System.Collections.Generic;
     
-public partial class DBVersion
+public partial class CustomSensor : Sensor
 {
 
-    public int Id { get; set; }
+    public string LastValue { get; set; }
 
-    public System.Guid Version { get; set; }
+    public System.DateTime ValueChangeDate { get; set; }
 
 }
 

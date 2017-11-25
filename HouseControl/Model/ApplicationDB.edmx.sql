@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/06/2017 18:31:46
--- Generated from EDMX file: D:\work\#repo\HouseControl\Model\ApplicationDB.edmx
+-- Date Created: 11/25/2017 12:58:02
+-- Generated from EDMX file: D:\hs\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -426,6 +426,14 @@ CREATE TABLE [dbo].[Devices_ModBusDevice] (
 );
 GO
 
+-- Creating table 'Devices_CustomSensor'
+CREATE TABLE [dbo].[Devices_CustomSensor] (
+    [LastValue] nvarchar(max)  NULL,
+    [ValueChangeDate] datetime  NOT NULL,
+    [Id] int  NOT NULL
+);
+GO
+
 -- Creating table 'ZoneScenario'
 CREATE TABLE [dbo].[ZoneScenario] (
     [Zones_Id] int  NOT NULL,
@@ -578,6 +586,12 @@ GO
 -- Creating primary key on [Id] in table 'Devices_ModBusDevice'
 ALTER TABLE [dbo].[Devices_ModBusDevice]
 ADD CONSTRAINT [PK_Devices_ModBusDevice]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Devices_CustomSensor'
+ALTER TABLE [dbo].[Devices_CustomSensor]
+ADD CONSTRAINT [PK_Devices_CustomSensor]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1091,6 +1105,15 @@ ALTER TABLE [dbo].[Devices_ModBusDevice]
 ADD CONSTRAINT [FK_ModBusDevice_inherits_CustomDevice]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Devices_CustomDevice]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Id] in table 'Devices_CustomSensor'
+ALTER TABLE [dbo].[Devices_CustomSensor]
+ADD CONSTRAINT [FK_CustomSensor_inherits_Sensor]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Devices_Sensor]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO

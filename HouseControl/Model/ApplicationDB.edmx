@@ -30,6 +30,7 @@
     <EntitySet Name="Devices_CustomDevice" EntityType="ApplicationModel.Store.Devices_CustomDevice" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_ModBusController" EntityType="ApplicationModel.Store.Devices_ModBusController" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_ModBusDevice" EntityType="ApplicationModel.Store.Devices_ModBusDevice" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Devices_CustomSensor" EntityType="ApplicationModel.Store.Devices_CustomSensor" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ZoneScenario" EntityType="ApplicationModel.Store.ZoneScenario" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_Users_Role" Association="ApplicationModel.Store.FK_Users_Role">
       <End Role="Role" EntitySet="Roles" />
@@ -174,6 +175,10 @@
     <AssociationSet Name="FK_ModBusDevice_inherits_CustomDevice" Association="ApplicationModel.Store.FK_ModBusDevice_inherits_CustomDevice">
       <End Role="CustomDevice" EntitySet="Devices_CustomDevice" />
       <End Role="ModBusDevice" EntitySet="Devices_ModBusDevice" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CustomSensor_inherits_Sensor" Association="ApplicationModel.Store.FK_CustomSensor_inherits_Sensor">
+      <End Role="Sensor" EntitySet="Devices_Sensor" />
+      <End Role="CustomSensor" EntitySet="Devices_CustomSensor" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Contents">
@@ -390,6 +395,14 @@
     </Key>
     <Property Name="IsCoil" Type="bit" Nullable="true" />
     <Property Name="Address" Type="smallint" Nullable="true" />
+    <Property Name="Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Devices_CustomSensor">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="LastValue" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ValueChangeDate" Type="datetime" Nullable="false" />
     <Property Name="Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ZoneScenario">
@@ -838,6 +851,20 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="ModBusDevice">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CustomSensor_inherits_Sensor">
+    <End Role="Sensor" Type="ApplicationModel.Store.Devices_Sensor" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CustomSensor" Type="ApplicationModel.Store.Devices_CustomSensor" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Sensor">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CustomSensor">
         <PropertyRef Name="Id" />
       </Dependent>
     </ReferentialConstraint>
@@ -1407,6 +1434,10 @@
           <Property Name="IsCoil" Type="Boolean" Nullable="true" />
           <Property Name="Address" Type="Int16" Nullable="true" />
         </EntityType>
+        <EntityType Name="CustomSensor" BaseType="ApplicationModel.Sensor" >
+          <Property Name="LastValue" Type="String" Nullable="true" />
+          <Property Name="ValueChangeDate" Type="DateTime" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1563,6 +1594,13 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="IsCoil" ColumnName="IsCoil" />
           <ScalarProperty Name="Address" ColumnName="Address" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.CustomSensor)">
+        <MappingFragment StoreEntitySet="Devices_CustomSensor">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="LastValue" ColumnName="LastValue" />
+          <ScalarProperty Name="ValueChangeDate" ColumnName="ValueChangeDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

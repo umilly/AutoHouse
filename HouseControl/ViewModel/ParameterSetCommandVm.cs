@@ -101,9 +101,9 @@ namespace ViewModel
             }
         }
 
-        public SensorViewModel Sensor
+        public ISensorVM Sensor
         {
-            get { return Model.Sensor == null ? null : Use<IPool>().GetDBVM<SensorViewModel>(Model.Sensor); }
+            get { return Model.Sensor == null ? null : Use<IPool>().GetDBVM<ISensorVM>(Model.Sensor); }
             set
             {
                 if (value == null)
@@ -137,7 +137,7 @@ namespace ViewModel
         }
 
         public IEnumerable<ParameterViewModel> AllParams => Use<IPool>().GetViewModels<ParameterViewModel>();
-        public IEnumerable<SensorViewModel> AllSensors => Use<IPool>().GetViewModels<SensorViewModel>()
+        public IEnumerable<ISensorVM> AllSensors => Use<IPool>().GetViewModels<ISensorVM>()
             .Where(a=>a.Zone.IsGlobal||(Reaction!=null&& Reaction.Scenario.HaveZone(a.Zone)));
 
         public bool Invert

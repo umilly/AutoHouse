@@ -16,6 +16,7 @@ namespace ViewModelBase
     public class VMFactory:ServiceBase, IPool
     {
         private readonly Dictionary<Type,List<IViewModel>> _pool=new Dictionary<Type, List<IViewModel>>();
+        private static Dictionary<Type,List<Type>> _derrivedTypes=new Dictionary<Type, List<Type>>();
 
         private static Models DB;
 
@@ -41,7 +42,7 @@ namespace ViewModelBase
             }
             if (!_pool.ContainsKey(vmType))
             {
-                _pool[vmType] = new List<IViewModel>();
+                TryRegisterType(vmType);
             }
             var res = _pool[vmType].FirstOrDefault(a => a.ID == id) ?? CreateVM(vmType);
             return res;
@@ -71,7 +72,7 @@ namespace ViewModelBase
         public IEntytyObjectVM CreateDBObject(Type type)
         {
             if (!_pool.ContainsKey(type))
-                _pool[type]=new List<IViewModel>();
+                TryRegisterType(type);
             var newModel = DB.Set(dbVmTypes[type]).Create();
             DB.Set(dbVmTypes[type]).Add(newModel);
             var res = (IEntytyObjectVM)Activator.CreateInstance(type, Container, DB,newModel);
@@ -99,7 +100,7 @@ namespace ViewModelBase
 
         private void FillType(Type dbVmType)
         {
-            _pool[dbVmType] = new List<IViewModel>();
+            TryRegisterType(dbVmType);
             var task= DB.Set(dbVmTypes[dbVmType]).ForEachAsync(model=>AddEntityFromDB(dbVmType,model));
             task.Wait();
             foreach (var vm in _pool[dbVmType])
@@ -178,21 +179,61 @@ namespace ViewModelBase
         {
             if (!_pool.ContainsKey(type))
             {
-                _pool[type] = new List<IViewModel>();
+                TryRegisterType(type);
             }
             var res = (IViewModel) Activator.CreateInstance(type, Use<IServiceContainer>());
             _pool[type].Add(res);
             return res;
         }
 
+        private void TryRegisterType(Type type)
+        {
+            if (!_derrivedTypes.ContainsKey(type))
+            {
+                _derrivedTypes[type]=new List<Type>();
+            }
+
+            foreach (var registredType in _derrivedTypes.Keys)
+            {
+                if(type.IsAssignableFrom(registredType))
+                    _derrivedTypes[type].Add(registredType);
+                if(registredType.IsAssignableFrom(type))
+                    _derrivedTypes[registredType].Add(type);
+            }
+            if(!_pool.ContainsKey(type))
+                _pool[type] = new List<IViewModel>();
+        }
+
         public IEnumerable<T> GetViewModels<T>() where T:class,IViewModel
         {
-            return !_pool.ContainsKey(typeof(T)) ? Enumerable.Empty<T>() : _pool[typeof(T)].Cast<T>();
+            var t = typeof(T);
+             if (!_derrivedTypes.ContainsKey(t))
+            {
+                TryRegisterType(t);
+            }
+            var haveSome = _pool.ContainsKey(t) &&_pool[t].Any();
+            if (haveSome)
+            {
+                foreach (var vm in _pool[t].Cast<T>())
+                {
+                    yield return vm;
+                }
+            }
+            else
+            {
+                foreach (var type in _derrivedTypes[t])
+                {
+                    foreach (var key in _pool[type])
+                    {
+                        yield return key as T;
+                    }
+                }
+            }
         }
       
-        public T GetViewModel<T>(int id) where T:class
+        public T GetViewModel<T>(int id) where T:class, IViewModel
         {
-            return !_pool.ContainsKey(typeof(T)) ? null : (T)_pool[typeof(T)].SingleOrDefault(a=>a.ID==id);
+            return GetViewModels<T>().SingleOrDefault(a=>a.ID==id);
         }
     }
 }
