@@ -141,7 +141,7 @@ namespace Model
         }
         public static string BuildEntityConnectionStringFromAppSettings()
         {
-            var dbFile = @"D:\hs\db\house.mdf";
+            var dbFile = @"G:\work\#repo\db\house.mdf";
             string shortConnectionString=string.Empty;
             if (File.Exists("constr"))
                 shortConnectionString = File.ReadAllText("constr");

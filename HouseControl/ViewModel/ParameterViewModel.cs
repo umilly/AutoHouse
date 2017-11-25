@@ -202,7 +202,7 @@ namespace ViewModel
         public ParameterProxy GetProxy()
         {
             var param = ParameterProxy.FromDBParameter(Model);
-            param.ActualValue = Sensor==null?Value:Sensor.Value;
+            param.ActualValue = Sensor==null||Sensor is EmptyValue?Value:Sensor.Value;
             return param;
         }
     }
