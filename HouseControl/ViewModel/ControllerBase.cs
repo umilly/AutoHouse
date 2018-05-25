@@ -17,6 +17,17 @@ namespace ViewModel
         {
             fillSensorTypes();
             _contextMenu.Add(new CustomContextMenuItem("Добавить устройство",new CommandHandler(AddDevice)));
+            _contextMenu.Add(new CustomContextMenuItem("Добавить сенсор", new CommandHandler(AddSensor)));
+        }
+
+        private void AddSensor(bool obj)
+        {
+            var newSensor = Use<IPool>().CreateDBObject<FirstTypeSensor>();
+            var zone = Use<IPool>().GetDBVM<ZoneViewModel>(1);//GetOrCreateZone(zoneNum);
+            var sensors = Use<IPool>().GetViewModels<ISensorVM>().Where(a => a.Parent == this).ToList();
+            int slot = sensors.Any() ? sensors.Max(a => a.Slot) : 0;
+            newSensor.Init(_cahedTypes.First().Value, slot+1, Model, "Датчик");
+            newSensor.Zone = zone;
         }
 
         private void AddDevice(bool b)

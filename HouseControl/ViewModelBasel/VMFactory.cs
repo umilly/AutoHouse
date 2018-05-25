@@ -52,7 +52,12 @@ namespace ViewModelBase
         {
             if (!_pool.ContainsKey(type))
                 return null;
-            var res = _pool[type].Cast<IEntytyObjectVM>().FirstOrDefault(a => a.CompareModel(id));
+            IEnumerable<IEntytyObjectVM> all = new List<IEntytyObjectVM>();
+            foreach (var t in _derrivedTypes[type].Distinct())
+            {
+                all = all.Union(_pool[t].Cast<IEntytyObjectVM>());
+            }
+            var res = all.FirstOrDefault(a => a.CompareModel(id));
             return res;
         }
 
