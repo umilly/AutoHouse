@@ -643,18 +643,26 @@ ON [dbo].[ParametrSetCommands]
 
             public void Migrate()
             {
-                if (!_context.DBVersions.Any())
+                Guid currentVersion = Guid.Empty;
+                try
                 {
-                    var version = _context.DBVersions.Create();
-                    version.Version = GetLastUpdateId();
-                    _context.DBVersions.Add(version);
-                    _updates.OrderBy(a => a.Order).ToList().ForEach(update => { update.FillData?.Invoke(); });
-                    _context.SaveChanges();
-                    return;
+                    if (!_context.DBVersions.Any())
+                    {
+                        var version = _context.DBVersions.Create();
+                        version.Version = GetLastUpdateId();
+                        _context.DBVersions.Add(version);
+                        _updates.OrderBy(a => a.Order).ToList().ForEach(update => { update.FillData?.Invoke(); });
+                        _context.SaveChanges();
+                        return;
+                    }
+                    currentVersion = _context.DBVersions.Single().Version;
+                    var lastUpdateOrder = _updates.First(a => a.ID == currentVersion).Order;
+                    ApplyScripts(lastUpdateOrder);
                 }
-                var currentVersion = _context.DBVersions.Single().Version;
-                var lastUpdateOrder = _updates.First(a => a.ID == currentVersion).Order;
-                ApplyScripts(lastUpdateOrder);
+                catch (Exception e)
+                {
+                    throw new Exception($"error migrate db from '{currentVersion.ToString()}' to '{_updates.Last().ID}' total: '{_updates.Count}' ",e);
+                }
 
             }
 
