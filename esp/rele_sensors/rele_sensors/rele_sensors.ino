@@ -59,7 +59,7 @@ void setup(void)
   //mcp.begin();
   for(int i=0;i<SensorCount;i++)
   {
-    //mcp.pinMode(SensorPinss[i], INPUT);
+    //mcp.pinMode(SensorPins[i], INPUT);
   }
   for(int i=0;i<ReleCount;i++)
   {
@@ -136,6 +136,7 @@ bool CheckSensorChanged(int i)
 void loop(void)
 {  
   CheckSensors();
+  
   for(int i=0;i<ReleCount;i++)
   {
     //mcp.digitalWrite(pins[i],values[i]);
