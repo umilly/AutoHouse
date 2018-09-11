@@ -124,10 +124,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ContolView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ConditionEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -188,10 +184,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BoolToColorConverter.cs" />
-    <Compile Include="ContolView.xaml.cs">
-      <DependentUpon>ContolView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="IntToColorConverter.cs" />
     <Compile Include="ConditionEditor.xaml.cs">
       <DependentUpon>ConditionEditor.xaml</DependentUpon>
     </Compile>

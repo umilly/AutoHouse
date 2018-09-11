@@ -14,14 +14,14 @@
              d:DesignHeight="300" d:DesignWidth="300" 
              DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <UserControl.Resources>
-        <viewTools:BoolToColorConverter x:Key="ColorConverter"/>
+        <viewTools:IntToColorConverter x:Key="ColorConverter"/>
     </UserControl.Resources>
     <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Black" BorderThickness="2">
         <ScrollViewer MaxHeight="400" VerticalScrollBarVisibility="Auto">
             <TreeView Name="DeviceTreeView" Margin="5" ItemsSource="{Binding ViewModel.Devices}">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
-                        <Grid Background="{Binding Path=IsConnected, Converter={StaticResource ColorConverter}}">
+                        <Grid Background="{Binding Path=LastUpdateMs, Converter={StaticResource ColorConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="200"/>
                                 <ColumnDefinition Width="50"/>

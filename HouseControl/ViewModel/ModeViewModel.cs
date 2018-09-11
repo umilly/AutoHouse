@@ -8,7 +8,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ModeViewModel : LinkedObjectVM<Mode>
+    public class ModeViewModel : LinkedObjectVm<Mode>
     {
         private readonly List<IContexMenuItem> _contextMenu;
 

@@ -70,7 +70,6 @@ namespace WebServer
             try
             {
                 Use<IPool>().GetViewModels<ParameterViewModel>().First(a => a.ID == paramId).Value = value;
-                Use<IPool>().SaveDB();
                 return "OK";
             }
             catch (Exception e)

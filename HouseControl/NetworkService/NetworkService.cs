@@ -97,26 +97,38 @@ namespace ViewModelBase
             return res;
         }
 
+        private static int reqAmount = 0;
+       
         public async Task<string> AsyncRequest(string url)
         {
             string res = null;
             try
             {
+                lock (this)
+                {
+                    reqAmount++;
+                }
                 var response = (HttpWebResponse) await GetResponseTask(url);
                 var stream = response.GetResponseStream();
-                var reader = new StreamReader(stream,Encoding.UTF8);
+                var reader = new StreamReader(stream, Encoding.UTF8);
                 res = reader.ReadToEnd();
                 stream.Dispose();
                 reader.Dispose();
                 response.Dispose();
                 return res;
-
             }
             catch (Exception e)
             {
-                var prefix = $"ASync request to {url} Exception:\r\n ";
+                var prefix = $"ASync request Total:{reqAmount} URL: {url} Exception:\r\n ";
                 Use<ILog>().LogNetException(e, prefix);
                 return string.Empty;
+            }
+            finally
+            {
+                lock (this)
+                {
+                    reqAmount--;
+                }
             }
         }
 

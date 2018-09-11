@@ -21,7 +21,7 @@ namespace ViewModelBase
         T GetDBVM<T>(IHaveID model) where T : IEntytyObjectVM;
         T GetDBVM<T>(int id) where T : class,IEntytyObjectVM;
         void RemoveVM(Type type, int i);
-        void SaveDB();
+        void SaveDB(bool showMessage = true);
         void RemoveVM(Type getType, IHaveID model);
     }
 }

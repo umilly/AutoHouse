@@ -9,7 +9,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ScenarioViewModel : LinkedObjectVM<Scenario>, ITreeNode
+    public class ScenarioViewModel : LinkedObjectVm<Scenario>, ITreeNode
     {
         public ScenarioViewModel(IServiceContainer container, Models dataBase, Scenario model)
             : base(container, dataBase, model)

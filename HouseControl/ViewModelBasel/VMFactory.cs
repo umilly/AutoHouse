@@ -32,7 +32,15 @@ namespace ViewModelBase
                 Use<ILog>().Log(LogCategory.Configuration, e, true);
                 throw e;
             }
+            Use<ITimerSerivce>().Subsctibe(this,TrySave,60000,true);
         }
+
+        private void TrySave()
+        {
+            SaveDB(false);
+            
+        }
+
         private static Dictionary<Type,Type> dbVmTypes=new Dictionary<Type, Type>();
         public IViewModel GetOrCreateVM(Type vmType, int id)
         {
@@ -78,8 +86,17 @@ namespace ViewModelBase
         {
             if (!_pool.ContainsKey(type))
                 TryRegisterType(type);
-            var newModel = DB.Set(dbVmTypes[type]).Create();
-            DB.Set(dbVmTypes[type]).Add(newModel);
+            object newModel;
+            lock (DB)
+            {
+                newModel = DB.Set(dbVmTypes[type]).Create();
+                DB.Set(dbVmTypes[type]).Add(newModel);
+            }
+
+            if (Use<IGlobalParams>().LogDBAddRemove)
+            {
+                Use<ILog>().Log(LogCategory.Data, $"new '{type}' created");
+            }
             var res = (IEntytyObjectVM)Activator.CreateInstance(type, Container, DB,newModel);
             _pool[type].Add(res);
             res.AddedToPool();
@@ -150,20 +167,38 @@ namespace ViewModelBase
             _pool[type].Remove(toRemove);
         }
 
-        public void SaveDB()
+        public void SaveDB(bool showMessage=true)
         {
+            var reason = showMessage ? "User" : "Timer";
+            Use<ILog>().Log(LogCategory.Data, $"Save by {reason} \r\n ");
             try
             {
-                DB.SaveChanges();
+                lock (DB)
+                {
+                    DB.SaveChanges();
+                }
             }
             catch (Exception e)
             {
-                if(e is DbEntityValidationException)
+                Use<ILog>().Log(LogCategory.Data, $"Save FAILED:\r\n ");
+
+                var addNote = "";
+                if (e is DbEntityValidationException)
+                {
                     e = new FormattedDbEntityValidationException(e as DbEntityValidationException);
+                    addNote = e.Message;
+                }
                 Use<ILog>().Log(LogCategory.Data, $"Validation fail:\r\n ");
                 Use<ILog>().Log(LogCategory.Data, e);
-                Use<IViewService>().ShowMessage("ИЗМЕНЕНИЯ НЕ БЫЛИ СОХРАНЕНЫ.\r\n В конфигурации была обнаружена ошибка, возможно какая-то сущность была настроена не полностью. ");
+                if (showMessage)
+                {
+                    Use<IViewService>().ShowMessage(
+                        $"ИЗМЕНЕНИЯ НЕ БЫЛИ СОХРАНЕНЫ.\r\n В конфигурации была обнаружена ошибка, возможно какая-то сущность была настроена не полностью.\r\n{addNote} "
+                    );
+                }
             }
+            
+
         }
 
         public T GetOrCreateVM<T>(int number) where T:class,IViewModel

@@ -19,12 +19,12 @@ namespace ViewModel
         {
             container.RegisterType<ILog, EventLogger>();
             container.RegisterType<IPool, VMFactory>();
-            container.Use<IPool>().Init();
             container.RegisterType<ICopyService, CopyService>();
             container.RegisterType<INetworkService, NetworkService>();
             container.RegisterType<ITimerSerivce, TimerService>();
             container.RegisterType<IReactionService, ReactionService>();
             container.RegisterType<IGlobalParams, GlobalParams>();
+            container.Use<IPool>().Init();
             PreparePool();
             Use<ITimerSerivce>().Subsctibe(this, UpdateControllers, 500,true);
             Use<IWebServer>().Start();

@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.EntityClient;
 using System.Data.Entity.Validation;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using Facade;
@@ -33,23 +31,20 @@ namespace ViewModelBase
 
         public abstract bool Validate();
 
-        public void SaveDB()
-        {
-            if (!Validate())
-                return;
-            Use<IPool>().SaveDB();
-            OnPropertyChanged(() => ID);
-        }
-
         public virtual void Delete()
         {
             var model = Context.Entry(Model as T);
             if (model.State!=EntityState.Deleted
                 && model.State != EntityState.Detached)
                 Context.Set<T>().Remove(Model);
+            if (Use<IGlobalParams>().LogDBAddRemove)
+            {
+                Use<ILog>().Log(LogCategory.Data, $"'{model.GetType()}' id:'{ID}' deleted");
+            }
             Use<IPool>().RemoveVM(GetType(),Model);
-        
         }
+
+
 
         public bool CompareModel(IHaveID id)
         {
@@ -106,80 +101,6 @@ namespace ViewModelBase
 
                 return base.Message;
             }
-        }
-    }
-    public abstract class LinkedObjectVM<T> : EntytyObjectVM<T>, ITreeNode where T : class, IHaveID
-    {
-        protected readonly List<IContexMenuItem> _contextMenu;
-
-        protected LinkedObjectVM(IServiceContainer container, Models dataBase, T model) : base(container, dataBase, model)
-        {
-            _contextMenu=new List<IContexMenuItem>();
-            if (IsFake)
-                return;
-            _contextMenu.Add(new CustomContextMenuItem("Удалить", new CommandHandler(Delete)));
-            _contextMenu.Add(new CustomContextMenuItem("Копировать", new CommandHandler(CopyTo)));
-            _contextMenu.Add(new CustomContextMenuItem("Вставить", new PasteCommandHandler(PasteTo,Use<ICopyService>(),this)));
-        }
-
-        private void PasteTo(bool obj)
-        {
-            Use<ICopyService>().PasteTo(this);
-        }
-
-        private void CopyTo(bool obj)
-        {
-            Use<ICopyService>().SetCopyObject(this);
-        }
-
-        private void Delete(bool obj)
-        {
-            Delete();
-        }
-
-        public virtual ITreeNode Copy()
-        {
-            var res=Use<IPool>().CreateDBObject(GetType()) as ITreeNode;
-            var newModel = (res as LinkedObjectVM<T>).Model;
-            foreach (var property in newModel.GetType().GetProperties())
-            {
-                if(property.GetSetMethod()==null|| property.PropertyType.IsGenericType)
-                    continue;
-                var val = property.GetValue(Model);
-                property.SetValue(newModel,val,null);
-            }
-            if (Children == null)
-                return res;
-            var list = Children.ToList();
-            foreach (var treeNode in list)
-            {
-                var vm = treeNode.Copy();
-                vm.LinklToParent(res);
-            }
-            return res;
-        }
-
-        public abstract void LinklToParent(ITreeNode Parent);
-        public abstract Type ParentType { get; }
-        public abstract ITreeNode Parent { get; }
-        public abstract IEnumerable<ITreeNode> Children { get; }
-        public abstract string Name { get;  set; }
-        public abstract string Value { get; set; }
-        public abstract bool? IsConnected { get; set; }
-
-        public List<IContexMenuItem> ContextMenu => _contextMenu;
-
-        public virtual void OnChildDelete(ITreeNode node)
-        {
-            OnPropertyChanged(()=>Children);
-        }
-
-        public override void Delete()
-        {
-            var p = Parent;
-            Children?.OfType<IEntytyObjectVM>().ForEach(a => a.Delete());
-            base.Delete();
-            p?.OnChildDelete(this);
         }
     }
 }

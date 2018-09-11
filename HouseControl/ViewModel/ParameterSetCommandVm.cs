@@ -10,7 +10,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ParameterSetCommandVm : LinkedObjectVM<ParametrSetCommand>
+    public class ParameterSetCommandVm : LinkedObjectVm<ParametrSetCommand>
     {
         public ParameterSetCommandVm(IServiceContainer container, Models dataBase, ParametrSetCommand model)
             : base(container, dataBase, model)

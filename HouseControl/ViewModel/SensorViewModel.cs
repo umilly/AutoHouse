@@ -9,7 +9,7 @@ using ViewModelBase;
 namespace ViewModel
 {
     
-    public abstract class SensorViewModel<T> : LinkedObjectVM<T>,ISensorVM where T: Sensor
+    public abstract class SensorViewModel<T> : LinkedObjectVm<T>,ISensorVM where T: Sensor
     {
         public SensorViewModel(IServiceContainer container, Models dataBase, T model)
             : base(container, dataBase, model)
@@ -69,7 +69,7 @@ namespace ViewModel
             set { }
         }
 
-        public void Init(SensorType st, int slotNum, Controller controller, string name)
+       public void Init(SensorType st, int slotNum, Controller controller, string name)
         {
             Model.SensorType = st;
             Model.ContollerSlot = slotNum;

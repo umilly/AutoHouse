@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.NetworkInformation;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -101,7 +102,6 @@ namespace Facade
     {
         Type EntityType { get; }
         bool Validate();
-        void SaveDB();
         void Delete();
         bool CompareModel(IHaveID id);
         void AddedToPool();
@@ -119,6 +119,7 @@ namespace Facade
         string Name { get; }
         string Value { get; }
         bool? IsConnected { get; }
+        int LastUpdateMs { get; }
         List<IContexMenuItem> ContextMenu { get; }
         void OnChildDelete(ITreeNode node);
         ITreeNode Copy();
@@ -147,14 +148,28 @@ namespace Facade
     public interface IGlobalParams:IService
     {
         int? CurrentModeId { get; set; }
+        int LogLevel { get; set; }
+        bool LogDBAddRemove { get; set; }
     }
     public class GlobalParams : IGlobalParams
     {
         public int? CurrentModeId { get; set; }
         public void SetContainer(IServiceContainer container)
         {
-            
+            if(!File.Exists("options"))
+                return;
+            var opts = File.ReadAllText("options").Split(new []{'\r','\n'},StringSplitOptions.RemoveEmptyEntries);
+            foreach (var opt in opts)
+            {
+                if (opt.ToLower().Contains("loglevel"))
+                    LogLevel = int.Parse(opt.Split(new[] {"="}, StringSplitOptions.RemoveEmptyEntries)[1]);
+                if (opt.ToLower().Contains("logdbaddremove"))
+                    LogDBAddRemove = bool.Parse(opt.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries)[1]);
+            }
         }
+
+        public int LogLevel { get; set; }
+        public bool LogDBAddRemove { get; set; }
     }
 
     

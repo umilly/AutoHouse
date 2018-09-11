@@ -8,7 +8,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ConditionViewModel : LinkedObjectVM<Condition>,IConditionParent
+    public class ConditionViewModel : LinkedObjectVm<Condition>,IConditionParent
     {
         private readonly CommandHandler _addCondition;
 
@@ -198,7 +198,10 @@ namespace ViewModel
             {
                 var newVal = TypedCompare();
                 if (_isComplete == newVal)
+                {
+                    UpdateStatus();
                     return _isComplete;
+                }
                 _isComplete = newVal;
             }
             catch (Exception ex)
@@ -208,7 +211,7 @@ namespace ViewModel
                 _isComplete = false;
             }
             OnPropertyChanged(() => Value);
-            OnPropertyChanged(() => IsConnected);
+            UpdateStatus();
             return _isComplete;
         }
 

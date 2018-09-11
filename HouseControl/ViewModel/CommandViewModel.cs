@@ -12,7 +12,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class CommandViewModel : LinkedObjectVM<Command>
+    public class CommandViewModel : LinkedObjectVm<Command>
     {
         public CommandViewModel(IServiceContainer container, Models dataBase, Command model)
             : base(container, dataBase, model)
@@ -114,19 +114,23 @@ namespace ViewModel
             {
                 _isConnected = value;
                 if (value.HasValue && value.Value)
-                    Use<ITimerSerivce>().Subsctibe(this, ResetIsConnected, 1000);
+                {
+                    UpdateStatus();
+                }
+                    //Use<ITimerSerivce>().Subsctibe(this, ResetIsConnected, 1000);
                 OnPropertyChanged(() => IsConnected);
             }
         }
 
-        private void ResetIsConnected()
-        {
-            if (_isConnected.HasValue && _isConnected.Value)
-            {
-                _isConnected = null;
-                OnPropertyChanged(() => IsConnected);
-            }
-        }
+        //private void ResetIsConnected()
+        //{
+            
+        //    if (_isConnected.HasValue && _isConnected.Value)
+        //    {
+        //        _isConnected = null;
+        //        OnPropertyChanged(() => IsConnected);
+        //    }
+        //}
 
         public int DeviceId
         {

@@ -77,9 +77,14 @@ namespace VMBase
         }
 
         public IView NextView { get; set; }
+        private bool messageShowing = false;
         public void ShowMessage(string res)
         {
-            MessageBox.Show(res);
+            if(messageShowing)
+                return;
+            messageShowing = true;
+            var tmp = MessageBox.Show(res);
+            messageShowing = false;
         }
 
         public void CloseView(IView view)

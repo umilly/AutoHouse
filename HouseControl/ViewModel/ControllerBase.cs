@@ -8,7 +8,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public abstract class ControllerBase<T> : LinkedObjectVM<T> where T:Controller
+    public abstract class ControllerBase<T> : LinkedObjectVm<T> where T:Controller
     {
         private readonly Dictionary<int, string> _values=new Dictionary<int, string>();
         private bool _isConnected;
@@ -28,6 +28,7 @@ namespace ViewModel
             int slot = sensors.Any() ? sensors.Max(a => a.Slot) : 0;
             newSensor.Init(_cahedTypes.First().Value, slot+1, Model, "Датчик");
             newSensor.Zone = zone;
+            OnPropertyChanged(()=>Children);
         }
 
         private void AddDevice(bool b)
@@ -82,7 +83,12 @@ namespace ViewModel
             get { return _isConnected; }
             set
             {
-                _isConnected = value.Value; 
+                _isConnected = value.Value;
+                if (_isConnected)
+                {
+                    Update();
+                    UpdateStatus();
+                }
                 OnPropertyChanged();
             }
         }
@@ -112,7 +118,7 @@ namespace ViewModel
 
         public string MessageFind
         {
-            get { return $"Найдено {Model.Sensors.Count} сенсоров"; }
+            get { return $"Всего в контроллер включено {Model.Sensors.Count} сенсоров"; }
         }
 
         public static int i = 0;

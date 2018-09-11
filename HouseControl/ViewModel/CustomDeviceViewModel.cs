@@ -36,7 +36,7 @@ namespace ViewModel
         }
     }
 
-    public abstract class DeviceViewModelBase<T> :  LinkedObjectVM<T>, ICustomDevice where T:CustomDevice
+    public abstract class DeviceViewModelBase<T> :  LinkedObjectVm<T>, ICustomDevice where T:CustomDevice
     {
         
         public DeviceViewModelBase(IServiceContainer container, Models dataBase, T model) : base(container, dataBase, model)
