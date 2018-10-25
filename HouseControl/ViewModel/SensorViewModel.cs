@@ -31,7 +31,7 @@ namespace ViewModel
             throw new NotImplementedException();
         }
         public override Type ParentType { get { return typeof(ControllerVM); } }
-        public override ITreeNode Parent => Use<IPool>().GetDBVM<ControllerVM>(Model.Controller);
+        public override ITreeNode Parent => Use<IPool>().GetOrCreateDBVM<ControllerVM>(Model.Controller);
 
 
         public override IEnumerable<ITreeNode> Children { get; }
@@ -93,7 +93,7 @@ namespace ViewModel
 
         public ZoneViewModel Zone
         {
-            get { return Use<IPool>().GetDBVM<ZoneViewModel>(Model.Zone); }
+            get { return Use<IPool>().GetOrCreateDBVM<ZoneViewModel>(Model.Zone); }
             set
             {
                 value.LinkSensor(Model);
@@ -119,7 +119,7 @@ namespace ViewModel
 
     }
 
-    public interface ISensorVM: IConditionSource, IEntytyObjectVM
+    public interface ISensorVM: IConditionSource, IEntityObjectVM
     {
         bool Validate();
         void LinklToParent(ITreeNode Parent);

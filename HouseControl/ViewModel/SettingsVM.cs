@@ -85,16 +85,17 @@ namespace ViewModel
 
         public void Apply(Settings settings2)
         {
-            Relays.Clear();
-            foreach (var relayData in settings2.Relays)
-            {
-                var vm= Use<IPool>().GetOrCreateVM<RelayViewModel>(relayData.Number);
-                vm.RelayData = relayData;
-                vm.UpdateIsAvailable();
-                Relays.Add(vm);
-            }
-            _relayCount = settings2.Count;
-            IsDebug = settings2.IsDebug;
+            //Relays.Clear();
+            //foreach (var relayData in settings2.Relays)
+            //{
+            //    var vm= Use<IPool>().GetOrCreateVM<RelayViewModel>(relayData.Number);
+            //    vm.RelayData = relayData;
+            //    vm.UpdateIsAvailable();
+            //    Relays.Add(vm);
+            //}
+
+            _relayCount = 0;//settings2.Count;
+            IsDebug = true;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace ViewModel
             container.RegisterType<ILog, EventLogger>();
             container.RegisterType<ITimerSerivce, TimerService>();
             container.RegisterType<IGlobalParams, GlobalParams>();
-            Use<ITimerSerivce>().Subsctibe(this, UpdateParametersValues, 500,true);
+            Use<ITimerSerivce>().Subscribe(this, UpdateParametersValues, 500,true);
         }
 
         private void UpdateParametersValues()

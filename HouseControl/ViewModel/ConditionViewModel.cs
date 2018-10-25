@@ -23,7 +23,7 @@ namespace ViewModel
         }
 
         public ReactionViewModel Reaction
-            => Model.Reaction!=null ? Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction) : null;
+            => Model.Reaction!=null ? Use<IPool>().GetOrCreateDBVM<ReactionViewModel>(Model.Reaction) : null;
 
         public override void LinklToParent(ITreeNode newParent)
         {
@@ -40,7 +40,7 @@ namespace ViewModel
 
         public override ITreeNode Parent => Reaction ?? ParentCondition;
         public override Type ParentType { get { return typeof(IConditionParent); } }
-        public ITreeNode ParentCondition => Use<IPool>().GetDBVM<ConditionViewModel>(Model.ParentCondition);
+        public ITreeNode ParentCondition => Use<IPool>().GetOrCreateDBVM<ConditionViewModel>(Model.ParentCondition);
 
         public override IEnumerable<ITreeNode> Children => Use<IPool>().GetViewModels<ConditionViewModel>().Where(a=>a.Parent==this);
 
@@ -59,9 +59,9 @@ namespace ViewModel
             return !string.IsNullOrEmpty(Model.Name) && Reaction != null;
         }
 
-        public ParameterViewModel Parameter1 => Use<IPool>().GetDBVM<ParameterViewModel>(Model.Parameter1);
-        public ParameterViewModel Parameter2 => Use<IPool>().GetDBVM<ParameterViewModel>(Model.Parameter2);
-        public ISensorVM Sensor => Use<IPool>().GetDBVM<ISensorVM>(Model.Sensor);
+        public ParameterViewModel Parameter1 => Use<IPool>().GetOrCreateDBVM<ParameterViewModel>(Model.Parameter1);
+        public ParameterViewModel Parameter2 => Use<IPool>().GetOrCreateDBVM<ParameterViewModel>(Model.Parameter2);
+        public ISensorVM Sensor => Use<IPool>().GetOrCreateDBVM<ISensorVM>(Model.Sensor);
 
         public IEnumerable<ConditionTypeViewModel> CondtionTypes
         {
@@ -69,17 +69,17 @@ namespace ViewModel
             {
                 if (Children.OfType<ConditionViewModel>().Any())
                 {
-                    yield return Use<IPool>().GetDBVM<ConditionTypeViewModel>((int) ConditionTypeValue.And);
-                    yield return Use<IPool>().GetDBVM<ConditionTypeViewModel>((int)ConditionTypeValue.Or);
+                    yield return Use<IPool>().GetViewModel<ConditionTypeViewModel>((int) ConditionTypeValue.And);
+                    yield return Use<IPool>().GetViewModel<ConditionTypeViewModel>((int)ConditionTypeValue.Or);
                     yield break;
                 }
                 if (Parameter1!=null||Parameter2!=null||Sensor!=null)
                 {
 
-                    yield return Use<IPool>().GetDBVM<ConditionTypeViewModel>((int)ConditionTypeValue.Equal);
-                    yield return Use<IPool>().GetDBVM<ConditionTypeViewModel>((int)ConditionTypeValue.NotEqual);
-                    yield return Use<IPool>().GetDBVM<ConditionTypeViewModel>((int)ConditionTypeValue.More);
-                    yield return Use<IPool>().GetDBVM<ConditionTypeViewModel>((int)ConditionTypeValue.Less);
+                    yield return Use<IPool>().GetViewModel<ConditionTypeViewModel>((int)ConditionTypeValue.Equal);
+                    yield return Use<IPool>().GetViewModel<ConditionTypeViewModel>((int)ConditionTypeValue.NotEqual);
+                    yield return Use<IPool>().GetViewModel<ConditionTypeViewModel>((int)ConditionTypeValue.More);
+                    yield return Use<IPool>().GetViewModel<ConditionTypeViewModel>((int)ConditionTypeValue.Less);
                     yield break;
                 }
                 foreach (var ctype in Use<IPool>().GetViewModels<ConditionTypeViewModel>())
@@ -92,7 +92,7 @@ namespace ViewModel
 
         public ConditionTypeViewModel CondtionType
         {
-            get { return Use<IPool>().GetDBVM<ConditionTypeViewModel>(Model.ConditionType); }
+            get { return Use<IPool>().GetOrCreateDBVM<ConditionTypeViewModel>(Model.ConditionType); }
             set
             {
                 value.LinkCondtioin(Model);

@@ -26,7 +26,7 @@ namespace ViewModel
         public override Type ParentType { get { return typeof(ModeViewModel); } }
 
         public override ITreeNode Parent
-            => Model.Mode == null ? null : Use<IPool>().GetDBVM<ModeViewModel>(Model.Mode);
+            => Model.Mode == null ? null : Use<IPool>().GetOrCreateDBVM<ModeViewModel>(Model.Mode);
 
         public override IEnumerable<ITreeNode> Children
             => Use<IPool>().GetViewModels<ReactionViewModel>().Where(a => a.Scenario == this);

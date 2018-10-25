@@ -4,7 +4,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ConditionTypeViewModel : EntytyObjectVM<ConditionType>
+    public class ConditionTypeViewModel : EntityObjectVm<ConditionType>
     {
         public ConditionTypeViewModel(IServiceContainer container, Models dataBase, ConditionType model) : base(container, dataBase, model)
         {

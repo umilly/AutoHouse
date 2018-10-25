@@ -17,6 +17,8 @@ namespace ViewModel
     {
         public MainViewModel(IServiceContainer container) : base(container)
         {
+            container.RegisterType<ISettings, Settings>();
+            container.RegisterType<IContext,DataContext<Models>>();
             container.RegisterType<ILog, EventLogger>();
             container.RegisterType<IPool, VMFactory>();
             container.RegisterType<ICopyService, CopyService>();
@@ -24,9 +26,9 @@ namespace ViewModel
             container.RegisterType<ITimerSerivce, TimerService>();
             container.RegisterType<IReactionService, ReactionService>();
             container.RegisterType<IGlobalParams, GlobalParams>();
-            container.Use<IPool>().Init();
+            container.Use<IPool>().InitByAssambly(new []{ typeof(MainViewModel).Assembly,typeof(ViewModelBase.ViewModelBase).Assembly});
             PreparePool();
-            Use<ITimerSerivce>().Subsctibe(this, UpdateControllers, 500,true);
+            Use<ITimerSerivce>().Subscribe(this, UpdateControllers, 500,true);
             Use<IWebServer>().Start();
         }
 
@@ -39,8 +41,8 @@ namespace ViewModel
 
         private void PreparePool()
         {
-            var types = GetType().Assembly.GetTypes().Where(type => typeof (IEntytyObjectVM).IsAssignableFrom(type)&&!type.IsAbstract);
-            Use<IPool>().FillPool(types.ToArray());
+            //var types = GetType().Assembly.GetTypes().Where(type => typeof (IEntityObjectVM).IsAssignableFrom(type)&&!type.IsAbstract);
+            //Use<IPool>().FillPool(types.ToArray());
         }
 
         public override int ID

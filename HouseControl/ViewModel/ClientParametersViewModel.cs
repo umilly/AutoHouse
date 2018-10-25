@@ -26,7 +26,7 @@ namespace ViewModel
         private void AskParams()
         {
             Use<ITimerSerivce>().UnSubsctibe(this);
-            Use<ITimerSerivce>().Subsctibe(this,ParseParamsData,1000,true );
+            Use<ITimerSerivce>().Subscribe(this,ParseParamsData,1000,true );
         }
 
         public List<Group<ClientParameterViewModel>> Groups => _groupingService.GetGroups(Parameters.ToList());

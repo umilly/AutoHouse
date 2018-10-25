@@ -7,13 +7,13 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ParameterViewModel : EntytyObjectVM<Parameter>, IConditionSource, IPublicParam
+    public class ParameterViewModel : EntityObjectVm<Parameter>, IConditionSource, IPublicParam
     {
         public ParameterViewModel(IServiceContainer container, Models dataBase, Parameter model)
             : base(container, dataBase, model)
         {
             if (!IsFake && Model.ID == Parameter.CurrentTimeId)
-                Use<ITimerSerivce>().Subsctibe(this, UpdateTime, 1000, true);
+                Use<ITimerSerivce>().Subscribe(this, UpdateTime, 1000, true);
         }
 
         public override void AddedToPool()
@@ -52,7 +52,7 @@ namespace ViewModel
 
         public ParameterTypeViewModel ParamType
         {
-            get { return Use<IPool>().GetDBVM<ParameterTypeViewModel>(Model.ParameterType); }
+            get { return Use<IPool>().GetOrCreateDBVM<ParameterTypeViewModel>(Model.ParameterType); }
             set
             {
                 value.LinkParam(Model);
@@ -60,7 +60,7 @@ namespace ViewModel
         }
         public ParameterCategoryVm Category
         {
-            get { return Use<IPool>().GetDBVM<ParameterCategoryVm>(Model.ParameterCategory); }
+            get { return Use<IPool>().GetOrCreateDBVM<ParameterCategoryVm>(Model.ParameterCategory); }
             set
             {
                 value.LinkParam(Model);
@@ -69,7 +69,7 @@ namespace ViewModel
         }
         public IConditionSource Sensor
         {
-            get { return Model.Sensor==null?EmptyValue.Instance: (IConditionSource)Use<IPool>().GetDBVM<ISensorVM>(Model.Sensor); }
+            get { return Model.Sensor==null?EmptyValue.Instance: (IConditionSource)Use<IPool>().GetOrCreateDBVM<ISensorVM>(Model.Sensor); }
             set
             {
                 if (value == EmptyValue.Instance)
@@ -134,7 +134,7 @@ namespace ViewModel
             {
                 return Model.NextParameter == null
                     ? (IConditionSource) EmptyValue.Instance
-                    : Use<IPool>().GetDBVM<ParameterViewModel>(Model.NextParameter);
+                    : Use<IPool>().GetOrCreateDBVM<ParameterViewModel>(Model.NextParameter);
             }
             set
             {

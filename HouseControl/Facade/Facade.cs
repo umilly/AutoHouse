@@ -67,8 +67,10 @@ namespace Facade
 
         void UnRegisterAll();
     }
-
-    public interface IHaveID
+    public interface IDBModel
+    {
+    }
+    public interface IHaveID: IDBModel
     {
         int ID { get; }
     }
@@ -95,23 +97,36 @@ namespace Facade
         Data,
         Configuration,
         MobileWebServer,
-        Command
+        Command,
+        Debug
     }
 
-    public interface IEntytyObjectVM:IViewModel
+    public interface IEntityObjectVM : IViewModel
     {
-        Type EntityType { get; }
-        bool Validate();
-        void Delete();
-        bool CompareModel(IHaveID id);
+        bool IsModelActual { get; }
         void AddedToPool();
+        bool CompareModel(IHaveID id);
+        void Delete();
     }
-    public interface ITimerSerivce:IService {
-        void Subsctibe(object key, Action action,int waitMilliSeconds,bool repeat=false);
+    public interface IEntityObjectVM<out T> : IEntityObjectVM where T : class, IDBModel
+    {
+        T Model { get; }
+    }
+    public interface ITimerSerivce : IDisposable,IService
+    {
+        void Reset();
+        void Subscribe(object key, Action action, int waitMilliSeconds, bool repeat = false);
         void UnSubsctibe(object key);
-        void Exit();
     }
-
+    public interface IEvent
+    {
+    }
+    public interface IEventDispatcher
+    {
+        void Publish<T>(T e) where T : IEvent;
+        void Subscribe<T>(object o, Action<T> action) where T : IEvent;
+        void UnSubscribe(object o);
+    }
     public interface ITreeNode : IViewModel
     {
         ITreeNode Parent { get; }
@@ -182,12 +197,19 @@ namespace Facade
         GetModesJson,
         GetParamsJson
     }
-
+    public interface ISettings:IService
+    {
+        int LogLevel { get; set; }
+    }
     public interface ICopyService:IService
     {
         void SetCopyObject(ITreeNode copyObject);
         bool AllowPasteOn(ITreeNode parent);
         void PasteTo(ITreeNode parent);
         event Action CopyObjChanged;
+    }
+    public interface IInitable
+    {
+        void Init();
     }
 }

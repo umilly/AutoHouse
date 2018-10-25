@@ -119,7 +119,7 @@ namespace WpfApplication
             if(needClose)
                 Close();
             Application.Current.Shutdown();
-            _container.Use<ITimerSerivce>().Exit();
+            _container.Use<ITimerSerivce>().Dispose();
         }
 
         private void ShowCategoryList(object sender, RoutedEventArgs e)

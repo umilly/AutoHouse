@@ -1,27 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
+using System.Reflection;
 using Facade;
 
 namespace ViewModelBase
 {
     public interface IPool:IService
     {
-        void Init();
-        IEnumerable<T> GetViewModels<T>() where T : class,IViewModel;
+        IEntityObjectVM CreateDBObject(Type type);
+        T CreateDBObject<T>() where T : IEntityObjectVM;
         IViewModel CreateVM(Type type);
-        T CreateVM<T>() where T:IViewModel;
-        T GetOrCreateVM<T>(int number) where T:class ,IViewModel;
-        IViewModel GetOrCreateVM(Type vmType, int id);
-        void RemoveVM<T>(int i);
-        void FillPool(Type[] types);
-        IEntytyObjectVM GetDBVM(Type type, IHaveID id);
-        IEntytyObjectVM CreateDBObject(Type type);
-        T CreateDBObject<T>() where T : IEntytyObjectVM;
-        T GetDBVM<T>(IHaveID model) where T : IEntytyObjectVM;
-        T GetDBVM<T>(int id) where T : class,IEntytyObjectVM;
-        void RemoveVM(Type type, int i);
-        void SaveDB(bool showMessage = true);
+
+        T CreateVM<T>() where T : IViewModel;
+
+
+        IEntityObjectVM GetDBVM(Type t, long id);
+
+        IEntityObjectVM GetOrCreateDBVM(Type type, IHaveID id);
+
+        T GetOrCreateDBVM<T>(IHaveID model) where T : IEntityObjectVM;
+        T GetOrCreateVM<T>(decimal number) where T : class, IViewModel;
+        IViewModel GetOrCreateVM(Type vmType, decimal id);
+        T GetViewModel<T>(long id) where T : class, IViewModel;
+        IEnumerable<T> GetViewModels<T>() where T : class, IViewModel;
+        void InitByAssambly(Assembly[] assembly);
+        void PrepareModels<Tvm, Tm>(IEnumerable<Tm> models) where Tvm : IEntityObjectVM<Tm> where Tm : class, IHaveID;
+        void RemoveVM<T>(long i);
+        void RemoveVM(Type type, long i);
         void RemoveVM(Type getType, IHaveID model);
+
+        void SaveDB();
     }
 }

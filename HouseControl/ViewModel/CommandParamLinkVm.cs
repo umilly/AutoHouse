@@ -6,7 +6,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class CommandParamLinkVm : EntytyObjectVM<ComandParameterLink>
+    public class CommandParamLinkVm : EntityObjectVm<ComandParameterLink>
     {
         public CommandParamLinkVm(IServiceContainer container, Models dataBase, ComandParameterLink model) : base(container, dataBase, model)
         {
@@ -19,7 +19,7 @@ namespace ViewModel
 
         public CommandViewModel Command
         {
-            get { return Use<IPool>().GetDBVM<CommandViewModel>(Model.Command); }
+            get { return Use<IPool>().GetOrCreateDBVM<CommandViewModel>(Model.Command); }
             set
             {
                 value.LinkCommandParam(Model);
@@ -28,7 +28,7 @@ namespace ViewModel
         }
         public IConditionSource Parameter
         {
-            get { return Model.Parameter==null? EmptyValue.Instance : Use<IPool>().GetDBVM<ParameterViewModel>(Model.Parameter) as IConditionSource; }
+            get { return Model.Parameter==null? EmptyValue.Instance : Use<IPool>().GetOrCreateDBVM<ParameterViewModel>(Model.Parameter) as IConditionSource; }
             set
             {
                 if (value == EmptyValue.Instance)
@@ -57,7 +57,7 @@ namespace ViewModel
 
         public DeviceParamLinkVM DeviceParamType
         {
-            get { return Use<IPool>().GetDBVM<DeviceParamLinkVM>(Model.DeviceParameterTypeLink); }
+            get { return Use<IPool>().GetOrCreateDBVM<DeviceParamLinkVM>(Model.DeviceParameterTypeLink); }
             set
             {
                 value.LinkComandParam(Model);

@@ -20,7 +20,7 @@ namespace ViewModel
             _isConnected = null;
         }
 
-        public ReactionViewModel Reaction => Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction);
+        public ReactionViewModel Reaction => Use<IPool>().GetOrCreateDBVM<ReactionViewModel>(Model.Reaction);
 
         public override void LinklToParent(ITreeNode newParent)
         {
@@ -56,7 +56,7 @@ namespace ViewModel
 
         public CustomDeviceViewModel Device
         {
-            get { return Use<IPool>().GetDBVM<CustomDeviceViewModel>(Model.CustomDevice); }
+            get { return Use<IPool>().GetOrCreateDBVM<CustomDeviceViewModel>(Model.CustomDevice); }
             set
             {
                 Parameters.ForEach(a=>a.Delete());
@@ -92,7 +92,7 @@ namespace ViewModel
 
         public IEnumerable<CommandParamLinkVm> Parameters
         {
-            get { return Model.ComandParameterLinks.Select(a => Use<IPool>().GetDBVM<CommandParamLinkVm>(a)); }
+            get { return Model.ComandParameterLinks.Select(a => Use<IPool>().GetOrCreateDBVM<CommandParamLinkVm>(a)); }
         }
 
         public void LinkTo(Reaction model)
@@ -117,7 +117,7 @@ namespace ViewModel
                 {
                     UpdateStatus();
                 }
-                    //Use<ITimerSerivce>().Subsctibe(this, ResetIsConnected, 1000);
+                    //Use<ITimerSerivce>().Subscribe(this, ResetIsConnected, 1000);
                 OnPropertyChanged(() => IsConnected);
             }
         }
@@ -136,7 +136,7 @@ namespace ViewModel
         {
             get
             {
-                var dev = Use<IPool>().GetDBVM<CustomDeviceViewModel>(Model.CustomDevice);
+                var dev = Use<IPool>().GetOrCreateDBVM<CustomDeviceViewModel>(Model.CustomDevice);
                 return dev.NumberOnController;
             }
         }

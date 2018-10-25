@@ -42,9 +42,9 @@ namespace VMBase
 
         //public void ResetVM(IView view, int id)
         //{
-        //    if (typeof (IEntytyObjectVM).IsAssignableFrom(view.VmType))
+        //    if (typeof (IEntityObjectVM).IsAssignableFrom(view.VmType))
         //    {
-        //        var oldVM = (view.ViewModel as IEntytyObjectVM);
+        //        var oldVM = (view.ViewModel as IEntityObjectVM);
         //        if (!oldVM.SavedInContext)
         //            return;
         //        if (!oldVM.Validate())
@@ -89,9 +89,9 @@ namespace VMBase
 
         public void CloseView(IView view)
         {
-            //if (!typeof (IEntytyObjectVM).IsAssignableFrom(view.VmType))
+            //if (!typeof (IEntityObjectVM).IsAssignableFrom(view.VmType))
             //    return;
-            //var oldVM = (view.ViewModel as IEntytyObjectVM);
+            //var oldVM = (view.ViewModel as IEntityObjectVM);
             //if (!oldVM.SavedInContext)
             //    oldVM.Delete();
         }

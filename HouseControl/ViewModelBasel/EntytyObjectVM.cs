@@ -10,7 +10,7 @@ using Model;
 
 namespace ViewModelBase
 {
-    public abstract class EntytyObjectVM<T> : ViewModelBase, IEntytyObjectVM where T : class, IHaveID
+    public abstract class EntityObjectVm<T> : ViewModelBase, IEntityObjectVM where T : class, IHaveID
     {
         public Type EntityType => typeof (T);
 
@@ -18,7 +18,7 @@ namespace ViewModelBase
         
         protected T Model { get; private set; }
 
-        protected EntytyObjectVM(IServiceContainer container,Models dataBase,T model) : base(container)
+        protected EntityObjectVm(IServiceContainer container,Models dataBase,T model) : base(container)
         {
             Context = dataBase;
             Model = model;            
@@ -50,6 +50,8 @@ namespace ViewModelBase
         {
             return Model == id;
         }
+
+        public bool IsModelActual { get; } = true;
 
         public virtual void AddedToPool()
         {

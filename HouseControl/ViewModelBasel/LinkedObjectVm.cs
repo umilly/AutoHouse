@@ -6,7 +6,7 @@ using Model;
 
 namespace ViewModelBase
 {
-    public abstract class LinkedObjectVm<T> : EntytyObjectVM<T>, ITreeNode where T : class, IHaveID
+    public abstract class LinkedObjectVm<T> : EntityObjectVm<T>, ITreeNode where T : class, IHaveID
     {
         protected readonly List<IContexMenuItem> _contextMenu;
 
@@ -19,7 +19,7 @@ namespace ViewModelBase
             _contextMenu.Add(new CustomContextMenuItem("Копировать", new CommandHandler(CopyTo)));
             _contextMenu.Add(new CustomContextMenuItem("Вставить", new PasteCommandHandler(PasteTo,Use<ICopyService>(),this)));
 
-            Use<ITimerSerivce>().Subsctibe(this, UpdateStatusMs, 100, true);
+            Use<ITimerSerivce>().Subscribe(this, UpdateStatusMs, 100, true);
         }
         private void UpdateStatusMs()
         {
@@ -101,7 +101,7 @@ namespace ViewModelBase
         public override void Delete()
         {
             var p = Parent;
-            Children?.OfType<IEntytyObjectVM>().ForEach(a => a.Delete());
+            Children?.OfType<IEntityObjectVM>().ForEach(a => a.Delete());
             base.Delete();
             p?.OnChildDelete(this);
         }

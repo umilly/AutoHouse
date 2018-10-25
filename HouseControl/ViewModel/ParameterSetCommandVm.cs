@@ -25,7 +25,7 @@ namespace ViewModel
                 throw new InvalidEnumArgumentException("comand's parent must ve scenario");
             (newParent as ReactionViewModel).LinkChildParamCommand(Model);
         }
-        public override ITreeNode Parent => Use<IPool>().GetDBVM<ReactionViewModel>(Model.Reaction);
+        public override ITreeNode Parent => Use<IPool>().GetOrCreateDBVM<ReactionViewModel>(Model.Reaction);
         public override IEnumerable<ITreeNode> Children { get; }
         public override string Value { get; set; }
         public override bool? IsConnected { get; set; }
@@ -49,7 +49,7 @@ namespace ViewModel
         {
             get
             {
-                return Model.DestParameter == null ? null : Use<IPool>().GetDBVM<ParameterViewModel>(Model.DestParameter);
+                return Model.DestParameter == null ? null : Use<IPool>().GetOrCreateDBVM<ParameterViewModel>(Model.DestParameter);
             }
             set
             {
@@ -63,7 +63,7 @@ namespace ViewModel
         {
             get
             {
-                return Model.SrcParameter1 == null ? null : Use<IPool>().GetDBVM<ParameterViewModel>(Model.SrcParameter1);
+                return Model.SrcParameter1 == null ? null : Use<IPool>().GetOrCreateDBVM<ParameterViewModel>(Model.SrcParameter1);
             }
             set
             {
@@ -84,7 +84,7 @@ namespace ViewModel
         {
             get
             {
-                return Model.SrcParameter2 == null ? null : Use<IPool>().GetDBVM<ParameterViewModel>(Model.SrcParameter2);
+                return Model.SrcParameter2 == null ? null : Use<IPool>().GetOrCreateDBVM<ParameterViewModel>(Model.SrcParameter2);
             }
             set
             {
@@ -103,7 +103,7 @@ namespace ViewModel
 
         public ISensorVM Sensor
         {
-            get { return Model.Sensor == null ? null : Use<IPool>().GetDBVM<ISensorVM>(Model.Sensor); }
+            get { return Model.Sensor == null ? null : Use<IPool>().GetOrCreateDBVM<ISensorVM>(Model.Sensor); }
             set
             {
                 if (value == null)

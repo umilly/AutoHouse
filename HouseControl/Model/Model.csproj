@@ -106,6 +106,7 @@
     <Compile Include="CustomSensor.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataContext.cs" />
     <Compile Include="DBVersion.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
@@ -115,6 +116,7 @@
     <Compile Include="DeviceParameterTypeLink.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="IContext.cs" />
     <Compile Include="ModBusController.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
@@ -124,6 +126,7 @@
     <Compile Include="Mode.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models.cs" />
     <Compile Include="Parameter.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
@@ -203,6 +206,10 @@
     <ProjectReference Include="..\Facade\Facade.csproj">
       <Project>{4a90dd13-26b3-4a89-9df0-0e5723ef392f}</Project>
       <Name>Facade</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceBase\Common.csproj">
+      <Project>{7bcffefb-5d13-4325-9638-f98f8d2510b8}</Project>
+      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

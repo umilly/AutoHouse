@@ -59,7 +59,7 @@ namespace ViewModel
         public override ITreeNode Parent => Controller;
         public override IEnumerable<ITreeNode> Children { get; }
 
-        public ControllerVM Controller => Use<IPool>().GetDBVM<ControllerVM>(this.Model.Controller);
+        public ControllerVM Controller => Use<IPool>().GetOrCreateDBVM<ControllerVM>(this.Model.Controller);
 
         public override string Name
         {
@@ -98,7 +98,7 @@ namespace ViewModel
             get
             {
                 return Model.DeviceParameterTypeLinks
-                    .Select(a => Use<IPool>().GetDBVM<DeviceParamLinkVM>(a)).OrderBy(a=>a.Order);
+                    .Select(a => Use<IPool>().GetOrCreateDBVM<DeviceParamLinkVM>(a)).OrderBy(a=>a.Order);
             }
         }
 

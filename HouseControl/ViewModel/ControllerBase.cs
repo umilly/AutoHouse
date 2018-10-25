@@ -23,7 +23,7 @@ namespace ViewModel
         private void AddSensor(bool obj)
         {
             var newSensor = Use<IPool>().CreateDBObject<FirstTypeSensor>();
-            var zone = Use<IPool>().GetDBVM<ZoneViewModel>(1);//GetOrCreateZone(zoneNum);
+            var zone = Use<IPool>().GetViewModel<ZoneViewModel>(1);//GetOrCreateZone(zoneNum);
             var sensors = Use<IPool>().GetViewModels<ISensorVM>().Where(a => a.Parent == this).ToList();
             int slot = sensors.Any() ? sensors.Max(a => a.Slot) : 0;
             newSensor.Init(_cahedTypes.First().Value, slot+1, Model, "Датчик");
@@ -183,7 +183,7 @@ namespace ViewModel
                     if (found==null)
                     {
                         var newSensor = Use<IPool>().CreateDBObject<FirstTypeSensor>();
-                        var zone = Use<IPool>().GetDBVM<ZoneViewModel>(1);//GetOrCreateZone(zoneNum);
+                        var zone = Use<IPool>().GetViewModel<ZoneViewModel>(1);//GetOrCreateZone(zoneNum);
                         newSensor.Init(_cahedTypes[key], slotNum, Model, "Датчик " + ++num);
                         newSensor.Zone = zone;
                     }

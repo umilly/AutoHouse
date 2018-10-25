@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using Facade;
 using IServiceContainer = Facade.IServiceContainer;
 
@@ -191,5 +195,187 @@ public static class ExtendedEnumerable
         {
             action(item);
         }
+    }
+}
+
+public static class Extension
+{
+    private static readonly SHA1CryptoServiceProvider Shaprovider = new SHA1CryptoServiceProvider();
+
+    public static Expression<Func<T, bool>> AndExpression<T, Q>(
+        this Expression<Func<T, bool>> left,
+        Expression<Func<T, Q>> rigtExpr,
+        Q rightVal)
+    {
+        var param = left.Parameters[0];
+        var leftEqualExp = left.Body as BinaryExpression;
+        var rightPropName = ((rigtExpr.Body as MemberExpression).Member as PropertyInfo).Name;
+        var rightEquelExp = Expression.Equal(Expression.Property(param, rightPropName), Expression.Constant(rightVal));
+        var andExpr = Expression.AndAlso(leftEqualExp, rightEquelExp);
+        return Expression.Lambda<Func<T, bool>>(andExpr, param);
+    }
+
+    public static Expression AndExpressionUnsafe(
+        this Expression left,
+        Expression rigtExpr)
+    {
+        var param = (left as LambdaExpression).Parameters[0];
+        var leftEqualExp = (left as LambdaExpression).Body as BinaryExpression;
+        var rightEquelExp =
+            (rigtExpr as LambdaExpression)
+            .Body as BinaryExpression;
+        var rightParam = (rightEquelExp.Left as MemberExpression).Expression as ParameterExpression;
+        if (rightParam == null)
+        {
+            throw new NotImplementedException("Possibel multiple property, need TODO recursive paramter setter");
+        }
+
+        rightEquelExp = Expression.Equal(
+            Expression.Property(param, (rightEquelExp.Left as MemberExpression).Member as PropertyInfo),
+            rightEquelExp.Right);
+        var andExpr = Expression.AndAlso(leftEqualExp, rightEquelExp);
+        return Expression.Lambda(andExpr, param);
+    }
+
+    public static Expression<Func<T, bool>> CompareExpression<T, Q>(this Expression<Func<T, Q>> left, Q rigt)
+    {
+        var param = left.Parameters[0];
+        var exp = Expression.Equal(
+            left.Body as MemberExpression,
+            Expression.Constant(rigt));
+        var explambda = Expression.Lambda<Func<T, bool>>(exp, param);
+        return explambda;
+    }
+
+    public static void FullFill(
+        this IList source,
+        IList newSource)
+    {
+        var a = new ArrayList(source);
+        foreach (var element in a)
+        {
+            if (!newSource.Contains(element))
+            {
+                source.Remove(element);
+            }
+        }
+
+        foreach (var elemtnt in newSource)
+        {
+            if (!source.Contains(elemtnt))
+            {
+                source.Add(elemtnt);
+            }
+        }
+    }
+
+    public static Expression<Func<TModel1, TValue>> GetProperty<TModel1, TModel2, TValue>(
+        this Expression<Func<TModel1, TModel2>> modelKey,
+        Expression<Func<TModel2, TValue>> linkProperty)
+    {
+        var firstProperty = (modelKey.Body as MemberExpression).Member as PropertyInfo;
+        var param = modelKey.Parameters[0];
+        var secondProperty = (linkProperty.Body as MemberExpression).Member as PropertyInfo;
+        var first = Expression.Property(param, firstProperty);
+        var second = Expression.Property(first, secondProperty);
+        var res = Expression.Lambda<Func<TModel1, TValue>>(second, param);
+        return res;
+    }
+
+
+    public static Func<T, TVal> GetterForExpression<T, TVal>(Expression<Func<T, TVal>> expression)
+    {
+        return expression.Compile();
+    }
+
+    public static string NameOf<T>(this Expression<Func<T>> property)
+    {
+        return (property.Body as MemberExpression).Member.Name;
+    }
+
+    public static string PropertyName<T1, T2>(Expression<Func<T1, T2>> property)
+    {
+        var prop = (property.Body as MemberExpression).Member as PropertyInfo;
+        return prop.Name;
+    }
+
+    public static Action<T, TVal> SetterForExpression<T, TVal>(Expression<Func<T, TVal>> expression)
+    {
+        var prop = (expression.Body as MemberExpression).Member as PropertyInfo;
+        var saetter = prop.GetSetMethod();
+        return (obj, propVale) => saetter.Invoke(obj, new object[] { propVale });
+    }
+
+    public static Action<T1, T2> SetterForName<T1, T2>(string property)
+    {
+        var set = (typeof(T1).GetMember(property).Single() as PropertyInfo).GetSetMethod();
+        var res = new Action<T1, T2>((ob, val) => set.Invoke(ob, new object[] { val }));
+        return res;
+    }
+
+    public static byte[] SHA(this string src)
+    {
+        return Shaprovider.ComputeHash(Encoding.ASCII.GetBytes(src ?? ""));
+    }
+
+    public static IEnumerable<T> TakeRecursive<T>(this object ob)
+    {
+        var cache = new HashSet<object>();
+        return TakeRecursiveInternal<T>(ob, cache);
+    }
+
+    public static bool ToBool(this string value)
+    {
+        return value == "Y";
+    }
+
+    public static string ToOracleBool(this bool value)
+    {
+        return value ? "Y" : "N";
+    }
+
+    private static IEnumerable<T> TakeRecursiveInternal<T>(object ob, HashSet<object> caсhe)
+    {
+        var result = new List<T>();
+        var props = ob.GetType().GetProperties();
+        foreach (var prop in props)
+        {
+            if (typeof(IEnumerable).IsAssignableFrom(prop.PropertyType))
+            {
+                var items = prop.GetValue(ob) as IEnumerable;
+                if (items == null)
+                {
+                    continue;
+                }
+
+                var newItems = items.Cast<object>().Where(a => !caсhe.Contains(a)).ToList();
+                newItems.ForEach(a => caсhe.Add(a));
+                foreach (var newItem in newItems)
+                {
+                    if (newItem is T variable)
+                    {
+                        result.Add(variable);
+                    }
+
+                    result.AddRange(TakeRecursiveInternal<T>(newItem, caсhe));
+                }
+            }
+            else
+            {
+                var item = prop.GetValue(ob);
+                if (item != null && !caсhe.Contains(item))
+                {
+                    caсhe.Add(item);
+                    if (item is T i)
+                    {
+                        result.Add(i);
+                    }
+
+                    result.AddRange(TakeRecursiveInternal<T>(item, caсhe));
+                }
+            }
+        }
+
+        return result;
     }
 }

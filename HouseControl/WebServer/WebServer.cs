@@ -184,8 +184,11 @@ namespace WebServer
                 var res = new Dictionary<string, string>();
                 foreach (var item in v.Split('&'))
                 {
-                    var name = item.Split('=')[0];
-                    var val = item.Split('=')[1];
+                    var splited = item.Split('=');
+                    if (splited.Length != 2)
+                        return null;
+                    var name = splited[0];
+                    var val = splited[1];
                     res[name] = val;
                 }
                 return res;

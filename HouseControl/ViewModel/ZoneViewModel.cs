@@ -4,7 +4,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ZoneViewModel : EntytyObjectVM<Zone>
+    public class ZoneViewModel : EntityObjectVm<Zone>
     {
         
         public ZoneViewModel(IServiceContainer container, Models dataBase, Zone model) : base(container, dataBase, model)

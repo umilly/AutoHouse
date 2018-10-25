@@ -2,7 +2,7 @@ using Facade;
 using Model;
 using ViewModelBase;
 
-public class ParameterCategoryVm : EntytyObjectVM<ParameterCategory>
+public class ParameterCategoryVm : EntityObjectVm<ParameterCategory>
 {
     public ParameterCategoryVm(IServiceContainer container, Models dataBase, ParameterCategory model) : base(container, dataBase, model)
     {

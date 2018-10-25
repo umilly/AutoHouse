@@ -20,8 +20,8 @@ using System.Data.Entity.Infrastructure;
 
 public partial class Models : DbContext
 {
-    public Models()
-        : base("name=Models")
+    public Models(string s)
+        : base(s)
     {
 
     }
