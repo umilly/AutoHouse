@@ -7,7 +7,7 @@ namespace ViewModel
     public class ZoneViewModel : EntityObjectVm<Zone>
     {
         
-        public ZoneViewModel(IServiceContainer container, Models dataBase, Zone model) : base(container, dataBase, model)
+        public ZoneViewModel(IServiceContainer container,Zone model) : base(container, model)
         {
         }
 

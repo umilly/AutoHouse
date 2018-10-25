@@ -12,8 +12,8 @@ namespace ViewModel
     {
         private readonly CommandHandler _addCondition;
 
-        public ConditionViewModel(IServiceContainer container, Models dataBase, Condition model)
-            : base(container, dataBase, model)
+        public ConditionViewModel(IServiceContainer container, Condition model)
+            : base(container,model)
         {
             if (IsFake)
                 return;
@@ -21,7 +21,7 @@ namespace ViewModel
             _contextMenu.Add(new CustomContextMenuItem("Новое подусловие", _addCondition));
             UpdateConextMenu();
         }
-
+        
         public ReactionViewModel Reaction
             => Model.Reaction!=null ? Use<IPool>().GetOrCreateDBVM<ReactionViewModel>(Model.Reaction) : null;
 
@@ -36,6 +36,7 @@ namespace ViewModel
             {
                (newParent as ReactionViewModel).LinkCondition(Model);
             }
+            Use<IReactionService>().Check(this);
         }
 
         public override ITreeNode Parent => Reaction ?? ParentCondition;
@@ -99,6 +100,7 @@ namespace ViewModel
                 UpdateConextMenu();
                 OnPropertyChanged();
                 OnPropertyChanged(()=> PramsEnabled);
+                Use<IReactionService>().Check(this);
             }
         }
 
@@ -121,6 +123,11 @@ namespace ViewModel
                     .Union(Use<IPool>().GetViewModels<ParameterViewModel>())
                     .Union(new[] { EmptyValue.Instance});
             }
+        }
+
+        public ReactionViewModel ParentReacton
+        {
+            get => Reaction ?? (ParentCondition as ConditionViewModel).ParentReacton;
         }
 
         public ScenarioViewModel CurrentScenario
@@ -155,6 +162,8 @@ namespace ViewModel
                  Model.Sensor = null;
                 (value as ISensorVM)?.LinkCondition(Model);
                 (value as ParameterViewModel)?.LinkCondition(Model,true);
+                OnPropertyChanged(nameof(CondtionTypes));
+                Use<IReactionService>().Check(this);
             }
         }
         public IConditionSource RightParam
@@ -167,6 +176,8 @@ namespace ViewModel
                     Model.Parameter2 = null;
                 }
                 (value as ParameterViewModel)?.LinkCondition(Model, false);
+                OnPropertyChanged(nameof(CondtionTypes));
+                Use<IReactionService>().Check(this);
             }
         }
 
@@ -177,6 +188,7 @@ namespace ViewModel
             condition.Name = "Условие";
             condition.CondtionType = Use<IPool>().GetViewModels<ConditionTypeViewModel>().First();
             OnPropertyChanged(() => Children);
+            Use<IReactionService>().Check(this);
         }
 
         public override string Name
@@ -282,27 +294,11 @@ namespace ViewModel
         public void LinkTo(Reaction model)
         {
             Model.Reaction = model;
+            Use<IReactionService>().Check(this);
         }
     }
 
     public interface IConditionParent
     {
-    }
-
-    public class EmptyValue : IConditionSource
-    {
-        public static EmptyValue Instance { get; } = new EmptyValue();
-
-        public string SourceName => "Не установлен";
-
-        public string Value
-        {
-            get
-            {
-                throw new ArgumentOutOfRangeException("Настройка реакций не завершена, где то не установлено значение");
-            }
-        }
-
-        public Type ValueType => typeof (object);
     }
 }

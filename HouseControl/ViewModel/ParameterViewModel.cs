@@ -9,8 +9,8 @@ namespace ViewModel
 {
     public class ParameterViewModel : EntityObjectVm<Parameter>, IConditionSource, IPublicParam
     {
-        public ParameterViewModel(IServiceContainer container, Models dataBase, Parameter model)
-            : base(container, dataBase, model)
+        public ParameterViewModel(IServiceContainer container,  Parameter model)
+            : base(container, model)
         {
             if (!IsFake && Model.ID == Parameter.CurrentTimeId)
                 Use<ITimerSerivce>().Subscribe(this, UpdateTime, 1000, true);
@@ -21,7 +21,7 @@ namespace ViewModel
             base.AddedToPool();
             if (IsFake)
                 return;
-            Use<IPool>().GetViewModels<ParameterViewModel>().ForEach(a => a.OnParamsChanged());
+            Use<IPool>().GetViewModels<ParametersListViewModel>().ForEach(a => a.OnParamsChanged());
         }
 
         public Type ValueType => ParamType.Type;
@@ -41,15 +41,13 @@ namespace ViewModel
             get { return Model.ID == Parameter.CurrentTimeId ? DateTime.Now.ToLongTimeString() : Model.Value; }
             set
             {
+                if(Model.Value==value)
+                    return;
                 Model.Value = value;
                 OnPropertyChanged();
+                Use<IReactionService>().Check(this);
             }
         }
-
-        public IEnumerable<ParameterTypeViewModel> ParamTypes => Use<IPool>().GetViewModels<ParameterTypeViewModel>();
-        public IEnumerable<ParameterCategoryVm> Categories => Use<IPool>().GetViewModels<ParameterCategoryVm>();
-        public IEnumerable<IConditionSource> Sensors => Use<IPool>().GetViewModels<ISensorVM>().Union(new[] { (IConditionSource)EmptyValue.Instance }) ;
-
         public ParameterTypeViewModel ParamType
         {
             get { return Use<IPool>().GetOrCreateDBVM<ParameterTypeViewModel>(Model.ParameterType); }
@@ -138,30 +136,14 @@ namespace ViewModel
             }
             set
             {
-                if (value == EmptyValue.Instance)
+                if (value == EmptyValue.Instance||value==this)
                     Model.NextParameter = null;
                 else
                     Model.NextParameter = (value as ParameterViewModel).Model;
                 OnPropertyChanged(()=>NextParam);
             }
         }
-
-        public void OnParamsChanged()
-        {
-            OnPropertyChanged(()=>AllParams);
-        }
-        public IEnumerable<IConditionSource> AllParams
-        {
-            get
-            {
-                return
-                    Use<IPool>()
-                        .GetViewModels<ParameterViewModel>()
-                        .Cast<IConditionSource>()
-                        .Except(new[] {this})
-                        .Union(new[] {EmptyValue.Instance});
-            }
-        }
+        
 
         public string Ident => ID.ToString();
 
@@ -196,7 +178,7 @@ namespace ViewModel
         public override void Delete()
         {
             base.Delete();
-            Use<IPool>().GetViewModels<ParameterViewModel>().ForEach(a => a.OnParamsChanged());
+            Use<IPool>().GetViewModels<ParametersListViewModel>().ForEach(a => a.OnParamsChanged());
         }
 
         public ParameterProxy GetProxy()
@@ -211,9 +193,6 @@ namespace ViewModel
     {
         Type ValueType { get; }
         string Value { get; set; }
-        IEnumerable<ParameterTypeViewModel> ParamTypes { get; }
-        IEnumerable<ParameterCategoryVm> Categories { get; }
-        IEnumerable<IConditionSource> Sensors { get; }
         ParameterTypeViewModel ParamType { get; set; }
         ParameterCategoryVm Category { get; set; }
         IConditionSource Sensor { get; set; }
@@ -224,7 +203,6 @@ namespace ViewModel
         bool IsEditable { get; }
         bool IsPublic { get; set; }
         IConditionSource NextParam { get; set; }
-        IEnumerable<IConditionSource> AllParams { get; }
         string Ident { get; }
     }
 }

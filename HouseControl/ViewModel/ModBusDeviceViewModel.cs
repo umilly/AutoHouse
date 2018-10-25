@@ -6,7 +6,7 @@ namespace ViewModel
 {
     public class ModBusDeviceViewModel : DeviceViewModelBase<ModBusDevice>
     {
-        public ModBusDeviceViewModel(IServiceContainer container, Models dataBase, ModBusDevice model) : base(container, dataBase, model)
+        public ModBusDeviceViewModel(IServiceContainer container, ModBusDevice model) : base(container,model)
         {
         }
 

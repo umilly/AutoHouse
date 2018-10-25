@@ -51,6 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -98,6 +99,7 @@
     <Compile Include="CategoryEditor.xaml.cs">
       <DependentUpon>CategoryEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ContainerConfig.cs" />
     <Compile Include="ParamSetCommandEditor.xaml.cs">
       <DependentUpon>ParamSetCommandEditor.xaml</DependentUpon>
     </Compile>
@@ -172,10 +174,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -208,9 +206,6 @@
     </Compile>
     <Compile Include="ReactionNavigationView.xaml.cs">
       <DependentUpon>ReactionNavigationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -257,6 +252,10 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{c9740e4f-63a1-4458-8902-a1117e87ae4b}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetworkService\NetworkService.csproj">
+      <Project>{3FF07A1E-6FFD-4658-B7E2-153097261089}</Project>
+      <Name>NetworkService</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServiceBase\Common.csproj">
       <Project>{7bcffefb-5d13-4325-9638-f98f8d2510b8}</Project>

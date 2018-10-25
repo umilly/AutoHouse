@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Facade;
 using Model;
 using ViewModelBase;
@@ -10,8 +11,13 @@ namespace ViewModel
 {
     public class ControllerVM : ControllerBase<Controller>
     {
-        public ControllerVM(IServiceContainer container, Models dataBase, Controller controller) : base(container, dataBase, controller)
+        public ControllerVM(IServiceContainer container,Controller controller) : base(container,  controller)
         {
+        }
+
+        protected override Task OnCreate()
+        {
+            return base.OnCreate();
         }
 
         public override void OnChildDelete(ITreeNode node)

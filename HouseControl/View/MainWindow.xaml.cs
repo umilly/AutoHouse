@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,12 +9,10 @@ using View;
 using ViewModel;
 using VMBase;
 using Xceed.Wpf.Toolkit;
+using MessageBox = System.Windows.MessageBox;
 
 namespace WpfApplication
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private ContentControl _currentConent;
@@ -21,10 +20,7 @@ namespace WpfApplication
         private MainViewModel MainVM { get; set; }
         public MainWindow()
         {
-            _container.RegisterType<IViewService,ViewService>();
-            _container.RegisterType<IWebServer, WebServer.WebServer>();
-            var types = GetType().Assembly.GetTypes().Where(type => typeof(IView).IsAssignableFrom(type));
-            _container.Use<IViewService>().FillTypes(types.ToArray());
+            InitContainer();
             MainVM = new MainViewModel(_container);
             MainVM.InitSettings();
             InitializeComponent();
@@ -59,12 +55,6 @@ namespace WpfApplication
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void SettingsMenuClick(object sender, RoutedEventArgs e)
-        {
-            CurrentContent = _container.Use<IViewService>().CreateView<SettingsView>(1);
-            //OnNextView(null, null);
-        }
-
         private void ControlMenuClick(object sender, RoutedEventArgs e)
         {
             
@@ -72,7 +62,15 @@ namespace WpfApplication
 
         private void SaveClick(object sender, RoutedEventArgs e)
         {
-            MainVM.SaveSettings();
+            try
+            {
+                MainVM.SaveSettings();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(this,exception.ToString(),"Ошибка сохранения",MessageBoxButton.OK);
+            }
+            
         }
 
         private void LoadClick(object sender, RoutedEventArgs e)

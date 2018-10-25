@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Common;
 using Facade;
-using ViewModelBase;
 
 namespace ViewModel
 {
@@ -247,21 +245,6 @@ namespace ViewModel
         public int LogLevel { get; set; }
         public void SetContainer(IServiceContainer container)
         {
-            
-        }
-    }
-
-    public class ReactionService : ServiceBase, IReactionService
-    {
-        public void Check()
-        {
-            var reacts=Use<IPool>().GetViewModels<ReactionViewModel>();
-            var mode = Use<IPool>().GetViewModels<ModeViewModel>().SingleOrDefault(a => a.IsSelected);
-            if (mode!=null)
-            {
-                reacts = reacts.Where(a => a.Scenario.Parent.ID == mode.ID);
-                reacts.ForEach(a => a.Check());
-            }
             
         }
     }

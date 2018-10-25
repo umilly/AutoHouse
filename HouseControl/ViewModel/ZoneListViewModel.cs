@@ -15,7 +15,7 @@ namespace ViewModel
         {
             var model=Use<IPool>().CreateDBObject<ZoneViewModel>();
             model.Name = "Новая зона";
-            Use<IPool>().SaveDB();
+            //Use<IPool>().SaveDB(TODO);
             OnPropertyChanged(()=>Zones);
         }
         public override int ID { get; set; }

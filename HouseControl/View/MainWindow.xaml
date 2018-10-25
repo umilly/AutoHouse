@@ -3,8 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApplication"
-        xmlns:view="clr-namespace:View"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="1200"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
@@ -174,7 +172,6 @@
         <Menu>
           <MenuItem Header="File">
             <MenuItem Margin="5" Header="Control" Click="ControlMenuClick"></MenuItem>
-            <MenuItem Header="Settings" Click="SettingsMenuClick"></MenuItem>
             <MenuItem Header="Save" Click="SaveClick"></MenuItem>
             <MenuItem Header="Load" Click="LoadClick"></MenuItem>
             <MenuItem Header="Exit" Click="ExitClick"></MenuItem>

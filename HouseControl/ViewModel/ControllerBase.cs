@@ -13,7 +13,7 @@ namespace ViewModel
         private readonly Dictionary<int, string> _values=new Dictionary<int, string>();
         private bool _isConnected;
         private static Dictionary<string, SensorType> _cahedTypes;
-        public ControllerBase(IServiceContainer container,Models dataBase,T controller) : base(container,dataBase,controller)
+        public ControllerBase(IServiceContainer container,T controller) : base(container,controller)
         {
             fillSensorTypes();
             _contextMenu.Add(new CustomContextMenuItem("Добавить устройство",new CommandHandler(AddDevice)));
@@ -41,12 +41,13 @@ namespace ViewModel
 
         protected abstract ICustomDevice CreateChildDev();
         
-        private void fillSensorTypes()
+        private async Task fillSensorTypes()
         {
             if (_cahedTypes != null || Context == null)
                 return;
             _cahedTypes = new Dictionary<string, SensorType>();
-            Context.SensorTypes.ForEach(a => _cahedTypes[a.Key] = a);
+            var types=await Context.QueryModels<SensorType>(type => true);
+            types.ForEach(a => _cahedTypes[a.Key] = a);
         }
 
         public override void LinklToParent(ITreeNode Parent)
@@ -58,7 +59,7 @@ namespace ViewModel
 
         public override IEnumerable<ITreeNode> Children
         {
-            get { return Use<IPool>().GetViewModels<ISensorVM>()
+            get { return Use<IPool>().GetViewModels<FirstTypeSensor>()
                 .Cast<ITreeNode>()
                 .Union(Use<IPool>().GetViewModels<CustomDeviceViewModel>())
                 .Where(a => a.Parent == this); }
@@ -109,10 +110,10 @@ namespace ViewModel
             return IP != null && Name != null;
         }
 
-        public IEnumerable<Controller> GetControllers()
-        {
-            return Context.Devices.OfType<Controller>().ToList();
-        }
+        //public IEnumerable<Controller> GetControllers()
+        //{
+        //    return Context.Devices.OfType<Controller>().ToList();
+        //}
 
         private string Url => $"http://{IP}:{Port}";
 
@@ -144,6 +145,7 @@ namespace ViewModel
             }
             IsConnected = true;
             var lines = result.Split(new[] { "<",">"}, StringSplitOptions.RemoveEmptyEntries);
+            HashSet<int> changed = new HashSet<int>();
             for (int i = 0; i < lines.Count(); i++)
             {
                 var line = lines[i];
@@ -154,8 +156,16 @@ namespace ViewModel
                 }
                 var index = int.Parse(line.Split('_').First());
                 var value = line.Split('_').Last().Trim();
+                _values.TryGetValue(index, out var prevVal);
+                if (prevVal != value)
+                {
+                    changed.Add(index);
+                }
                 _values[index] = value;
             }
+            var sensors = Use<IPool>().GetViewModels<FirstTypeSensor>()
+                .Where(a => a.Parent == this && changed.Contains(a.Slot));
+            Use<IReactionService>().Check((IViewModel[])sensors);
         }
 
         public  async Task FindSensors()
@@ -189,7 +199,7 @@ namespace ViewModel
                     }
                 }
             }
-            Context.SaveChanges();
+            Context.SaveContextImmediate();
         }
 
         //private ZoneViewModel GetOrCreateZone(int zoneNum)

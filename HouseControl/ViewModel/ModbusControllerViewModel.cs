@@ -11,7 +11,7 @@ namespace ViewModel
 {
     public class ModbusControllerViewModel : ControllerBase<ModBusController>
     { 
-        public ModbusControllerViewModel(IServiceContainer container, Models dataBase, ModBusController controller) : base(container, dataBase, controller)
+        public ModbusControllerViewModel(IServiceContainer container,  ModBusController controller) : base(container, controller)
         {
             if(IsFake)
                 return;

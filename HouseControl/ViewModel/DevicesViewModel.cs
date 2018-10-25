@@ -5,14 +5,15 @@ using Model;
 using ViewModel;
 using ViewModelBase;
 
-public class DevicesViewModel : ViewModelBase.ViewModelBase, ITreeNode
+public class DevicesViewModel : ViewModelBase.LinkedObjectVm<EmptyModel>, ITreeNode
 {
     readonly List<IContexMenuItem> _contextMenu = new List<IContexMenuItem>();
 
-    public DevicesViewModel(IServiceContainer container) : base(container)
+    public DevicesViewModel(IServiceContainer container,EmptyModel model) : base(container, model)
     {
         _contextMenu.Add(new CustomContextMenuItem("Добавить контроллер", new CommandHandler(AddController)));
         _contextMenu.Add(new CustomContextMenuItem("Добавить контроллер modbus", new CommandHandler(AddControllerMB)));
+        
     }
 
     public override int ID
@@ -21,18 +22,39 @@ public class DevicesViewModel : ViewModelBase.ViewModelBase, ITreeNode
         set { }
     }
 
-    public ITreeNode Parent => null;
+    public override bool Validate()
+    {
+        return true;
+    }
 
-    public IEnumerable<ITreeNode> Children => Use<IPool>().GetViewModels<ControllerVM>();
+    public override ITreeNode Parent => null;
 
-    public string Name => "Устройства";
+    public override IEnumerable<ITreeNode> Children => Use<IPool>().GetViewModels<ControllerVM>();
 
-    public string Value => string.Empty;
+    public override string Name
+    {
+        get => "Устройства";
+        set {  }
+    }
 
-    public bool? IsConnected => null;
-    public int LastUpdateMs { get; } = 0;
+    public override string Value
+    {
+        get => string.Empty;
+        set {  }
+    }
 
-    public List<IContexMenuItem> ContextMenu => _contextMenu;
+    public override bool? IsConnected
+    {
+        get => null;
+        set
+        {
+        }
+    }
+
+    public override int LastUpdateMs { get; } = 0;
+
+    //public override List<IContexMenuItem> ContextMenu => _contextMenu;
+    public List<IContexMenuItem> ContextMenu { get; }
 
     public void OnChildDelete(ITreeNode scenarioViewModel)
     {
@@ -44,12 +66,12 @@ public class DevicesViewModel : ViewModelBase.ViewModelBase, ITreeNode
         throw new System.NotImplementedException();
     }
 
-    public void LinklToParent(ITreeNode Parent)
+    public override void LinklToParent(ITreeNode Parent)
     {
-        throw new System.NotImplementedException();
+        
     }
 
-    public Type ParentType { get { return null; } }
+    public override Type ParentType { get { return null; } }
 
     private void AddController(bool obj)
     {

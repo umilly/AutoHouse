@@ -12,8 +12,8 @@ namespace ViewModel
 {
     public class ParameterSetCommandVm : LinkedObjectVm<ParametrSetCommand>
     {
-        public ParameterSetCommandVm(IServiceContainer container, Models dataBase, ParametrSetCommand model)
-            : base(container, dataBase, model)
+        public ParameterSetCommandVm(IServiceContainer container,  ParametrSetCommand model)
+            : base(container,  model)
         {
         }
 

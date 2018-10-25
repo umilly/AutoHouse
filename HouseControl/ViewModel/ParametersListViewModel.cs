@@ -13,10 +13,11 @@ namespace ViewModel
             Filter.OnFilterChanged += () => { OnPropertyChanged(() => Parameters); };
         }
 
-        private ParameterFilterVM Filter => Use<IPool>().GetOrCreateVM<ParameterFilterVM>(-1);
+        private ParameterFilterVM _filter;
+        public ParameterFilterVM Filter => _filter?? (_filter=Use<IPool>().GetOrCreateVM<ParameterFilterVM>(-1));
         public override int ID { get; set; }
         
-        public IEnumerable<IPublicParam> Parameters
+        public List<IPublicParam> Parameters
         {
             get
             {
@@ -24,9 +25,30 @@ namespace ViewModel
                 return
                     new[] {Filter}.Union(
                     Use<IPool>().GetViewModels<ParameterViewModel>().Where(a => f.IsMatch(a))
-                    .Cast<IPublicParam>());
+                    .Cast<IPublicParam>()).ToList();
             }
         }
+        public void OnParamsChanged()
+        {
+            OnPropertyChanged(() => AllParams);
+        }
+        public IEnumerable<IConditionSource> AllParams
+        {
+            get
+            {
+                return
+                    Use<IPool>()
+                        .GetViewModels<ParameterViewModel>()
+                        .Cast<IConditionSource>()
+                        //.Except(new[] { this })
+                        .Union(new[] { EmptyValue.Instance });
+            }
+        }
+
+        public IEnumerable<ParameterTypeViewModel> ParamTypes => Use<IPool>().GetViewModels<ParameterTypeViewModel>();
+        public IEnumerable<ParameterCategoryVm> Categories => Use<IPool>().GetViewModels<ParameterCategoryVm>();
+        public IEnumerable<IConditionSource> Sensors => Use<IPool>().GetViewModels<ISensorVM>().Union(new[] { (IConditionSource)EmptyValue.Instance });
+
 
         public void CreateParams()
         {
@@ -34,7 +56,7 @@ namespace ViewModel
             newParam.Name = "Параметр" ;
             newParam.Value = "";
             newParam.ParamType = Use<IPool>().GetViewModels<ParameterTypeViewModel>().First();
-            Use<IPool>().SaveDB();
+            //Use<IPool>().SaveDB(TODO);
             OnPropertyChanged(() => Parameters);
         }
 

@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using Facade;
+using Model;
 using ViewModel;
 using ViewModelBase;
 
-public class SystemViewModel : ViewModelBase.ViewModelBase, ITreeNode
+public class SystemViewModel : ViewModelBase.LinkedObjectVm<EmptyModel>, ITreeNode
 {
     readonly List<IContexMenuItem> _contextMenu=new List<IContexMenuItem>();
 
-    public SystemViewModel(IServiceContainer container) : base(container)
+    public SystemViewModel(IServiceContainer container,EmptyModel model) : base(container, model)
     {
         _contextMenu.Add(new CustomContextMenuItem("Добавить режим", new CommandHandler(AddMode)));
     }
@@ -20,31 +21,44 @@ public class SystemViewModel : ViewModelBase.ViewModelBase, ITreeNode
         set { }
     }
 
-    public Type ParentType => null;
-    public ITreeNode Parent => null;
-
-    public IEnumerable<ITreeNode> Children => Use<IPool>().GetViewModels<ModeViewModel>();
-
-    public string Name => "Вся система";
-
-    public string Value => string.Empty;
-
-    public bool? IsConnected => null;
-    public int LastUpdateMs { get; }
-
-    public List<IContexMenuItem> ContextMenu => _contextMenu;
-
-    public void OnChildDelete(ITreeNode scenarioViewModel)
+    public override bool Validate()
     {
-        OnPropertyChanged(() => Children);
+        return true;
     }
 
-    public ITreeNode Copy()
+    public override Type ParentType => null;
+
+    public override ITreeNode Parent => null;
+
+    public override  IEnumerable<ITreeNode>  Children => Use<IPool>().GetViewModels<ModeViewModel>();
+
+    public override string Name
+    {
+        get => "Вся система";
+        set {  }
+    }
+
+    public override string Value
+    {
+        get => string.Empty;
+        set {  }
+    }
+
+    public override bool? IsConnected
+    {
+        get => null;
+        set{}
+    }
+
+    public override int LastUpdateMs { get; }
+    
+
+    public override ITreeNode Copy()
     {
         throw new NotImplementedException();
     }
 
-    public void LinklToParent(ITreeNode Parent)
+    public override void LinklToParent(ITreeNode Parent)
     {
         throw new NotImplementedException();
     }

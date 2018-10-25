@@ -11,8 +11,8 @@ namespace ViewModel
     
     public abstract class SensorViewModel<T> : LinkedObjectVm<T>,ISensorVM where T: Sensor
     {
-        public SensorViewModel(IServiceContainer container, Models dataBase, T model)
-            : base(container, dataBase, model)
+        public SensorViewModel(IServiceContainer container,  T model)
+            : base(container, model)
         {
             Children = Enumerable.Empty<ITreeNode>();
         }
@@ -145,14 +145,8 @@ namespace ViewModel
 
     public class FirstTypeSensor : SensorViewModel<Sensor>
     {
-        public FirstTypeSensor(IServiceContainer container, Models dataBase, Sensor model)
-            : base(container, dataBase, model) { }
-
-    }
-    public class SecondTypeSensor : SensorViewModel<CustomSensor>
-    {
-        public SecondTypeSensor(IServiceContainer container, Models dataBase, CustomSensor model)
-            : base(container, dataBase, model) { }
+        public FirstTypeSensor(IServiceContainer container,  Sensor model)
+            : base(container, model) { }
 
     }
 }

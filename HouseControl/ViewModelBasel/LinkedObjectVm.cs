@@ -10,7 +10,7 @@ namespace ViewModelBase
     {
         protected readonly List<IContexMenuItem> _contextMenu;
 
-        protected LinkedObjectVm(IServiceContainer container, Models dataBase, T model) : base(container, dataBase, model)
+        protected LinkedObjectVm(IServiceContainer container,  T model) : base(container,  model)
         {
             _contextMenu=new List<IContexMenuItem>();
             if (IsFake)
@@ -21,9 +21,24 @@ namespace ViewModelBase
 
             Use<ITimerSerivce>().Subscribe(this, UpdateStatusMs, 100, true);
         }
+
+        public virtual void OnChildrenChanded()
+        {
+            OnPropertyChanged(nameof(Children));
+            Parent?.OnChildrenChanded();
+        }
+        public override void AddedToPool()
+        {
+            OnChildrenChanded();
+        }
         private void UpdateStatusMs()
         {
             OnPropertyChanged(() => LastUpdateMs);
+        }
+
+        public virtual void OnChildrenChanged()
+        {
+            OnPropertyChanged(nameof(Children));
         }
         private void PasteTo(bool obj)
         {

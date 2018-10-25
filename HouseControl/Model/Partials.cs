@@ -30,6 +30,11 @@ namespace Model
             get { return this.Id; }
         }
     }
+
+    public partial class SensorType : IHaveID
+    {
+        public int ID { get=>Id; }
+    }
     public partial class ComandParameterLink : IHaveID
     {
         public int ID

@@ -4,7 +4,7 @@ using ViewModelBase;
 
 public class ParameterCategoryVm : EntityObjectVm<ParameterCategory>
 {
-    public ParameterCategoryVm(IServiceContainer container, Models dataBase, ParameterCategory model) : base(container, dataBase, model)
+    public ParameterCategoryVm(IServiceContainer container, ParameterCategory model) : base(container, model)
     {
     }
 

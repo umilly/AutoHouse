@@ -7,7 +7,7 @@ namespace ViewModel
 {
     public class ParameterTypeViewModel : EntityObjectVm<ParameterType>
     {
-        public ParameterTypeViewModel(IServiceContainer container, Models dataBase, ParameterType model) : base(container, dataBase, model)
+        public ParameterTypeViewModel(IServiceContainer container,  ParameterType model) : base(container,  model)
         {
             if(IsFake)
                 return;

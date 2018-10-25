@@ -19,7 +19,7 @@ namespace ViewModelBase
 
         IEntityObjectVM GetOrCreateDBVM(Type type, IHaveID id);
 
-        T GetOrCreateDBVM<T>(IHaveID model) where T : IEntityObjectVM;
+        T GetOrCreateDBVM<T>(IHaveID model) where T : class, IEntityObjectVM;
         T GetOrCreateVM<T>(decimal number) where T : class, IViewModel;
         IViewModel GetOrCreateVM(Type vmType, decimal id);
         T GetViewModel<T>(long id) where T : class, IViewModel;
@@ -30,6 +30,6 @@ namespace ViewModelBase
         void RemoveVM(Type type, long i);
         void RemoveVM(Type getType, IHaveID model);
 
-        void SaveDB();
+        void SaveDB(bool throwError);
     }
 }

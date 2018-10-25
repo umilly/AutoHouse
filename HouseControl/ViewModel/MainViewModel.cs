@@ -13,37 +13,59 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class MainViewModel : ViewModelBase.ViewModelBase
+    public class MainViewModel : ViewModelBase.EmptyEntityVM
     {
         public MainViewModel(IServiceContainer container) : base(container)
         {
-            container.RegisterType<ISettings, Settings>();
-            container.RegisterType<IContext,DataContext<Models>>();
-            container.RegisterType<ILog, EventLogger>();
-            container.RegisterType<IPool, VMFactory>();
-            container.RegisterType<ICopyService, CopyService>();
-            container.RegisterType<INetworkService, NetworkService>();
-            container.RegisterType<ITimerSerivce, TimerService>();
-            container.RegisterType<IReactionService, ReactionService>();
-            container.RegisterType<IGlobalParams, GlobalParams>();
-            container.Use<IPool>().InitByAssambly(new []{ typeof(MainViewModel).Assembly,typeof(ViewModelBase.ViewModelBase).Assembly});
-            PreparePool();
             Use<ITimerSerivce>().Subscribe(this, UpdateControllers, 500,true);
             Use<IWebServer>().Start();
+        }
+
+        protected override async Task OnCreate()
+        {
+            var controllers= await Context.QueryModels<Controller>(controller => true);
+            Use<IPool>().PrepareModels<ControllerVM,Controller>(controllers);
+            var sensors = await Context.QueryModels<Sensor>(sensor => true);
+            Use<IPool>().PrepareModels<FirstTypeSensor, Sensor>(sensors);
+            var zones = await Context.QueryModels<Zone>(zone => true);
+            Use<IPool>().PrepareModels<ZoneViewModel, Zone>(zones);
+            var ptypes = await Context.QueryModels<ParameterType>(pt => true);
+            Use<IPool>().PrepareModels<ParameterTypeViewModel, ParameterType>(ptypes);
+            var devices = await Context.QueryModels<CustomDevice>(pt => true);
+            Use<IPool>().PrepareModels<CustomDeviceViewModel, CustomDevice>(devices);
+            //params
+            var paramss = await Context.QueryModels<Parameter>(pt => true);
+            Use<IPool>().PrepareModels<ParameterViewModel, Parameter>(paramss);
+            var paramscat = await Context.QueryModels<ParameterCategory>(pt => true);
+            Use<IPool>().PrepareModels<ParameterCategoryVm, ParameterCategory>(paramscat);
+
+            //reactions
+            var modes = await Context.QueryModels<Mode>(pt => true);
+            Use<IPool>().PrepareModels<ModeViewModel, Mode>(modes);
+            var scenarios = await Context.QueryModels<Scenario>(pt => true);
+            Use<IPool>().PrepareModels<ScenarioViewModel, Scenario>(scenarios);
+            var reactions = await Context.QueryModels<Reaction>(pt => true);
+            Use<IPool>().PrepareModels<ReactionViewModel, Reaction>(reactions);
+            var conditions = await Context.QueryModels<Condition>(pt => true);
+            Use<IPool>().PrepareModels<ConditionViewModel, Condition>(conditions);
+            var commands = await Context.QueryModels<Command>(pt => true);
+            Use<IPool>().PrepareModels<CommandViewModel, Command>(commands);
+            var condTypes = await Context.QueryModels<ConditionType>(pt => true);
+            Use<IPool>().PrepareModels<ConditionTypeViewModel, ConditionType>(condTypes);
+
+
+
+            //Use<IPool>().GetViewModels<FirstTypeSensor>().ForEach(a => a.UpdateValue());
         }
 
         private void UpdateControllers()
         {
             Use<IPool>().GetViewModels<ControllerVM>().ForEach(a=>a.Update());
             Use<IPool>().GetViewModels<FirstTypeSensor>().ForEach(a => a.UpdateValue());
-            Use<IReactionService>().Check();
+            //Use<IReactionService>().Check();
         }
 
-        private void PreparePool()
-        {
-            //var types = GetType().Assembly.GetTypes().Where(type => typeof (IEntityObjectVM).IsAssignableFrom(type)&&!type.IsAbstract);
-            //Use<IPool>().FillPool(types.ToArray());
-        }
+        
 
         public override int ID
         {
@@ -53,33 +75,12 @@ namespace ViewModel
         
         public void InitSettings()
         {
-            var settings = Use<IPool>().GetOrCreateVM<SettingsVM>(1);
-            try
-            {
-                var serializer=new DataContractJsonSerializer(typeof(Settings));
-                var stream = new FileStream("settings.ini", FileMode.Open);
-                var settings2 =(Settings)  serializer.ReadObject(stream);
-                stream.Close();
-                stream.Dispose();
-                settings.Apply(settings2);
-            }
-            catch (Exception)
-            {
-                settings.RelayCount = 13;
-            }
+
         }
 
         public void SaveSettings()
         {
-            Use<IPool>().SaveDB();
-            //var serializer = new DataContractJsonSerializer(typeof(Settings));
-            //File.Delete("settings.ini");
-            //var settings = Use<IPool>().GetOrCreateVM<SettingsVM>(1);
-            //var serSets = new Settings() {Relays = settings.Relays.Select(a=>a.RelayData).ToList(),Count = settings.RelayCount,IsDebug = settings.IsDebug};
-            //var fileStream = new FileStream("settings.ini", FileMode.CreateNew);
-            //serializer.WriteObject(fileStream, serSets);
-            //fileStream.Close();
-            //fileStream.Dispose();
+            Use<IPool>().SaveDB(true);
         }
     }
 }

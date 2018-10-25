@@ -38,7 +38,7 @@ namespace ViewModelBase
             }
 
             var newModel = _db.CreateModel(dbVmTypes[type]);
-            var res = (IEntityObjectVM)Activator.CreateInstance(type, _container, _db, newModel);
+            var res = (IEntityObjectVM)Activator.CreateInstance(type, _container,  newModel);
             //var res = (IEntityObjectVM)_container.GetInstance(type, new object[] { newModel });
             AddInternal(type, res);
             res.AddedToPool();
@@ -96,8 +96,10 @@ namespace ViewModelBase
             return res ?? AddEntityFromDB(type, id).First();
         }
 
-        public T GetOrCreateDBVM<T>(IHaveID id) where T : IEntityObjectVM
+        public T GetOrCreateDBVM<T>(IHaveID id) where T : class, IEntityObjectVM
         {
+            if (id == null)
+                return (T)null;
             return (T)GetOrCreateDBVM(typeof(T), id);
         }
 
@@ -222,7 +224,7 @@ namespace ViewModelBase
             _poolDbVm[type].Remove(i);
         }
 
-        public void SaveDB()
+        public void SaveDB(bool throwError)
         {
             try
             {
@@ -234,7 +236,8 @@ namespace ViewModelBase
                 {
                     e = new FormattedDbEntityValidationException(e as DbEntityValidationException);
                 }
-
+                if (throwError)
+                    throw e;
                 _log.Log(LogCategory.Data, $"Validation fail:\r\n ");
                 _log.Log(LogCategory.Data, e);
                 //_log.Log(LogCategory.Data, "ИЗМЕНЕНИЯ НЕ БЫЛИ СОХРАНЕНЫ.\r\n В конфигурации была обнаружена ошибка, возможно какая-то сущность была настроена не полностью. ");
@@ -243,7 +246,7 @@ namespace ViewModelBase
 
         private IEntityObjectVM[] AddEntityFromDB(Type dbVmType, params IHaveID[] models)
         {
-            var res = models.Select(model => (IEntityObjectVM)Activator.CreateInstance(dbVmType, _container, _db, model))
+            var res = models.Select(model => (IEntityObjectVM)Activator.CreateInstance(dbVmType, _container, model))
                 .ToArray();
             AddInternal(dbVmType, res);
             foreach (var entityObjectVm in res)
@@ -270,16 +273,39 @@ namespace ViewModelBase
             dbVmTypes.Clear();
             foreach (var vmType in types)
             {
-                //if (typeof(IEntityObjectVM).IsAssignableFrom(vmType))
-                //{
-                //    RegisterModelArgInConstructor(vmType);
-                //}
+                if (typeof(IEntityObjectVM).IsAssignableFrom(vmType))
+                {
+                    RegisterModelArgInConstructor(vmType);
+                }
 
                 //_container.Register(vmType);
                 TryRegisterType(vmType);
             }
         }
+        private void RegisterModelArgInConstructor(Type vmType)
+        {
+            Type t = null;
+            var curentType = vmType;
+            while (t == null)
+            {
+                if (curentType.IsGenericType && curentType.GetGenericTypeDefinition() == typeof(EntityObjectVm<>))
+                {
+                    t = curentType;
+                }
+                else
+                {
+                    curentType = curentType.BaseType;
+                }
 
+                if (curentType == null)
+                {
+                    break;
+                }
+            }
+            var entityType = curentType.GetGenericArguments()[0];
+         
+            dbVmTypes[vmType] = entityType;
+        }
         private bool IsDbType(Type type)
         {
             return typeof(IEntityObjectVM).IsAssignableFrom(type);

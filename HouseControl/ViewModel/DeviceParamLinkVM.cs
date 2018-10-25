@@ -8,7 +8,7 @@ namespace ViewModel
 {
     public class DeviceParamLinkVM : EntityObjectVm<DeviceParameterTypeLink>
     {
-        public DeviceParamLinkVM(IServiceContainer container, Models dataBase, DeviceParameterTypeLink model) : base(container, dataBase, model)
+        public DeviceParamLinkVM(IServiceContainer container,DeviceParameterTypeLink model) : base(container,model)
         {
         }
 
@@ -39,6 +39,7 @@ namespace ViewModel
                 OnPropertyChanged();
             }
         }
+
         public ParameterTypeViewModel ParamType
         {
             get { return Use<IPool>().GetOrCreateDBVM<ParameterTypeViewModel>(Model.ParameterType); }

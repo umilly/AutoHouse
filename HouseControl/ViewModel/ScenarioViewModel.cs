@@ -11,8 +11,8 @@ namespace ViewModel
 {
     public class ScenarioViewModel : LinkedObjectVm<Scenario>, ITreeNode
     {
-        public ScenarioViewModel(IServiceContainer container, Models dataBase, Scenario model)
-            : base(container, dataBase, model)
+        public ScenarioViewModel(IServiceContainer container,  Scenario model)
+            : base(container, model)
         {
             _contextMenu.Add(new CustomContextMenuItem("Добавить реакцию", new CommandHandler(AddReaction)));
         }

@@ -9,7 +9,7 @@ namespace ViewModel
 {
     public class CustomDeviceViewModel : DeviceViewModelBase<CustomDevice>
     {
-        public CustomDeviceViewModel(IServiceContainer container, Models dataBase, CustomDevice model) : base(container, dataBase, model)
+        public CustomDeviceViewModel(IServiceContainer container, CustomDevice model) : base(container, model)
         {
             if(IsFake)
                 return;
@@ -39,7 +39,7 @@ namespace ViewModel
     public abstract class DeviceViewModelBase<T> :  LinkedObjectVm<T>, ICustomDevice where T:CustomDevice
     {
         
-        public DeviceViewModelBase(IServiceContainer container, Models dataBase, T model) : base(container, dataBase, model)
+        public DeviceViewModelBase(IServiceContainer container, T model) : base(container,  model)
         {
             
         }

@@ -11,8 +11,8 @@ namespace ViewModel
 {
     public class ReactionViewModel : LinkedObjectVm<Reaction>, ITreeNode, IConditionParent
     {
-        public ReactionViewModel(IServiceContainer container, Models dataBase, Reaction model)
-            : base(container, dataBase, model)
+        public ReactionViewModel(IServiceContainer container, Reaction model)
+            : base(container,  model)
         {
             _contextMenu.Add(new CustomContextMenuItem("Добавить условие",new CommandHandler(AddCondition)));
             _contextMenu.Add(new CustomContextMenuItem("Добавить команду", new CommandHandler(AddCommand)));

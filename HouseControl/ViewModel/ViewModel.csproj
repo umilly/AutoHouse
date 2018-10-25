@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="CategoryViewModel.cs" />
     <Compile Include="ControllerBase.cs" />
+    <Compile Include="EmptyValue.cs" />
     <Compile Include="ModbusControllerViewModel.cs" />
     <Compile Include="ClientModesViewModel.cs" />
     <Compile Include="ClientModeViewModel.cs" />
@@ -88,15 +89,14 @@
     <Compile Include="ParameterViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ConrolPanelVM.cs" />
     <Compile Include="ReactionEditorVM.cs" />
+    <Compile Include="ReactionService.cs" />
     <Compile Include="ReactionViewModel.cs" />
     <Compile Include="RelayData.cs" />
-    <Compile Include="RelayViewModel.cs" />
     <Compile Include="ScenarioViewModel.cs" />
+    <Compile Include="SecondTypeSensor.cs" />
     <Compile Include="SensorViewModel.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="SettingsVM.cs" />
     <Compile Include="SystemViewModel.cs" />
     <Compile Include="TimerService.cs" />
     <Compile Include="ParametersListViewModel.cs" />

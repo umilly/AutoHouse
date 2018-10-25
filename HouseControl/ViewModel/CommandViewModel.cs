@@ -14,8 +14,8 @@ namespace ViewModel
 {
     public class CommandViewModel : LinkedObjectVm<Command>
     {
-        public CommandViewModel(IServiceContainer container, Models dataBase, Command model)
-            : base(container, dataBase, model)
+        public CommandViewModel(IServiceContainer container,Command model)
+            : base(container, model)
         {
             _isConnected = null;
         }

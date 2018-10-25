@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Facade;
+using Model;
 using ViewModelBase;
 
 namespace ViewModel
@@ -18,7 +19,7 @@ namespace ViewModel
 
         public IEnumerable<ITreeNode> Reactions
         {
-            get { yield return Use<IPool>().GetOrCreateVM<DevicesViewModel>(-1); }
+            get { yield return Use<IPool>().GetOrCreateDBVM<DevicesViewModel>(EmptyModel.Instance); }
         }
     }
 }

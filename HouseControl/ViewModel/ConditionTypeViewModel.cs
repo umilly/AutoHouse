@@ -6,7 +6,7 @@ namespace ViewModel
 {
     public class ConditionTypeViewModel : EntityObjectVm<ConditionType>
     {
-        public ConditionTypeViewModel(IServiceContainer container, Models dataBase, ConditionType model) : base(container, dataBase, model)
+        public ConditionTypeViewModel(IServiceContainer container,  ConditionType model) : base(container, model)
         {
         }
         public string Name => Model.Name;

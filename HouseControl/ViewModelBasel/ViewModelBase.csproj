@@ -53,7 +53,9 @@
     <Compile Include="CommandHandler.cs" />
     <Compile Include="CustomContextMenuItem.cs" />
     <Compile Include="DbSet.cs" />
+    <Compile Include="EmptyEntityVM.cs" />
     <Compile Include="EntytyObjectVM.cs" />
+    <Compile Include="FormattedDbEntityValidationException.cs" />
     <Compile Include="IPool.cs" />
     <Compile Include="LinkedObjectVm.cs" />
     <Compile Include="Properties\Annotations.cs" />

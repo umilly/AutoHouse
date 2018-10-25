@@ -8,7 +8,7 @@ namespace ViewModel
 {
     public class CommandParamLinkVm : EntityObjectVm<ComandParameterLink>
     {
-        public CommandParamLinkVm(IServiceContainer container, Models dataBase, ComandParameterLink model) : base(container, dataBase, model)
+        public CommandParamLinkVm(IServiceContainer container,  ComandParameterLink model) : base(container,  model)
         {
         }
 
@@ -26,6 +26,14 @@ namespace ViewModel
                 OnPropertyChanged();
             }
         }
+
+        public override void Delete()
+        {
+            Model.Command?.ComandParameterLinks?.Remove(Model);
+            Model.Parameter?.ComandParameterLinks?.Remove(Model);
+            base.Delete();
+        }
+
         public IConditionSource Parameter
         {
             get { return Model.Parameter==null? EmptyValue.Instance : Use<IPool>().GetOrCreateDBVM<ParameterViewModel>(Model.Parameter) as IConditionSource; }

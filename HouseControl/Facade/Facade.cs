@@ -141,6 +141,7 @@ namespace Facade
         void LinklToParent(ITreeNode Parent);
         Type ParentType { get; }
 
+        void OnChildrenChanded();
     }
 
     public interface IContexMenuItem
@@ -158,6 +159,7 @@ namespace Facade
     public interface IReactionService:IService
     {
         void Check();
+        void Check(params IViewModel[] parametersViewModel);
     }
 
     public interface IGlobalParams:IService

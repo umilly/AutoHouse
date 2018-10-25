@@ -12,8 +12,8 @@ namespace ViewModel
     {
         private readonly List<IContexMenuItem> _contextMenu;
 
-        public ModeViewModel(IServiceContainer container, Models dataBase, Mode model)
-            : base(container, dataBase, model)
+        public ModeViewModel(IServiceContainer container,  Mode model)
+            : base(container, model)
         {
             _contextMenu = base.ContextMenu;
             _contextMenu.Add(new CustomContextMenuItem("Добавить сценарий", new CommandHandler(AddScenario)));
@@ -33,7 +33,7 @@ namespace ViewModel
             throw new System.NotImplementedException();
         }
 
-        public override ITreeNode Parent => Use<IPool>().GetOrCreateVM<SystemViewModel>(-1);
+        public override ITreeNode Parent => Use<IPool>().GetOrCreateDBVM<SystemViewModel>(EmptyModel.Instance);
 
         public override IEnumerable<ITreeNode> Children => Scenarios;
 

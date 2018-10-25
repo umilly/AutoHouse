@@ -83,6 +83,12 @@ namespace Model
 
         public long ExternId { get; set; }
     }
+
+    public class EmptyModel : IHaveID
+    {
+        public static EmptyModel Instance { get; }=new EmptyModel();
+        public int ID { get=>-1; }
+    }
      public abstract class DbModel : IHaveID
     {
         public int ID { get=>Id; }
