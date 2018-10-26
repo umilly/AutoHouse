@@ -28,7 +28,7 @@ namespace ViewModel
 
         public override void LinklToParent(ITreeNode Parent)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         public override Type ParentType { get { return typeof(ControllerVM); } }
         public override ITreeNode Parent => Use<IPool>().GetOrCreateDBVM<ControllerVM>(Model.Controller);

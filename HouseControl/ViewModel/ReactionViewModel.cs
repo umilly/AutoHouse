@@ -48,6 +48,7 @@ namespace ViewModel
         public void LinkCondition(Condition model)
         {
             model.Reaction = Model;
+            model.ParentCondition = null;
             OnPropertyChanged(() => Children);
         }
         public ScenarioViewModel Scenario

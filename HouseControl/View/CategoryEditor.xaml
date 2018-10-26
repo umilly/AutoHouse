@@ -18,13 +18,14 @@
                 <RowDefinition Height="500"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="1" Grid.Row="1">ID</Label>
-            <Label Grid.Column="2" Grid.Row="1">Name</Label>
-            <ScrollViewer Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Black"  VerticalScrollBarVisibility="Auto">
+            <Label Grid.Column="2" Grid.Row="1">ID</Label>
+            <Label Grid.Column="3" Grid.Row="1">Name</Label>
+            <ScrollViewer Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Black"  VerticalScrollBarVisibility="Auto">
                 <ItemsControl Name="ParamsList" ItemsSource="{Binding ViewModel.Categories, Mode=OneWay }">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="viewModel:CategoryViewModel">
@@ -40,7 +41,7 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-            <Button Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Click="AddCategoryClick">Добавить категорию</Button>
+            <Button Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" Click="AddCategoryClick">Добавить категорию</Button>
         </Grid>
     </Border>
 </vmBase:CustomViewBase>

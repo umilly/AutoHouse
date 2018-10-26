@@ -181,7 +181,7 @@ namespace ViewModelBase
                 return false;
             if (_copyObject.ParentType == null)
                 return false;
-            return _copyObject.ParentType == parent.GetType();
+            return _copyObject.ParentType.IsAssignableFrom(parent.GetType());
         }
 
         public void PasteTo(ITreeNode parent)

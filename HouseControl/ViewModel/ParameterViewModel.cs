@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Facade;
 using Model;
@@ -14,6 +15,32 @@ namespace ViewModel
         {
             if (!IsFake && Model.ID == Parameter.CurrentTimeId)
                 Use<ITimerSerivce>().Subscribe(this, UpdateTime, 1000, true);
+            else
+            {
+                TimerLogic();
+            }
+            
+        }
+
+        public void TimerLogic()
+        {
+            Use<ITimerSerivce>().UnSubsctibe(this);
+            if (ParamType.ParameterTypeValue == ParameterTypeValue.Time)
+            {
+                DateTime.TryParse(Value, CultureInfo.InvariantCulture.NumberFormat,DateTimeStyles.AllowInnerWhite,out var time);
+                var ts = (time.TimeOfDay-DateTime.Now.TimeOfDay);
+                if (ts.TotalMilliseconds < 0)
+                {
+                    ts = (time.TimeOfDay.Add(new TimeSpan(1,0,0,0)) - DateTime.Now.TimeOfDay);
+                }
+                Use<ITimerSerivce>().Subscribe(this,Check,(int)ts.TotalMilliseconds+1001);
+            }
+        }
+
+        private void Check()
+        {
+            Use<IReactionService>().Check(this);
+            TimerLogic();
         }
 
         public override void AddedToPool()
@@ -45,6 +72,7 @@ namespace ViewModel
                     return;
                 Model.Value = value;
                 OnPropertyChanged();
+                TimerLogic();
                 Use<IReactionService>().Check(this);
             }
         }
@@ -54,6 +82,7 @@ namespace ViewModel
             set
             {
                 value.LinkParam(Model);
+                TimerLogic();
             }
         }
         public ParameterCategoryVm Category

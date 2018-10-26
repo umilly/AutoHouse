@@ -86,7 +86,7 @@ namespace ViewModel
         {
             if (_isExecuting)
             {
-                throw new InvalidOperationException("cant dispose executing task");
+                //throw new InvalidOperationException("cant dispose executing task");
             }
 
             _isDisposed = true;

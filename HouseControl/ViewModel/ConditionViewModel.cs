@@ -27,10 +27,12 @@ namespace ViewModel
 
         public override void LinklToParent(ITreeNode newParent)
         {
-            if (newParent is ConditionViewModel)
+            if (newParent is ConditionViewModel pc)
             {
-                Model.ParentCondition = (newParent as ConditionViewModel).Model;
+                Model.ParentCondition = pc.Model;
+                Model.Reaction = null;
                 OnPropertyChanged(() => Children);
+                pc.OnChildrenChanded();
             }
             if (newParent is ReactionViewModel)
             {
@@ -261,8 +263,8 @@ namespace ViewModel
                         throw new ArgumentOutOfRangeException(
                             "типы значений не совпадают, время можно сравнить только со временем");
                     }
-                    var t1 = DateTime.Parse(s1.Value, CultureInfo.InvariantCulture.NumberFormat);
-                    var t2 = DateTime.Parse(s2.Value, CultureInfo.InvariantCulture.NumberFormat);
+                    DateTime.TryParse(s1.Value, CultureInfo.InvariantCulture.NumberFormat, DateTimeStyles.AllowInnerWhite, out var t1);
+                    DateTime.TryParse(s2.Value, CultureInfo.InvariantCulture.NumberFormat, DateTimeStyles.AllowInnerWhite, out var t2);
                     return t1.CompareTo(t2);
                 }
                 if (s1.ValueType == typeof(bool) || s1.ValueType == typeof(int) || s1.ValueType == typeof(float))

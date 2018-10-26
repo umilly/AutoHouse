@@ -73,7 +73,6 @@
                                 Header="Value" />
           <DataGridComboBoxColumn Width="100"
                                   SelectedItemBinding="{Binding Category}" DisplayMemberPath="Name"
-                                  SelectedValuePath="Ident"
                                   Header="Categroty" >
               <DataGridComboBoxColumn.EditingElementStyle>
                   <Style TargetType="ComboBox">
@@ -87,11 +86,35 @@
               </DataGridComboBoxColumn.ElementStyle>
           </DataGridComboBoxColumn>
           <DataGridComboBoxColumn Width="100"
-                                  SelectedValueBinding="{Binding Sensor}" ItemsSource="{Binding ViewModel.Sensors}"
-                                    Header="Sensor" />
-            <DataGridComboBoxColumn Width="100"
-                                    SelectedValueBinding="{Binding NextParam}" ItemsSource="{Binding ViewModel.AllParams}"
-                                    Header="Link" />
+                                  SelectedItemBinding="{Binding Sensor}" DisplayMemberPath="Name" 
+                                    Header="Sensor" >
+              <DataGridComboBoxColumn.EditingElementStyle>
+                  <Style TargetType="ComboBox">
+                      <Setter Property="ItemsSource" Value="{Binding ViewModel.Sensors, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ParametersListView } }" />
+                  </Style>
+              </DataGridComboBoxColumn.EditingElementStyle>
+              <DataGridComboBoxColumn.ElementStyle>
+                  <Style TargetType="ComboBox">
+                      <Setter Property="ItemsSource" Value="{Binding ViewModel.Sensors, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ParametersListView } }" />
+                  </Style>
+              </DataGridComboBoxColumn.ElementStyle>
+          </DataGridComboBoxColumn>
+
+          <DataGridComboBoxColumn Width="100"
+                                  SelectedItemBinding="{Binding NextParam}" 
+                                  DisplayMemberPath="Name"
+                                  Header="Link" >
+              <DataGridComboBoxColumn.EditingElementStyle>
+                  <Style TargetType="ComboBox">
+                      <Setter Property="ItemsSource" Value="{Binding ViewModel.AllParams, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ParametersListView } }" />
+                  </Style>
+              </DataGridComboBoxColumn.EditingElementStyle>
+              <DataGridComboBoxColumn.ElementStyle>
+                  <Style TargetType="ComboBox">
+                      <Setter Property="ItemsSource" Value="{Binding ViewModel.AllParams, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ParametersListView } }" />
+                  </Style>
+              </DataGridComboBoxColumn.ElementStyle>
+          </DataGridComboBoxColumn>
             <DataGridTextColumn Binding="{Binding Path=ButtonDescription, Mode=TwoWay}" Width="*"
                                 Header="ButtonDesc" />
             <DataGridCheckBoxColumn Binding="{Binding Path=IsPublic, Mode=TwoWay}" Width="*"

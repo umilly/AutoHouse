@@ -15,8 +15,11 @@ namespace ViewModelBase
             _contextMenu=new List<IContexMenuItem>();
             if (IsFake)
                 return;
-            _contextMenu.Add(new CustomContextMenuItem("Удалить", new CommandHandler(Delete)));
-            _contextMenu.Add(new CustomContextMenuItem("Копировать", new CommandHandler(CopyTo)));
+            if (typeof(T) != typeof(EmptyModel))
+            {
+                _contextMenu.Add(new CustomContextMenuItem("Удалить", new CommandHandler(Delete)));
+                _contextMenu.Add(new CustomContextMenuItem("Копировать", new CommandHandler(CopyTo)));
+            }
             _contextMenu.Add(new CustomContextMenuItem("Вставить", new PasteCommandHandler(PasteTo,Use<ICopyService>(),this)));
 
             Use<ITimerSerivce>().Subscribe(this, UpdateStatusMs, 100, true);

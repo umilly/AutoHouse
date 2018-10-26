@@ -7,7 +7,7 @@ using ViewModelBase;
 
 public class DevicesViewModel : ViewModelBase.LinkedObjectVm<EmptyModel>, ITreeNode
 {
-    readonly List<IContexMenuItem> _contextMenu = new List<IContexMenuItem>();
+    //readonly List<IContexMenuItem> _contextMenu = new List<IContexMenuItem>();
 
     public DevicesViewModel(IServiceContainer container,EmptyModel model) : base(container, model)
     {
@@ -54,7 +54,7 @@ public class DevicesViewModel : ViewModelBase.LinkedObjectVm<EmptyModel>, ITreeN
     public override int LastUpdateMs { get; } = 0;
 
     //public override List<IContexMenuItem> ContextMenu => _contextMenu;
-    public List<IContexMenuItem> ContextMenu { get; }
+    //public List<IContexMenuItem> ContextMenu { get; }
 
     public void OnChildDelete(ITreeNode scenarioViewModel)
     {

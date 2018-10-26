@@ -25,7 +25,11 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.Column="0">Управление:</Label>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" >
+            <Label>Устройства </Label>
+            <Button Width="30" Click="ExpandClick">+</Button>
+            <Button Width="30" Click="CollapseClick">-</Button>
+        </StackPanel>
         <TreeView Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="DeviceTreeView" Margin="5" ItemsSource="{Binding ViewModel.Reactions}" HorizontalContentAlignment="Stretch">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">

@@ -25,6 +25,32 @@ namespace View
             Editor= _viewService.CreateView(value as IViewModel);
             OnPropertyChanged(()=>Editor);
         }
+        private void ChangeExpand(bool open)
+        {
+            foreach (var item in DeviceTreeView.Items)
+            {
+                var treeItem = DeviceTreeView.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
+                if (treeItem != null && open)
+                {
+                    treeItem.IsExpanded = true;
+                    treeItem.ExpandSubtree();
+                }
+                if (treeItem != null && !open)
+                {
+                    treeItem.IsExpanded = false;
+                }
+            }
+        }
+
+        private void CollapseClick(object sender, RoutedEventArgs e)
+        {
+            ChangeExpand(false);
+        }
+
+        private void ExpandClick(object sender, RoutedEventArgs e)
+        {
+            ChangeExpand(true);
+        }
 
         public IView Editor { get; set; }
     }

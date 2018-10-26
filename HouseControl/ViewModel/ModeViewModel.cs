@@ -10,12 +10,12 @@ namespace ViewModel
 {
     public class ModeViewModel : LinkedObjectVm<Mode>
     {
-        private readonly List<IContexMenuItem> _contextMenu;
+        //private readonly List<IContexMenuItem> _contextMenu;
 
         public ModeViewModel(IServiceContainer container,  Mode model)
             : base(container, model)
         {
-            _contextMenu = base.ContextMenu;
+            //_contextMenu = base.ContextMenu;
             _contextMenu.Add(new CustomContextMenuItem("Добавить сценарий", new CommandHandler(AddScenario)));
             
         }
@@ -30,7 +30,7 @@ namespace ViewModel
 
         public override void LinklToParent(ITreeNode Parent)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public override ITreeNode Parent => Use<IPool>().GetOrCreateDBVM<SystemViewModel>(EmptyModel.Instance);
@@ -105,6 +105,7 @@ namespace ViewModel
         public void LinkChildScenario(Scenario model)
         {
             model.Mode = Model;
+            OnPropertyChanged(nameof(Children));
         }
     }
 }

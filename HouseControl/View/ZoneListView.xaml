@@ -14,8 +14,13 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ButtonBase_OnClick">Добавить зону</Button>
-        <ItemsControl Grid.Row="1" Name="ParamsList" ItemsSource="{Binding ViewModel.Zones, Mode=OneWay }">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40"> </ColumnDefinition>
+          <ColumnDefinition Width="Auto"> </ColumnDefinition>
+          <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ButtonBase_OnClick">Добавить зону</Button>
+        <ItemsControl Grid.Column="1" Grid.Row="1" Name="ParamsList" ItemsSource="{Binding ViewModel.Zones, Mode=OneWay }">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="viewModel:ZoneViewModel">
                     <Grid>

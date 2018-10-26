@@ -12,8 +12,9 @@ namespace ViewModel
             if(IsFake)
                 return;
             Type = TypeAssociationAttribute.GetType((ParameterTypeValue) model.ID);
+            ParameterTypeValue = (ParameterTypeValue) model.ID;
         }
-
+        public ParameterTypeValue ParameterTypeValue { get; set; }
         public string Name => Model.Name;
 
         public Type Type { get;private set; }
