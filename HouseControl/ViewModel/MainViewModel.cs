@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Common;
@@ -17,15 +19,13 @@ namespace ViewModel
     {
         public MainViewModel(IServiceContainer container) : base(container)
         {
-            Use<ITimerSerivce>().Subscribe(this, UpdateControllers, 500,true);
-            Use<IWebServer>().Start();
         }
 
         protected override async Task OnCreate()
         {
             var controllers= await Context.QueryModels<Controller>(controller => true);
             Use<IPool>().PrepareModels<ControllerVM,Controller>(controllers);
-            var sensors = await Context.QueryModels<Sensor>(sensor => true);
+            var sensors = await Context.CustomQuery<Sensor>(sensor => sensor.Include(s=>s.Conditions).ToList());
             Use<IPool>().PrepareModels<FirstTypeSensor, Sensor>(sensors);
             var zones = await Context.QueryModels<Zone>(zone => true);
             Use<IPool>().PrepareModels<ZoneViewModel, Zone>(zones);
@@ -52,7 +52,11 @@ namespace ViewModel
             Use<IPool>().PrepareModels<CommandViewModel, Command>(commands);
             var condTypes = await Context.QueryModels<ConditionType>(pt => true);
             Use<IPool>().PrepareModels<ConditionTypeViewModel, ConditionType>(condTypes);
+            var commandParams = await Context.QueryModels<ParametrSetCommand>(pt => true);
+            Use<IPool>().PrepareModels<ParameterSetCommandVm, ParametrSetCommand>(commandParams);
 
+            Use<IWebServer>().Start();
+            Use<ITimerSerivce>().Subscribe(this, UpdateControllers, 500, true);
 
 
             //Use<IPool>().GetViewModels<FirstTypeSensor>().ForEach(a => a.UpdateValue());
@@ -81,6 +85,14 @@ namespace ViewModel
         public void SaveSettings()
         {
             Use<IPool>().SaveDB(true);
+        }
+    }
+
+    public class UpdateTimer : TimerService,IUpdateTimer
+    {
+        protected override void OnLoop()
+        {
+            base.OnLoop();
         }
     }
 }

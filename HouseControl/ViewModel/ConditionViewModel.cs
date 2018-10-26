@@ -119,11 +119,13 @@ namespace ViewModel
         {
             get
             {
-                return Use<IPool>().GetViewModels<ISensorVM>()
+                var res=
+                Use<IPool>().GetViewModels<ISensorVM>()
                     .Where(a => a.Zone != null&& a.Zone.IsGlobal|| CurrentScenario.HaveZone(a.Zone))
                     .Cast<IConditionSource>()
                     .Union(Use<IPool>().GetViewModels<ParameterViewModel>())
-                    .Union(new[] { EmptyValue.Instance});
+                    .Union(new[] { EmptyValue.Instance}).ToList();
+                return res;
             }
         }
 

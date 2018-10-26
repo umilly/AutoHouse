@@ -40,8 +40,8 @@ namespace WebServer
 
         public void Start()
         {
-            _serverThread.Start();
             _listener.Start();
+            _serverThread.Start();
         }
 
         public void Stop()

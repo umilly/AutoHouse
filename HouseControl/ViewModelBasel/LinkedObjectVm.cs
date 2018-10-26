@@ -22,7 +22,7 @@ namespace ViewModelBase
             }
             _contextMenu.Add(new CustomContextMenuItem("Вставить", new PasteCommandHandler(PasteTo,Use<ICopyService>(),this)));
 
-            Use<ITimerSerivce>().Subscribe(this, UpdateStatusMs, 100, true);
+            Use<IUpdateTimer>().Subscribe(this, UpdateStatusMs, 100, true);
         }
 
         public virtual void OnChildrenChanded()

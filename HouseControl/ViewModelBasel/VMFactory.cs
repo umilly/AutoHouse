@@ -84,7 +84,7 @@ namespace ViewModelBase
 
             IEntityObjectVM res = null;
 
-            foreach (var t in _derrivedTypes[type].Distinct())
+            foreach (var t in _derrivedTypes[type])
             {
                 res = _poolDbVm[t].Get(id);
                 if (res != null)
@@ -146,8 +146,8 @@ namespace ViewModelBase
             {
                 TryRegisterType(t);
             }
-
-            return IsDbType(t) ? _poolDbVm[t].All.Cast<T>() : _poolVm[t].All.Cast<T>();
+            
+            return IsDbType(t) ? _derrivedTypes[t].SelectMany(a => _poolDbVm[a].All.Cast<T>()).Distinct() : _poolVm[t].All.Cast<T>();
             res.AddRange(IsDbType(t) ? _poolDbVm[t].All.Cast<T>() : _poolVm[t].All.Cast<T>());
             return res;
             //TODO Future search derived classes
@@ -358,6 +358,8 @@ namespace ViewModelBase
 
             foreach (var registredType in _derrivedTypes.Keys)
             {
+                if(_derrivedTypes[type].Contains(registredType))
+                    continue;
                 if (type.IsAssignableFrom(registredType))
                 {
                     _derrivedTypes[type].Add(registredType);

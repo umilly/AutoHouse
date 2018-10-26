@@ -7,7 +7,7 @@ using Facade;
 
 namespace ViewModel
 {
-    public sealed class TimerService : ITimerSerivce
+    public  class TimerService : ITimerSerivce
     {
         private readonly Queue<Action> _delegates = new Queue<Action>();
 
@@ -104,9 +104,14 @@ namespace ViewModel
                     Thread.Sleep(100);
                     continue;
                 }
-
                 _delegates.Dequeue()();
+                OnLoop();
             }
+        }
+
+        protected virtual void OnLoop()
+        {
+            
         }
 
         private void ProcessTask(TimerTask executeTask)

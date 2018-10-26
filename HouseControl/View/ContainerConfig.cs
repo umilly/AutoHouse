@@ -26,6 +26,7 @@ namespace WpfApplication
             _container.RegisterType<ICopyService, CopyService>();
             _container.RegisterType<INetworkService, NetworkService>();
             _container.RegisterType<ITimerSerivce, TimerService>();
+            _container.RegisterType<IUpdateTimer, UpdateTimer>();
             _container.RegisterType<IReactionService, ReactionService>();
             _container.RegisterType<IGlobalParams, GlobalParams>();
             _container.Use<IPool>().InitByAssambly(new[] { typeof(MainViewModel).Assembly, typeof(ViewModelBase.ViewModelBase).Assembly });

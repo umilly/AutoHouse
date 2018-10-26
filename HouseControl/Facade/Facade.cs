@@ -118,6 +118,11 @@ namespace Facade
         void Subscribe(object key, Action action, int waitMilliSeconds, bool repeat = false);
         void UnSubsctibe(object key);
     }
+    public interface IUpdateTimer : ITimerSerivce
+    {
+
+    }
+
     public interface IEvent
     {
     }
@@ -159,7 +164,7 @@ namespace Facade
     public interface IReactionService:IService
     {
         void Check();
-        void Check(params IViewModel[] parametersViewModel);
+        Task Check(params IViewModel[] parametersViewModel);
     }
 
     public interface IGlobalParams:IService

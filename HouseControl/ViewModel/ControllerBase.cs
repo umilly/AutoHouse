@@ -131,12 +131,12 @@ namespace ViewModel
             using (var task = Use<INetworkService>().AsyncRequest(Url))
             {
                 await task;
-                ParseSensorsValues(task.Result);
+                await ParseSensorsValues(task.Result);
             }
             i--;
         }
 
-        private void ParseSensorsValues(string result)
+        private async Task ParseSensorsValues(string result)
         {
             if (string.IsNullOrEmpty(result))
             {
@@ -165,7 +165,7 @@ namespace ViewModel
             }
             var sensors = Use<IPool>().GetViewModels<FirstTypeSensor>()
                 .Where(a => a.Parent == this && changed.Contains(a.Slot));
-            Use<IReactionService>().Check((IViewModel[])sensors);
+            await Use<IReactionService>().Check(sensors.Cast<IViewModel>().ToArray());
         }
 
         public  async Task FindSensors()

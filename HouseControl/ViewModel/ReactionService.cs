@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 using Facade;
 using Model;
@@ -21,37 +22,46 @@ namespace ViewModel
             
         }
 
-        public void Check(params IViewModel[] parametersViewModel)
+        public Task Check(params IViewModel[] parametersViewModel)
         {
-            List<Reaction> reacts = new List<Reaction>();
+            return Task.Run(() => CheckInternal(parametersViewModel));
+            
+        }
+
+        private void CheckInternal(IViewModel[] parametersViewModel)
+        {
+            List<ReactionViewModel> reacts = new List<ReactionViewModel>();
             foreach (var parameterViewModel in parametersViewModel)
             {
-
                 if (parameterViewModel is ConditionViewModel condition)
                 {
-                    reacts.Add((condition.ParentReacton as IEntityObjectVM<Reaction>).Model);
+                    reacts.Add(condition.ParentReacton);
                 }
+
                 if (parameterViewModel is ParameterViewModel model)
                 {
                     var paramReacts = ((IEntityObjectVM<Parameter>) model).Model.ComandParameterLinks
-                        .Select(a => a.Command.Reaction).Union(
+                        .Select(a => Use<IPool>().GetOrCreateDBVM<ReactionViewModel>(a.Command.Reaction)).Union(
                             Use<IPool>().GetViewModels<ConditionViewModel>()
                                 .Where(a => a.Parameter1 == parameterViewModel || a.Parameter2 == parameterViewModel)
-                                .Select(a => ((IEntityObjectVM<Reaction>) a.ParentReacton).Model)).Distinct();
+                                .Select(a => a.ParentReacton));
                     reacts.AddRange(paramReacts);
                 }
+
                 if (parameterViewModel is IEntityObjectVM<Sensor> sensor)
                 {
-                    var sensorReacts = sensor.Model.Conditions
-                        .Select(a => a.Reaction);
+                    var sensorReacts = sensor.Model.Conditions.Select(c =>
+                        Use<IPool>().GetOrCreateDBVM<ConditionViewModel>(c).ParentReacton);
                     reacts.AddRange(sensorReacts);
                 }
-                if (parameterViewModel is IEntityObjectVM<Reaction> react)
+
+                if (parameterViewModel is ReactionViewModel react)
                 {
-                    reacts.Add(react.Model);
+                    reacts.Add(react);
                 }
             }
-            reacts.Distinct().ForEach(a => Use<IPool>().GetOrCreateDBVM<ReactionViewModel>(a).Check());
+
+            reacts.Distinct().ForEach(a => a.Check());
         }
     }
 }
