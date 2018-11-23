@@ -60,15 +60,15 @@ namespace ViewModel
 
             Use<IWebServer>().Start();
             Use<IReactionService>().Check();
-            //Use<ITimerSerivce>().Subscribe(this, UpdateControllers, 500, true);
-            //Use<IPool>().GetViewModels<FirstTypeSensor>().ForEach(a => a.UpdateValue());
+            Use<ITimerSerivce>().Subscribe(this, UpdateControllers, 500, true);
+            Use<IPool>().GetViewModels<FirstTypeSensor>().ForEach(a => a.UpdateValue());
         }
 
         private void UpdateControllers()
         {
             Use<IPool>().GetViewModels<ControllerVM>().ForEach(a=>a.Update());
             Use<IPool>().GetViewModels<FirstTypeSensor>().ForEach(a => a.UpdateValue());
-            Use<IReactionService>().Check();
+            //Use<IReactionService>().Check();
         }
 
         
