@@ -11,7 +11,7 @@ namespace ViewModel
     public abstract class ControllerBase<T> : LinkedObjectVm<T> where T:Controller
     {
         private readonly Dictionary<int, string> _values=new Dictionary<int, string>();
-        private bool _isConnected;
+        //private bool _isConnected;
         private static Dictionary<string, SensorType> _cahedTypes;
         public ControllerBase(IServiceContainer container,T controller) : base(container,controller)
         {
@@ -22,7 +22,7 @@ namespace ViewModel
 
         private void AddSensor(bool obj)
         {
-            var newSensor = Use<IPool>().CreateDBObject<FirstTypeSensor>();
+            var newSensor = Use<IPool>().CreateDBObject<SecondTypeSensor>();
             var zone = Use<IPool>().GetViewModel<ZoneViewModel>(1);//GetOrCreateZone(zoneNum);
             var sensors = Use<IPool>().GetViewModels<ISensorVM>().Where(a => a.Parent == this).ToList();
             int slot = sensors.Any() ? sensors.Max(a => a.Slot) : 0;
@@ -61,7 +61,9 @@ namespace ViewModel
         {
             get { return Use<IPool>().GetViewModels<FirstTypeSensor>()
                 .Cast<ITreeNode>()
+                .Union(Use<IPool>().GetViewModels<SecondTypeSensor>())
                 .Union(Use<IPool>().GetViewModels<CustomDeviceViewModel>())
+                
                 .Where(a => a.Parent == this); }
         }
 
@@ -75,25 +77,17 @@ namespace ViewModel
 
         public override string Value
         {
-            get { return IsConnected.Value ? "+" : "-"; }
+            get { return VMState== VMState.Positive ? "+" : "-"; }
             set { }
         }
 
-        public override bool? IsConnected
+        private TimeSpan ConnectonTimeOut = new TimeSpan(0, 1, 0);
+
+        public override VMState VMState
         {
-            get { return _isConnected; }
-            set
-            {
-                _isConnected = value.Value;
-                if (_isConnected)
-                {
-                    Update();
-                    UpdateStatus();
-                }
-                OnPropertyChanged();
-            }
+            get { return DateTime.Now - _lastUpdate < ConnectonTimeOut ? VMState.Positive : VMState.Negative; }
         }
-        
+
         public string IP
         {
             get { return Model.IP; }
@@ -110,11 +104,6 @@ namespace ViewModel
             return IP != null && Name != null;
         }
 
-        //public IEnumerable<Controller> GetControllers()
-        //{
-        //    return Context.Devices.OfType<Controller>().ToList();
-        //}
-
         private string Url => $"http://{IP}:{Port}";
 
         public string MessageFind
@@ -122,28 +111,26 @@ namespace ViewModel
             get { return $"Всего в контроллер включено {Model.Sensors.Count} сенсоров"; }
         }
 
-        public static int i = 0;
         public async void Update()
         {
             if(string.IsNullOrEmpty(IP)||Port<=0||Port>65535)
                 return;
-            i++;
             using (var task = Use<INetworkService>().AsyncRequest(Url))
             {
                 await task;
                 await ParseSensorsValues(task.Result);
             }
-            i--;
         }
 
         private async Task ParseSensorsValues(string result)
         {
             if (string.IsNullOrEmpty(result))
             {
-                IsConnected = false;
+                //VMState = false;
                 return;
             }
-            IsConnected = true;
+            UpdateStatus();
+            //VMState = true;
             var lines = result.Split(new[] { "<",">"}, StringSplitOptions.RemoveEmptyEntries);
             HashSet<int> changed = new HashSet<int>();
             for (int i = 0; i < lines.Count(); i++)
@@ -168,6 +155,27 @@ namespace ViewModel
             await Use<IReactionService>().Check(sensors.Cast<IViewModel>().ToArray());
         }
 
+        private Dictionary<string,SecondTypeSensor> _sensorByName=new Dictionary<string, SecondTypeSensor>();
+        public async Task SetSensorsValues(Dictionary<string,string> sensorValues)
+        {
+            var updateAll = VMState != VMState.Positive;
+            foreach (var sensorValue in sensorValues)
+            {
+                if (!_sensorByName.ContainsKey(sensorValue.Key))
+                {
+                    _sensorByName[sensorValue.Key] = Use<IPool>().GetViewModels<SecondTypeSensor>()
+                        .First(a => a.InternalName == sensorValue.Key);
+                }
+                _sensorByName[sensorValue.Key].Value= sensorValue.Value;
+            }
+            UpdateStatus();
+            var sensors = updateAll?
+                 Use<IPool>().GetViewModels<SecondTypeSensor>()
+                     .Where(a => a.Parent == this):
+                sensorValues.Keys.Select(a => _sensorByName[a]);
+            await Use<IReactionService>()
+                .Check(sensors.ToArray());
+        }
         public  async Task FindSensors()
         {
             var task = Use<INetworkService>().AsyncRequest(Url);

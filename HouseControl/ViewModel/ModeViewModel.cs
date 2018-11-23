@@ -53,13 +53,9 @@ namespace ViewModel
             set { }
         }
 
-        public override bool? IsConnected
+        public override VMState VMState
         {
-            get
-            {
-                return IsSelected?(bool?)true:null;
-            }
-            set { }
+            get { return IsSelected ? VMState.Positive : VMState.Negative; }
         }
 
         private void AddScenario(bool obj)
@@ -91,7 +87,7 @@ namespace ViewModel
             set
             {
                 Model.IsSelected = value; 
-                OnPropertyChanged(()=>IsConnected);
+                OnPropertyChanged(()=>VMState);
             }
         }
 

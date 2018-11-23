@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
+using System.Threading.Tasks;
 using Facade;
 using Model;
 using ViewModel;
@@ -17,9 +18,9 @@ namespace ViewModel
         public CommandViewModel(IServiceContainer container,Command model)
             : base(container, model)
         {
-            _isConnected = null;
+            _comandEcexuted = null;
         }
-
+        public override int Color { get; } = 3;
         public ReactionViewModel Reaction => Use<IPool>().GetOrCreateDBVM<ReactionViewModel>(Model.Reaction);
 
         public override void LinklToParent(ITreeNode newParent)
@@ -105,30 +106,27 @@ namespace ViewModel
             model.Command = Model;
             Model.ComandParameterLinks.Add(model);
         }
-        private bool? _isConnected;
+        private bool? _comandEcexuted;
 
-        public override bool? IsConnected
+        public override VMState VMState
         {
-            get { return _isConnected; }
-            set
+            get
             {
-                _isConnected = value;
-                if (value.HasValue && value.Value)
-                {
-                    UpdateStatus();
-                }
-                    //Use<ITimerSerivce>().Subscribe(this, ResetIsConnected, 1000);
-                OnPropertyChanged(() => IsConnected);
+                return _comandEcexuted == null
+                    ? VMState.Default
+                    : _comandEcexuted.Value
+                        ? VMState.Positive
+                        : VMState.Negative;
             }
         }
 
         //private void ResetIsConnected()
         //{
             
-        //    if (_isConnected.HasValue && _isConnected.Value)
+        //    if (_comandEcexuted.HasValue && _comandEcexuted.Value)
         //    {
-        //        _isConnected = null;
-        //        OnPropertyChanged(() => IsConnected);
+        //        _comandEcexuted = null;
+        //        OnPropertyChanged(() => VMState);
         //    }
         //}
 
@@ -143,27 +141,46 @@ namespace ViewModel
 
         public async void Execute()
         {
-            try
+
+            if (VMState == VMState.Negative)
+                return;
+            _comandEcexuted = false;
+            while (!_comandEcexuted.Value)
             {
-                var sb = new StringBuilder();
-                sb.Append(
-                    $"http://{Model.CustomDevice.Controller.IP}:{Model.CustomDevice.Controller.Port}/{Model.CustomDevice.CommandPath}");
-                sb.Append($"?id={DeviceId}");
-                Parameters.OrderBy(a => a.Order).ForEach(c => sb.Append($"&val{c.Order}={c.Parameter.Value}"));
-                IsConnected = false;
-                var http = sb.ToString();
-                using (var res = Use<INetworkService>().AsyncRequest(http))
+                var controller =
+                    (LinkedObjectVm<Controller>) Use<IPool>()
+                        .GetOrCreateDBVM<ControllerVM>(Model.CustomDevice.Controller);
+                if (controller.VMState == VMState.Negative)
                 {
-                    await res;
-                    if (string.IsNullOrEmpty(res.Result))
-                        throw new Exception($"No Connect to {http }:\r\n{res.Result}");
+                    _comandEcexuted = null;
+                    return;
                 }
-                IsConnected = true;
+                try
+                {
+                    await ExecuteInternal();
+                }
+                catch (Exception ex)
+                {
+                    await Task.Delay(100);
+                }
             }
-            catch (Exception ex)
+        }
+
+        private async Task ExecuteInternal()
+        {
+            var sb = new StringBuilder();
+            sb.Append(
+                $"http://{Model.CustomDevice.Controller.IP}:{Model.CustomDevice.Controller.Port}/{Model.CustomDevice.CommandPath}");
+            sb.Append($"?id={DeviceId}");
+            Parameters.OrderBy(a => a.Order).ForEach(c => sb.Append($"&val{c.Order}={c.Parameter.Value}"));
+            var http = sb.ToString();
+            using (var res = Use<INetworkService>().AsyncRequest(http))
             {
-                IsConnected = false;
+                await res;
+                if (string.IsNullOrEmpty(res.Result))
+                    throw new Exception($"No Connect to {http}:\r\n{res.Result}");
             }
+            _comandEcexuted = true;
         }
 
         public void DeleteDeviceParam(DeviceParameterTypeLink model)

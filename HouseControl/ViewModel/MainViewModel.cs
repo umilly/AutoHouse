@@ -26,7 +26,8 @@ namespace ViewModel
             var controllers= await Context.QueryModels<Controller>(controller => true);
             Use<IPool>().PrepareModels<ControllerVM,Controller>(controllers);
             var sensors = await Context.CustomQuery<Sensor>(sensor => sensor.Include(s=>s.Conditions).ToList());
-            Use<IPool>().PrepareModels<FirstTypeSensor, Sensor>(sensors);
+            Use<IPool>().PrepareModels<SecondTypeSensor, Sensor>(sensors.Where(a=>a is CustomSensor));
+            Use<IPool>().PrepareModels<FirstTypeSensor, Sensor>(sensors.Where(a => !(a is CustomSensor)));
             var zones = await Context.QueryModels<Zone>(zone => true);
             Use<IPool>().PrepareModels<ZoneViewModel, Zone>(zones);
             var ptypes = await Context.QueryModels<ParameterType>(pt => true);
@@ -54,11 +55,12 @@ namespace ViewModel
             Use<IPool>().PrepareModels<ConditionTypeViewModel, ConditionType>(condTypes);
             var commandParams = await Context.QueryModels<ParametrSetCommand>(pt => true);
             Use<IPool>().PrepareModels<ParameterSetCommandVm, ParametrSetCommand>(commandParams);
+            var sensorTypes = await Context.QueryModels<SensorType>(pt => true);
+            Use<IPool>().PrepareModels<SensorTypeViewModel, SensorType>(sensorTypes);
 
             Use<IWebServer>().Start();
-            Use<ITimerSerivce>().Subscribe(this, UpdateControllers, 500, true);
-
-
+            Use<IReactionService>().Check();
+            //Use<ITimerSerivce>().Subscribe(this, UpdateControllers, 500, true);
             //Use<IPool>().GetViewModels<FirstTypeSensor>().ForEach(a => a.UpdateValue());
         }
 
@@ -66,7 +68,7 @@ namespace ViewModel
         {
             Use<IPool>().GetViewModels<ControllerVM>().ForEach(a=>a.Update());
             Use<IPool>().GetViewModels<FirstTypeSensor>().ForEach(a => a.UpdateValue());
-            //Use<IReactionService>().Check();
+            Use<IReactionService>().Check();
         }
 
         

@@ -73,16 +73,6 @@ namespace ViewModel
 
         public override string Value { get; set; }
 
-        
-        public override bool? IsConnected
-        {
-            get { return null; }
-            set
-            {
-            }
-        }
-
-
         public string DeviceKey
         {
             get { return Model.CommandPath; }

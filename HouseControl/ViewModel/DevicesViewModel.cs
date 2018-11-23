@@ -43,14 +43,6 @@ public class DevicesViewModel : ViewModelBase.LinkedObjectVm<EmptyModel>, ITreeN
         set {  }
     }
 
-    public override bool? IsConnected
-    {
-        get => null;
-        set
-        {
-        }
-    }
-
     public override int LastUpdateMs { get; } = 0;
 
     //public override List<IContexMenuItem> ContextMenu => _contextMenu;

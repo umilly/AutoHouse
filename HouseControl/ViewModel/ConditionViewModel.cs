@@ -11,6 +11,7 @@ namespace ViewModel
     public class ConditionViewModel : LinkedObjectVm<Condition>,IConditionParent
     {
         private readonly CommandHandler _addCondition;
+        public override int Color { get; } = 2;
 
         public ConditionViewModel(IServiceContainer container, Condition model)
             : base(container,model)
@@ -55,7 +56,7 @@ namespace ViewModel
             }
         }
 
-        public override bool? IsConnected { get { return _isComplete; }set {} }
+        public override VMState VMState { get { return _isComplete?VMState.Positive : VMState.Negative; }}
 
         public override bool Validate()
         {

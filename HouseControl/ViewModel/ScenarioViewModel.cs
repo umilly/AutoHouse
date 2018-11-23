@@ -36,13 +36,6 @@ namespace ViewModel
             get { return string.Empty; }
             set { }
         }
-
-        public override bool? IsConnected
-        {
-            get { return null; }
-            set { }
-        }
-
         private void AddReaction(bool obj)
         {
             var newReaction = Use<IPool>().CreateDBObject<ReactionViewModel>();

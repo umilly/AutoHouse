@@ -44,11 +44,6 @@ public class SystemViewModel : ViewModelBase.LinkedObjectVm<EmptyModel>, ITreeNo
         set {  }
     }
 
-    public override bool? IsConnected
-    {
-        get => null;
-        set{}
-    }
 
     public override int LastUpdateMs { get; }
     

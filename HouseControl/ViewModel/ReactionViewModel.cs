@@ -99,10 +99,9 @@ namespace ViewModel
             set { }
         }
 
-        public override bool? IsConnected
+        public override VMState VMState
         {
-            get { return null; }
-            set { }
+            get => VMState.Default;
         }
 
         public void Link(Scenario model)

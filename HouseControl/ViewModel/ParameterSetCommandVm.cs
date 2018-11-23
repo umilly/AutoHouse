@@ -17,6 +17,7 @@ namespace ViewModel
         {
         }
 
+        public override int Color { get; } = 4;
         public override Type ParentType { get; }
 
         public override void LinklToParent(ITreeNode newParent)
@@ -28,7 +29,6 @@ namespace ViewModel
         public override ITreeNode Parent => Use<IPool>().GetOrCreateDBVM<ReactionViewModel>(Model.Reaction);
         public override IEnumerable<ITreeNode> Children { get; }
         public override string Value { get; set; }
-        public override bool? IsConnected { get; set; }
         public ReactionViewModel Reaction { get { return Parent as ReactionViewModel;} }
         public override bool Validate()
         {

@@ -51,25 +51,20 @@ namespace ViewModel
             get { return typeof (float); }
         }
 
-        public override string Value
+
+
+        public override VMState VMState
         {
             get
             {
-                var p = Parent as ControllerVM;
-                return (p != null && p.Values.ContainsKey(Model.ContollerSlot))
-                    ? p.Values[Model.ContollerSlot]
-                    : "-";
+                return Parent != null && (Parent as ControllerVM).Values.ContainsKey(Model.ContollerSlot)
+                    ? VMState.Positive
+                    : VMState.Negative;
             }
-            set { }
+
         }
 
-        public override bool? IsConnected
-        {
-            get { return Parent != null && (Parent as ControllerVM).Values.ContainsKey(Model.ContollerSlot); }
-            set { }
-        }
-
-       public void Init(SensorType st, int slotNum, Controller controller, string name)
+        public void Init(SensorType st, int slotNum, Controller controller, string name)
         {
             Model.SensorType = st;
             Model.ContollerSlot = slotNum;
@@ -101,8 +96,18 @@ namespace ViewModel
             }
         }
 
-        public string SensorType => Model.SensorType.Name;
+        public SensorTypeViewModel SensorType
+        {
+            get => Use<IPool>().GetOrCreateDBVM<SensorTypeViewModel>(Model.SensorType);
+            set
+            {
+                value.LinkSensor(Model); 
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ValueRange));
+            }
+        }
 
+        public IEnumerable<SensorTypeViewModel> AllSensorTypes => Use<IPool>().GetViewModels<SensorTypeViewModel>();
         public string ValueRange => $"от {Model.SensorType.MinValue} до {Model.SensorType.MaxValue}";
 
         public IEnumerable<ZoneViewModel> Zones => Use<IPool>().GetViewModels<ZoneViewModel>();
@@ -129,11 +134,11 @@ namespace ViewModel
         string Name { get; set; }
         Type ValueType { get; }
         string Value { get; set; }
-        bool? IsConnected { get; set; }
+        VMState VMState { get; }
         string SourceName { get; }
         int Slot { get; }
         ZoneViewModel Zone { get; set; }
-        string SensorType { get; }
+        SensorTypeViewModel SensorType { get; }
         string ValueRange { get; }
         IEnumerable<ZoneViewModel> Zones { get; }
         void Init(SensorType st, int slotNum, Controller controller, string name);
@@ -143,10 +148,24 @@ namespace ViewModel
         void LinkParam(Parameter model);
     }
 
-    public class FirstTypeSensor : SensorViewModel<Sensor>
+    public class SensorTypeViewModel : EntityObjectVm<SensorType>
     {
-        public FirstTypeSensor(IServiceContainer container,  Sensor model)
-            : base(container, model) { }
+        public SensorTypeViewModel(IServiceContainer container, SensorType model) : base(container, model)
+        {
+        }
+        public string Name
+        {
+            get => Model.Name;
+        }
 
+        public override bool Validate()
+        {
+            return true;
+        }
+
+        public void LinkSensor(Sensor model)
+        {
+            model.SensorType=Model;
+        }
     }
 }

@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/25/2017 12:58:02
--- Generated from EDMX file: D:\hs\HouseControl\Model\ApplicationDB.edmx
+-- Date Created: 11/10/2018 13:51:33
+-- Generated from EDMX file: F:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -125,6 +125,9 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ModBusDevice_inherits_CustomDevice]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Devices_ModBusDevice] DROP CONSTRAINT [FK_ModBusDevice_inherits_CustomDevice];
 GO
+IF OBJECT_ID(N'[dbo].[FK_CustomSensor_inherits_Sensor]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Devices_CustomSensor] DROP CONSTRAINT [FK_CustomSensor_inherits_Sensor];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -201,6 +204,9 @@ IF OBJECT_ID(N'[dbo].[Devices_ModBusController]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Devices_ModBusDevice]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Devices_ModBusDevice];
+GO
+IF OBJECT_ID(N'[dbo].[Devices_CustomSensor]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Devices_CustomSensor];
 GO
 IF OBJECT_ID(N'[dbo].[ZoneScenario]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ZoneScenario];
@@ -430,6 +436,7 @@ GO
 CREATE TABLE [dbo].[Devices_CustomSensor] (
     [LastValue] nvarchar(max)  NULL,
     [ValueChangeDate] datetime  NOT NULL,
+    [InnerName] nvarchar(max)  NOT NULL,
     [Id] int  NOT NULL
 );
 GO

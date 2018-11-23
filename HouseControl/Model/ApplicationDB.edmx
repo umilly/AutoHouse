@@ -403,6 +403,7 @@
     </Key>
     <Property Name="LastValue" Type="nvarchar(max)" Nullable="true" />
     <Property Name="ValueChangeDate" Type="datetime" Nullable="false" />
+    <Property Name="InnerName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ZoneScenario">
@@ -1437,6 +1438,7 @@
         <EntityType Name="CustomSensor" BaseType="ApplicationModel.Sensor" >
           <Property Name="LastValue" Type="String" Nullable="true" />
           <Property Name="ValueChangeDate" Type="DateTime" Nullable="false" />
+          <Property Name="InnerName" Type="String" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1601,6 +1603,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="LastValue" ColumnName="LastValue" />
           <ScalarProperty Name="ValueChangeDate" ColumnName="ValueChangeDate" />
+          <ScalarProperty Name="InnerName" ColumnName="InnerName" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

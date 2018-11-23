@@ -9,6 +9,7 @@ namespace ViewModelBase
     public abstract class LinkedObjectVm<T> : EntityObjectVm<T>, ITreeNode where T : class, IHaveID
     {
         protected readonly List<IContexMenuItem> _contextMenu;
+        public virtual int Color { get; } = 1;
 
         protected LinkedObjectVm(IServiceContainer container,  T model) : base(container,  model)
         {
@@ -37,6 +38,8 @@ namespace ViewModelBase
         private void UpdateStatusMs()
         {
             OnPropertyChanged(() => LastUpdateMs);
+            OnPropertyChanged(() => VMState);
+            OnPropertyChanged(() => Value);
         }
 
         public virtual void OnChildrenChanged()
@@ -86,28 +89,30 @@ namespace ViewModelBase
         public abstract IEnumerable<ITreeNode> Children { get; }
         public abstract string Name { get;  set; }
         public abstract string Value { get; set; }
-        public abstract bool? IsConnected { get; set; }
+        public virtual VMState VMState { get; }=VMState.Default; 
         public virtual int LastUpdateMs
         {
             get
             {
-                if (IsConnected == null)
+                if (VMState == VMState.Default)
                     return 0;
                 var now = DateTime.Now;
                 var res=(int) (now - _lastUpdate).TotalMilliseconds;
                 res = Math.Max(res, 1);
-                if (!IsConnected.Value)
+                if (VMState == VMState.Negative)
                     res = -res;
                 return res;
             }
         }
 
-        private DateTime _lastUpdate = DateTime.Now;
+        protected DateTime _lastUpdate = DateTime.Now;
 
         protected void UpdateStatus()
         {
             _lastUpdate=DateTime.Now;
             OnPropertyChanged(()=>LastUpdateMs);
+            OnPropertyChanged(() => VMState);
+            OnPropertyChanged(() => Value);
         }
         public List<IContexMenuItem> ContextMenu => _contextMenu;
 
@@ -124,4 +129,6 @@ namespace ViewModelBase
             p?.OnChildDelete(this);
         }
     }
+
+
 }

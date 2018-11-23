@@ -25,7 +25,6 @@ namespace ViewModel
         public Task Check(params IViewModel[] parametersViewModel)
         {
             return Task.Run(() => CheckInternal(parametersViewModel));
-            
         }
 
         private void CheckInternal(IViewModel[] parametersViewModel)

@@ -37,6 +37,7 @@ namespace Facade
         string SetMode(int modeId);
         string GetModesJson();
         string GetParametersJson();
+        string SetSensorsValues(string ip, Dictionary<string, string> sensorValues);
     }
     public interface IViewService : IService
     {
@@ -137,8 +138,9 @@ namespace Facade
         ITreeNode Parent { get; }
         IEnumerable<ITreeNode> Children { get; }
         string Name { get; }
+        int Color { get; }
         string Value { get; }
-        bool? IsConnected { get; }
+        VMState VMState { get; }
         int LastUpdateMs { get; }
         List<IContexMenuItem> ContextMenu { get; }
         void OnChildDelete(ITreeNode node);
@@ -202,7 +204,8 @@ namespace Facade
         SetParam,
         SetMode,
         GetModesJson,
-        GetParamsJson
+        GetParamsJson,
+        SetSensorsValues
     }
     public interface ISettings:IService
     {
@@ -218,5 +221,11 @@ namespace Facade
     public interface IInitable
     {
         void Init();
+    }
+    public enum VMState
+    {
+        Default,
+        Positive,
+        Negative
     }
 }

@@ -14,6 +14,7 @@
              DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
   <UserControl.Resources>
     <viewTools:IntToColorConverter x:Key="ColorConverter"/>
+      <viewTools:VMTypeToColorConverter x:Key="TypeColorConverter"/>
   </UserControl.Resources>
     <Grid>
       <Grid.ColumnDefinitions>
@@ -47,7 +48,7 @@
                                     </ContextMenu.ItemTemplate>
                                 </ContextMenu>
                             </Grid.ContextMenu>
-                            <TextBlock Grid.Column="0" Text="{Binding Path=Name}">
+                            <TextBlock Grid.Column="0" Text="{Binding Path=Name}" Foreground="{Binding Color, Converter={StaticResource TypeColorConverter}}">
                             </TextBlock>
                             <TextBlock Grid.Column="1" Text="{Binding Path=Value}"/>
                         </Grid>
