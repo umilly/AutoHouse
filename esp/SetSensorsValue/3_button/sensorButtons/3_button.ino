@@ -98,20 +98,49 @@ void setup(void)
 void CheckSensors()
 {
   int currentTime=millis();
+  bool needSend=false;
   for(int i=0;i<SensorCount;i++)
   {
      if(currentTime-SensorTimers[i]<SensorCoolDown)
         continue;
      if(CheckSensorChanged(i));
+     {
         SensorTimers[i]=currentTime;
+        needSend=true;
+     }
   }
+  if(needSend){
+          String url = "/SetSensorsValues?"; //команда
+  url += "ip=192.168.1.151";// айпи контроллера
+  //дальше перечисление всех параметров и их значений. В нормальной прошивке я писал все параметры и их имена в массивах, 
+  //если бы тут было также - я бы написал for для всех значений, а так пиши в ручуную каждый, как в примере ниже.
+  for(int i=0;i<SensorCount;i++)
+  {
+    url += "&"+SensorNames[i]+"="+ SensorValues[i];
+  }
+  for(int i=0;i<ReleCount;i++)
+  {
+    
+  }
+  url += "&ParamId="; // имя датчика1 прописанное в конфигурации  (ParamId)
+  url += ParamId;     // значение показания датчика
+  url += "&ParamId2="; // имя датчика2 прописанное в конфигурации  (ParamId2)
+  url += ParamId2;   // значение показания датчика 
+
+    client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+    "Host: " + host+":"+httpPort + "\r\n" + 
+    "Connection: close\r\n\r\n");  
+    
+    }
 }
 bool CheckSensorChanged(int i)
 {
   int pin = SensorPins[i];
   String sensorName=SensorNames[i];
-  int sensorValue=SensorValues[i];
-  if (mcp.digitalRead (pin) == HIGH) 
+  //int sensorValue=SensorValues[i];
+  bool isHigh=mcp.digitalRead (pin) == HIGH;
+  SensorValues[i]= isHigh?1:0;
+  if (isHigh) 
   {
     Serial.print("connecting to ");
     Serial.println(host);
@@ -123,15 +152,7 @@ bool CheckSensorChanged(int i)
     {
       Serial.println("connection failed");
       return false;
-    }
-    String url = "/SetParam/";
-    url += sensorName;
-    url += "?";
-    url += sensorValue;
-    client.print(String("GET ") + url + " HTTP/1.1\r\n" +
-    "Host: " + host+":"+httpPort + "\r\n" + 
-    "Connection: close\r\n\r\n");  
-    
+    }  
     return true;
   }
   return false;
