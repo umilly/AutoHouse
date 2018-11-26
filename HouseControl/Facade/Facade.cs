@@ -166,7 +166,7 @@ namespace Facade
     public interface IReactionService:IService
     {
         void Check();
-        Task Check(params IViewModel[] parametersViewModel);
+        void Check(params IViewModel[] parametersViewModel);
     }
 
     public interface IGlobalParams:IService

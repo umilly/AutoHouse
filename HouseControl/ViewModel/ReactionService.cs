@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Common;
 using Facade;
@@ -10,6 +12,42 @@ namespace ViewModel
 {
     public class ReactionService : ServiceBase, IReactionService
     {
+        private readonly Queue<IViewModel> _checkQueue =new Queue<IViewModel>();
+        public ReactionService() : base()
+        {
+            var timerThread = new Thread(CheckTasks);
+            timerThread.Start();
+        }
+
+        private void CheckTasks()
+        {
+            while (true)
+            {
+                if(IsDisposed)
+                    return;
+                IViewModel _checkTask = null;
+                lock (_checkQueue)
+                {
+                    if (_checkQueue.Any())
+                        _checkTask = _checkQueue.Dequeue();
+                }
+                if (_checkTask == null)
+                {
+                    Thread.Sleep(1);
+                    continue;
+                }
+
+                try
+                {
+                    CheckInternal(new[] {_checkTask});
+                }
+                catch (Exception e)
+                {
+                    Use<ILog>().LogNetException(e,"reaction check error");
+                }
+            }
+        }
+
         public void Check()
         {
             var reacts=Use<IPool>().GetViewModels<ReactionViewModel>();
@@ -19,12 +57,15 @@ namespace ViewModel
                 reacts = reacts.Where(a => a.Scenario.Parent.ID == mode.ID);
                 reacts.ForEach(a => a.Check());
             }
-            
         }
 
-        public Task Check(params IViewModel[] parametersViewModel)
+        public void Check(params IViewModel[] parametersViewModel)
         {
-            return Task.Run(() => CheckInternal(parametersViewModel));
+            lock (_checkQueue)
+            {
+               parametersViewModel.ForEach(a=> _checkQueue.Enqueue(a));
+            }
+            //return Task.Run(() => CheckInternal(parametersViewModel));
         }
 
         private void CheckInternal(IViewModel[] parametersViewModel)

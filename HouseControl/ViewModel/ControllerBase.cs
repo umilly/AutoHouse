@@ -118,11 +118,11 @@ namespace ViewModel
             using (var task = Use<INetworkService>().AsyncRequest(Url))
             {
                 await task;
-                await ParseSensorsValues(task.Result);
+                ParseSensorsValues(task.Result);
             }
         }
 
-        private async Task ParseSensorsValues(string result)
+        private  void ParseSensorsValues(string result)
         {
             if (string.IsNullOrEmpty(result))
             {
@@ -152,11 +152,11 @@ namespace ViewModel
             }
             var sensors = Use<IPool>().GetViewModels<FirstTypeSensor>()
                 .Where(a => a.Parent == this && changed.Contains(a.Slot));
-            await Use<IReactionService>().Check(sensors.Cast<IViewModel>().ToArray());
+            Use<IReactionService>().Check(sensors.Cast<IViewModel>().ToArray());
         }
 
         private Dictionary<string,SecondTypeSensor> _sensorByName=new Dictionary<string, SecondTypeSensor>();
-        public async Task SetSensorsValues(Dictionary<string,string> sensorValues)
+        public void SetSensorsValues(Dictionary<string,string> sensorValues)
         {
             var updateAll = VMState != VMState.Positive;
             foreach (var sensorValue in sensorValues)
@@ -173,7 +173,7 @@ namespace ViewModel
                  Use<IPool>().GetViewModels<SecondTypeSensor>()
                      .Where(a => a.Parent == this):
                 sensorValues.Keys.Select(a => _sensorByName[a]);
-            await Use<IReactionService>()
+            Use<IReactionService>()
                 .Check(sensors.ToArray());
         }
         public  async Task FindSensors()
