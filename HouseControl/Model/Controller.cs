@@ -19,6 +19,7 @@ namespace Model
         {
             this.Sensors = new HashSet<Sensor>();
             this.CustomDevices = new HashSet<CustomDevice>();
+            this.Conditions = new HashSet<Condition>();
         }
     
         public string IP { get; set; }
@@ -28,5 +29,7 @@ namespace Model
         public virtual ICollection<Sensor> Sensors { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CustomDevice> CustomDevices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Condition> Conditions { get; set; }
     }
 }

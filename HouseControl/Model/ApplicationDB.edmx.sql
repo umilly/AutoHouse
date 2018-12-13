@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 12/13/2018 11:04:10
+-- Date Created: 12/13/2018 13:54:55
 -- Generated from EDMX file: F:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -298,6 +298,7 @@ CREATE TABLE [dbo].[Conditions] (
     [ConditionTypeId] int  NOT NULL,
     [ReactionId] int  NULL,
     [ParentConditionId] int  NULL,
+    [ControllerId] int  NULL,
     [Sensor_Id] int  NULL,
     [Parameter1_Id] int  NULL,
     [Parameter2_Id] int  NULL
@@ -1070,6 +1071,21 @@ GO
 CREATE INDEX [IX_FK_ParameterParameter]
 ON [dbo].[Parameter]
     ([NextParameterId]);
+GO
+
+-- Creating foreign key on [ControllerId] in table 'Conditions'
+ALTER TABLE [dbo].[Conditions]
+ADD CONSTRAINT [FK_ControllerCondition]
+    FOREIGN KEY ([ControllerId])
+    REFERENCES [dbo].[Devices_Controller]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ControllerCondition'
+CREATE INDEX [IX_FK_ControllerCondition]
+ON [dbo].[Conditions]
+    ([ControllerId]);
 GO
 
 -- Creating foreign key on [Id] in table 'Devices_Sensor'

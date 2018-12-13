@@ -34,7 +34,7 @@ namespace ViewModelBase
         {
             OnChildrenChanded();
         }
-        protected void UpdateStatusMs()
+        protected virtual void UpdateStatusMs()
         {
             OnPropertyChanged(() => LastUpdateMs);
             OnPropertyChanged(() => VMState);

@@ -83,11 +83,28 @@ namespace Model
                 RegiterUpdate(Guid.Parse("F439FC8D-C225-4A0A-8910-CA588A3C48F1"), CreateCustomSensors);
                 RegiterUpdate(Guid.Parse("DE4F8F87-CD5C-4115-92A0-19E10AAA9AFF"), CustomSensorInnerName);
                 RegiterUpdate(Guid.Parse("0788A4B6-7E6C-4C41-BE04-15913AF16644"), IsActiveForReactions);
+                RegiterUpdate(Guid.Parse("FB075722-67F9-492C-AA35-259E3AEF34F0"),ConditionControllerAssociation);
             }
 
-          
+            public const string ConditionControllerAssociation = @"
+SET QUOTED_IDENTIFIER OFF;
 
-            public string IsActiveForReactions = @"
+ALTER TABLE [dbo].[Conditions]
+ADD [ControllerId] int  NULL;
+
+ALTER TABLE [dbo].[Conditions]
+ADD CONSTRAINT [FK_ControllerCondition]
+    FOREIGN KEY ([ControllerId])
+    REFERENCES [dbo].[Devices_Controller]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+CREATE INDEX [IX_FK_ControllerCondition]
+ON [dbo].[Conditions]
+    ([ControllerId]);
+";
+
+
+            public const string IsActiveForReactions = @"
 ALTER TABLE [dbo].[Reactions]
 ADD [IsActive] bit  NOT NULL DEFAULT(1);
 ";

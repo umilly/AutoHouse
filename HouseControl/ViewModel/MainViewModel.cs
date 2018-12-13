@@ -23,8 +23,10 @@ namespace ViewModel
 
         protected override async Task OnCreate()
         {
-            var controllers= await Context.QueryModels<Controller>(controller => true);
-            Use<IPool>().PrepareModels<ControllerVM,Controller>(controllers);
+
+            var controllers = await Context.CustomQuery<Controller>(controller => controller.Include(a => a.Conditions).ToList());
+            Use<IPool>().PrepareModels<ControllerVM, Controller>(controllers);
+
             var sensors = await Context.CustomQuery<Sensor>(sensor => sensor.Include(s=>s.Conditions).ToList());
             Use<IPool>().PrepareModels<SecondTypeSensor, Sensor>(sensors.Where(a=>a is CustomSensor));
             Use<IPool>().PrepareModels<FirstTypeSensor, Sensor>(sensors.Where(a => !(a is CustomSensor)));
@@ -45,7 +47,7 @@ namespace ViewModel
             Use<IPool>().PrepareModels<ModeViewModel, Mode>(modes);
             var scenarios = await Context.QueryModels<Scenario>(pt => true);
             Use<IPool>().PrepareModels<ScenarioViewModel, Scenario>(scenarios);
-            var reactions = await Context.QueryModels<Reaction>(pt => true);
+            var reactions = await Context.CustomQuery<Reaction>(r => r.Include(a=>a.Scenario).ToList());
             Use<IPool>().PrepareModels<ReactionViewModel, Reaction>(reactions);
             var conditions = await Context.QueryModels<Condition>(pt => true);
             Use<IPool>().PrepareModels<ConditionViewModel, Condition>(conditions);
@@ -58,10 +60,13 @@ namespace ViewModel
             var sensorTypes = await Context.QueryModels<SensorType>(pt => true);
             Use<IPool>().PrepareModels<SensorTypeViewModel, SensorType>(sensorTypes);
 
+            
             Use<IWebServer>().Start();
             Use<IReactionService>().Check();
+
             Use<ITimerSerivce>().Subscribe(this, UpdateControllers, 500, true);
             Use<IPool>().GetViewModels<FirstTypeSensor>().ForEach(a => a.UpdateValue());
+
         }
 
         private void UpdateControllers()

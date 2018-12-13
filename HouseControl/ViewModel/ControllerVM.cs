@@ -35,5 +35,10 @@ namespace ViewModel
         {
             return Use<IPool>().CreateDBObject<CustomDeviceViewModel>();
         }
+
+        public void LinkCondition(Condition model)
+        {
+            model.Controller = Model;
+        }
     }
 }

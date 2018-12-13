@@ -8,7 +8,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public abstract class ControllerBase<T> : LinkedObjectVm<T> where T:Controller
+    public abstract class ControllerBase<T> : LinkedObjectVm<T>, IConditionSource where T:Controller
     {
         private readonly Dictionary<int, string> _values=new Dictionary<int, string>();
         //private bool _isConnected;
@@ -18,6 +18,7 @@ namespace ViewModel
             fillSensorTypes();
             _contextMenu.Add(new CustomContextMenuItem("Добавить устройство",new CommandHandler(AddDevice)));
             _contextMenu.Add(new CustomContextMenuItem("Добавить сенсор", new CommandHandler(AddSensor)));
+            _lastUpdate=DateTime.MinValue;
         }
 
         private void AddSensor(bool obj)
@@ -75,6 +76,10 @@ namespace ViewModel
             set { Model.Name=value; }
         }
 
+        public string SourceName { get=>$"Controller:{Name}"; }
+        string IConditionSource.Value { get { return VMState == VMState.Positive ? "1" : "0"; } }
+        public Type ValueType { get=>typeof(bool); }
+
         public override string Value
         {
             get { return VMState== VMState.Positive ? "+" : "-"; }
@@ -82,10 +87,31 @@ namespace ViewModel
         }
 
         private TimeSpan ConnectonTimeOut = new TimeSpan(0, 1, 0);
-
+        VMState _vmState=VMState.Negative;
         public override VMState VMState
         {
-            get { return DateTime.Now - _lastUpdate < ConnectonTimeOut ? VMState.Positive : VMState.Negative; }
+            get=> _vmState;// { return DateTime.Now - _lastUpdate < ConnectonTimeOut ? VMState.Positive : VMState.Negative; }
+        }
+
+        public override int LastUpdateMs { get=>_vmState==VMState.Positive?1:-1; }
+
+        protected override void UpdateStatusMs()
+        {
+            var oldState = _vmState;
+            _vmState = DateTime.Now - _lastUpdate < ConnectonTimeOut ? VMState.Positive : VMState.Negative;
+            if (oldState != VMState)
+            {
+                CheckDependencies();
+            }
+            base.UpdateStatusMs();
+        }
+
+        private void CheckDependencies()
+        {
+            var conditions = Model.Conditions.Select(a => Use<IPool>().GetOrCreateDBVM<ConditionViewModel>(a));
+            var vms = Use<IPool>().GetViewModels<SecondTypeSensor>()
+                .Where(a => a.Parent == this).Cast<IViewModel>().Union(conditions);
+            Use<IReactionService>().Check(vms.ToArray());
         }
 
         public string IP

@@ -25,6 +25,7 @@ namespace Model
         public int ConditionTypeId { get; set; }
         public Nullable<int> ReactionId { get; set; }
         public Nullable<int> ParentConditionId { get; set; }
+        public Nullable<int> ControllerId { get; set; }
     
         public virtual ConditionType ConditionType { get; set; }
         public virtual Reaction Reaction { get; set; }
@@ -34,5 +35,6 @@ namespace Model
         public virtual Sensor Sensor { get; set; }
         public virtual Parameter Parameter1 { get; set; }
         public virtual Parameter Parameter2 { get; set; }
+        public virtual Controller Controller { get; set; }
     }
 }

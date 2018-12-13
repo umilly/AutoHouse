@@ -156,6 +156,10 @@
       <End Role="Parameter" EntitySet="Parameter" />
       <End Role="Parameter1" EntitySet="Parameter" />
     </AssociationSet>
+    <AssociationSet Name="ControllerCondition" Association="ApplicationModel.Store.ControllerCondition">
+      <End Role="Controller" EntitySet="Devices_Controller" />
+      <End Role="Condition" EntitySet="Conditions" />
+    </AssociationSet>
     <AssociationSet Name="FK_Sensor_inherits_Device" Association="ApplicationModel.Store.FK_Sensor_inherits_Device">
       <End Role="Device" EntitySet="Devices" />
       <End Role="Sensor" EntitySet="Devices_Sensor" />
@@ -265,6 +269,7 @@
     <Property Name="ConditionTypeId" Type="int" Nullable="false" />
     <Property Name="ReactionId" Type="int" Nullable="true" />
     <Property Name="ParentConditionId" Type="int" Nullable="true" />
+    <Property Name="ControllerId" Type="int" Nullable="true" />
     <Property Name="Sensor_Id" Type="int" Nullable="true" />
     <Property Name="Parameter1_Id" Type="int" Nullable="true" />
     <Property Name="Parameter2_Id" Type="int" Nullable="true" />
@@ -763,6 +768,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="ControllerCondition">
+    <End Role="Controller" Type="ApplicationModel.Store.Devices_Controller" Multiplicity="0..1" />
+    <End Role="Condition" Type="ApplicationModel.Store.Conditions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Controller">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Condition">
+        <PropertyRef Name="ControllerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_ZoneScenario_Zone">
     <End Role="Zone" Type="ApplicationModel.Store.Zones" Multiplicity="1" />
     <End Role="ZoneScenario" Type="ApplicationModel.Store.ZoneScenario" Multiplicity="*" />
@@ -1052,12 +1069,17 @@
             <End Role="Parameter" EntitySet="Parameter" />
             <End Role="Parameter1" EntitySet="Parameter" />
           </AssociationSet>
+          <AssociationSet Name="ControllerCondition" Association="ApplicationModel.ControllerCondition">
+            <End Role="Controller" EntitySet="Devices" />
+            <End Role="Condition" EntitySet="Conditions" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Controller" BaseType="ApplicationModel.Device">
           <Property Name="IP" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="Port" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Sensors" Relationship="ApplicationModel.SensorController" FromRole="Controller" ToRole="Sensor" />
           <NavigationProperty Name="CustomDevices" Relationship="ApplicationModel.CustomDeviceController" FromRole="Controller" ToRole="CustomDevice" />
+          <NavigationProperty Name="Conditions" Relationship="ApplicationModel.ControllerCondition" FromRole="Controller" ToRole="Condition" />
         </EntityType>
         <EntityType Name="Sensor" BaseType="ApplicationModel.Device">
           <Property Name="ContollerSlot" Type="Int32" Nullable="false" DefaultValue="0" />
@@ -1146,6 +1168,8 @@
           <NavigationProperty Name="Sensor" Relationship="ApplicationModel.ConditionSensor" FromRole="Condition" ToRole="Sensor" />
           <NavigationProperty Name="Parameter1" Relationship="ApplicationModel.ConditionParameter1" FromRole="Condition" ToRole="Parameter" />
           <NavigationProperty Name="Parameter2" Relationship="ApplicationModel.ConditionParameter2" FromRole="Condition" ToRole="Parameter" />
+          <NavigationProperty Name="Controller" Relationship="ApplicationModel.ControllerCondition" FromRole="Condition" ToRole="Controller" />
+          <Property Name="ControllerId" Type="Int32" Nullable="true" />
         </EntityType>
         <EntityType Name="ConditionType">
           <Key>
@@ -1442,6 +1466,18 @@
           <Property Name="ValueChangeDate" Type="DateTime" Nullable="false" />
           <Property Name="InnerName" Type="String" Nullable="false" />
         </EntityType>
+        <Association Name="ControllerCondition">
+          <End Type="ApplicationModel.Controller" Role="Controller" Multiplicity="0..1" />
+          <End Type="ApplicationModel.Condition" Role="Condition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Controller">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Condition">
+              <PropertyRef Name="ControllerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1539,6 +1575,7 @@
           <ScalarProperty Name="ConditionTypeId" ColumnName="ConditionTypeId" />
           <ScalarProperty Name="ReactionId" ColumnName="ReactionId" />
           <ScalarProperty Name="ParentConditionId" ColumnName="ParentConditionId" />
+          <ScalarProperty Name="ControllerId" ColumnName="ControllerId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

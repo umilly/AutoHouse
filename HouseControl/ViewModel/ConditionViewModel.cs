@@ -66,6 +66,7 @@ namespace ViewModel
         public ParameterViewModel Parameter1 => Use<IPool>().GetOrCreateDBVM<ParameterViewModel>(Model.Parameter1);
         public ParameterViewModel Parameter2 => Use<IPool>().GetOrCreateDBVM<ParameterViewModel>(Model.Parameter2);
         public ISensorVM Sensor => Use<IPool>().GetOrCreateDBVM<ISensorVM>(Model.Sensor);
+        public ControllerVM Controller => Use<IPool>().GetOrCreateDBVM<ControllerVM>(Model.Controller);
 
         public IEnumerable<ConditionTypeViewModel> CondtionTypes
         {
@@ -125,6 +126,7 @@ namespace ViewModel
                     .Where(a => a.Zone != null&& a.Zone.IsGlobal|| CurrentScenario.HaveZone(a.Zone))
                     .Cast<IConditionSource>()
                     .Union(Use<IPool>().GetViewModels<ParameterViewModel>())
+                    .Union(Use<IPool>().GetViewModels<ControllerVM>())
                     .Union(new[] { EmptyValue.Instance}).ToList();
                 return res;
             }
@@ -159,14 +161,16 @@ namespace ViewModel
 
         public IConditionSource LeftParam
         {
-            get { return Parameter1 ?? (IConditionSource)Sensor?? EmptyValue.Instance; }
+            get { return Parameter1 ?? (IConditionSource)Sensor?? (IConditionSource)Controller ?? EmptyValue.Instance; }
             set
             {
-                
-                 Model.Parameter1 = null;
-                 Model.Sensor = null;
+
+                Model.Parameter1 = null;
+                Model.Sensor = null;
+                Model.Controller = null;
                 (value as ISensorVM)?.LinkCondition(Model);
-                (value as ParameterViewModel)?.LinkCondition(Model,true);
+                (value as ParameterViewModel)?.LinkCondition(Model, true);
+                (value as ControllerVM)?.LinkCondition(Model);
                 OnPropertyChanged(nameof(CondtionTypes));
                 Use<IReactionService>().Check(this);
             }
