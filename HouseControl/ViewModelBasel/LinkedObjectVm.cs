@@ -25,7 +25,6 @@ namespace ViewModelBase
 
             Use<IUpdateTimer>().Subscribe(this, UpdateStatusMs, 100, true);
         }
-
         public virtual void OnChildrenChanded()
         {
             OnPropertyChanged(nameof(Children));
@@ -35,7 +34,7 @@ namespace ViewModelBase
         {
             OnChildrenChanded();
         }
-        private void UpdateStatusMs()
+        protected void UpdateStatusMs()
         {
             OnPropertyChanged(() => LastUpdateMs);
             OnPropertyChanged(() => VMState);

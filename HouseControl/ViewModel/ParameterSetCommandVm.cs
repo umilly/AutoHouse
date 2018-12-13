@@ -153,18 +153,26 @@ namespace ViewModel
         {
             get { return Model.DestParameter!=null&&Model.DestParameter.ParameterType.ID== (int)ParameterTypeValue.Bool; }
         }
-        private DateTime ExecuteTime=DateTime.MinValue;
         public void Execute()
         {
-            var now = DateTime.Now;
-            if ((now - ExecuteTime).TotalSeconds > Cooldown)
+            if (Cooldown==0)
             {
-                DestParameter.Value = SrcParameter1 != null ? SrcParameter1.Value : Sensor?.Value;
-                if (InvertAvail&&Invert)
-                {
-                    DestParameter.Value = DestParameter.Value == "1" ? "0" : "1";
-                }
-                ExecuteTime = now;
+                SetValue();
+            }
+            else
+            {
+                Use<ITimerSerivce>().UnSubsctibe(this);
+                Use<IUpdateTimer>().Subscribe(this, UpdateStatusMs, 100, true);
+                Use<ITimerSerivce>().Subscribe(this,SetValue,Cooldown*1000);
+            }
+        }
+
+        private void SetValue()
+        {
+            DestParameter.Value = SrcParameter1 != null ? SrcParameter1.Value : Sensor?.Value;
+            if (InvertAvail && Invert)
+            {
+                DestParameter.Value = DestParameter.Value == "1" ? "0" : "1";
             }
         }
 
