@@ -66,6 +66,8 @@ namespace ViewModel
             OnPropertyChanged(() => Children);
         }
 
+        public override int LastUpdateMs { get=>IsSelected?1:2000; }
+
         public string Description
         {
             get { return Model.Description; }
@@ -88,6 +90,7 @@ namespace ViewModel
             {
                 Model.IsSelected = value; 
                 OnPropertyChanged(()=>VMState);
+                OnPropertyChanged(() => LastUpdateMs);
             }
         }
 
