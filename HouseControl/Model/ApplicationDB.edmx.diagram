@@ -26,8 +26,8 @@
         <InheritanceConnector EntityType="ApplicationModel.Sensor" />
         <InheritanceConnector EntityType="ApplicationModel.Controller" ManuallyRouted="true" >
           <ConnectorPoint PointX="1.5" PointY="8.4033821614583335" />
-          <ConnectorPoint PointX="1.5" PointY="8.8851780344094671" />
-          <ConnectorPoint PointX="1.25" PointY="8.8851780344094671" />
+          <ConnectorPoint PointX="1.5" PointY="8.7783821614583335" />
+          <ConnectorPoint PointX="1.25" PointY="8.7783821614583335" />
           <ConnectorPoint PointX="1.25" PointY="16.375" />
         </InheritanceConnector>
         <EntityTypeShape EntityType="ApplicationModel.Parameter" Width="1.5" PointX="11.875" PointY="3.375" IsExpanded="true" />
@@ -46,8 +46,8 @@
         <AssociationConnector Association="ApplicationModel.ConditionCondition" />
         <AssociationConnector Association="ApplicationModel.CustomDeviceController" ManuallyRouted="true" >
           <ConnectorPoint PointX="4.7187475" PointY="14.662985026041666" />
-          <ConnectorPoint PointX="4.7187475" PointY="17.728618099320908" />
-          <ConnectorPoint PointX="2" PointY="17.728618099320908" />
+          <ConnectorPoint PointX="4.7187475" PointY="17.906193562681285" />
+          <ConnectorPoint PointX="2" PointY="17.906193562681285" />
         </AssociationConnector>
         <AssociationConnector Association="ApplicationModel.ConditionSensor" />
         <AssociationConnector Association="ApplicationModel.ConditionParameter1" />

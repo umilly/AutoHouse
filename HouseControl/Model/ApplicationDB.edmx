@@ -377,6 +377,7 @@
     </Key>
     <Property Name="IP" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Port" Type="int" Nullable="false" />
+    <Property Name="ActivityTime" Type="int" Nullable="false" DefaultValue="60" />
     <Property Name="Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Devices_CustomDevice">
@@ -1080,6 +1081,7 @@
           <NavigationProperty Name="Sensors" Relationship="ApplicationModel.SensorController" FromRole="Controller" ToRole="Sensor" />
           <NavigationProperty Name="CustomDevices" Relationship="ApplicationModel.CustomDeviceController" FromRole="Controller" ToRole="CustomDevice" />
           <NavigationProperty Name="Conditions" Relationship="ApplicationModel.ControllerCondition" FromRole="Controller" ToRole="Condition" />
+          <Property Name="ActivityTime" Type="Int32" Nullable="false" DefaultValue="60" />
         </EntityType>
         <EntityType Name="Sensor" BaseType="ApplicationModel.Device">
           <Property Name="ContollerSlot" Type="Int32" Nullable="false" DefaultValue="0" />
@@ -1616,6 +1618,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="IP" ColumnName="IP" />
           <ScalarProperty Name="Port" ColumnName="Port" />
+          <ScalarProperty Name="ActivityTime" ColumnName="ActivityTime" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.CustomDevice)">

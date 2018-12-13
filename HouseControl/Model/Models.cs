@@ -84,7 +84,15 @@ namespace Model
                 RegiterUpdate(Guid.Parse("DE4F8F87-CD5C-4115-92A0-19E10AAA9AFF"), CustomSensorInnerName);
                 RegiterUpdate(Guid.Parse("0788A4B6-7E6C-4C41-BE04-15913AF16644"), IsActiveForReactions);
                 RegiterUpdate(Guid.Parse("FB075722-67F9-492C-AA35-259E3AEF34F0"),ConditionControllerAssociation);
+                RegiterUpdate(Guid.Parse("BE05A3FA-E483-44E4-8D58-A985978B4ACF"), CreateControllerActivityTime);
+                    
             }
+
+            public const string CreateControllerActivityTime= @"
+SET QUOTED_IDENTIFIER OFF;
+ALTER TABLE [dbo].[Devices_Controller]
+ADD  [ActivityTime] int  NOT NULL DEFAULT(60);
+";
 
             public const string ConditionControllerAssociation = @"
 SET QUOTED_IDENTIFIER OFF;

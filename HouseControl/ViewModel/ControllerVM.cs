@@ -31,6 +31,16 @@ namespace ViewModel
 
         public override Type ParentType { get { return null; } }
 
+        public int ActivityTime
+        {
+            get { return Model.ActivityTime; }
+            set
+            {
+                Model.ActivityTime = value;
+                OnPropertyChanged();
+            }
+        }
+
         protected override ICustomDevice CreateChildDev()
         {
             return Use<IPool>().CreateDBObject<CustomDeviceViewModel>();

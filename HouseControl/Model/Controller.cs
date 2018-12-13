@@ -17,6 +17,7 @@ namespace Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Controller()
         {
+            this.ActivityTime = 60;
             this.Sensors = new HashSet<Sensor>();
             this.CustomDevices = new HashSet<CustomDevice>();
             this.Conditions = new HashSet<Condition>();
@@ -24,6 +25,7 @@ namespace Model
     
         public string IP { get; set; }
         public int Port { get; set; }
+        public int ActivityTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sensor> Sensors { get; set; }

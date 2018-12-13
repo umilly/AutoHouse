@@ -86,7 +86,10 @@ namespace ViewModel
             set { }
         }
 
-        private TimeSpan ConnectonTimeOut = new TimeSpan(0, 1, 0);
+        private TimeSpan ConnectonTimeOut
+        {
+            get => new TimeSpan(0, 0, Model.ActivityTime);
+        } 
         VMState _vmState=VMState.Negative;
         public override VMState VMState
         {

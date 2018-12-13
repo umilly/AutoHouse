@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 12/13/2018 13:54:55
+-- Date Created: 12/13/2018 17:12:05
 -- Generated from EDMX file: F:\work\#repo\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
@@ -109,6 +109,9 @@ IF OBJECT_ID(N'[dbo].[FK_ParametrSetCommandReaction]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ParameterParameter]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Parameter] DROP CONSTRAINT [FK_ParameterParameter];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ControllerCondition]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Conditions] DROP CONSTRAINT [FK_ControllerCondition];
 GO
 IF OBJECT_ID(N'[dbo].[FK_Sensor_inherits_Device]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Devices_Sensor] DROP CONSTRAINT [FK_Sensor_inherits_Device];
@@ -406,6 +409,7 @@ GO
 CREATE TABLE [dbo].[Devices_Controller] (
     [IP] nvarchar(max)  NOT NULL,
     [Port] int  NOT NULL,
+    [ActivityTime] int  NOT NULL,
     [Id] int  NOT NULL
 );
 GO
