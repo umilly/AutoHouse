@@ -100,8 +100,9 @@ namespace ViewModel
                     reacts.Add(react);
                 }
             }
+            var mode = Use<IPool>().GetViewModels<ModeViewModel>().SingleOrDefault(a => a.IsSelected);
 
-            reacts.Distinct().ForEach(a => a.Check());
+            reacts.Where(a=>a.Scenario.Parent==mode).Distinct().ForEach(a => a.Check());
         }
     }
 }

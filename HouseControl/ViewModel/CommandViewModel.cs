@@ -71,6 +71,10 @@ namespace ViewModel
         {
             var res=base.Copy() as CommandViewModel;
             res.CreateCommandLinks();
+            foreach (var commandParamLinkVm in res.Parameters)
+            {
+                commandParamLinkVm.Parameter = Parameters.First(a => a.Order == commandParamLinkVm.Order).Parameter;
+            }
             return res;
         }
 

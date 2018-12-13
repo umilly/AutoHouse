@@ -255,6 +255,12 @@ namespace ViewModel
             }
         }
 
+        public override ITreeNode Copy()
+        {
+            var res= base.Copy();
+            return res;
+        }
+
         public int Compare(IConditionSource s1, IConditionSource s2)
         {
             try
@@ -291,7 +297,7 @@ namespace ViewModel
             }
             catch (Exception ex)
             {
-                throw new ArgumentException($"compare v1:'{s1.Value}',v2:'{s2.Value}'",ex);
+                throw new ArgumentException($"compare error \r\n condition={Name};reaction={ParentReacton} v1:'{s1.Value}',v2:'{s2.Value}'",ex);
             }
             
         }

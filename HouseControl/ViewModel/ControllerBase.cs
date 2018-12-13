@@ -163,8 +163,14 @@ namespace ViewModel
             {
                 if (!_sensorByName.ContainsKey(sensorValue.Key))
                 {
-                    _sensorByName[sensorValue.Key] = Use<IPool>().GetViewModels<SecondTypeSensor>()
-                        .First(a => a.InternalName == sensorValue.Key);
+                    var sensor = Use<IPool>().GetViewModels<SecondTypeSensor>()
+                        .FirstOrDefault(a => a.Parent == this && a.InternalName == sensorValue.Key);
+                    if (sensor == null)
+                    {
+                        Use<ILog>().Log(LogCategory.Debug, $"для контроллера {IP} попытка устновить значение несуществующего датчика {sensorValue.Key}");
+                        continue;
+                    }
+                    _sensorByName[sensorValue.Key] = sensor;
                 }
                 _sensorByName[sensorValue.Key].Value= sensorValue.Value;
             }
@@ -172,7 +178,7 @@ namespace ViewModel
             var sensors = updateAll?
                  Use<IPool>().GetViewModels<SecondTypeSensor>()
                      .Where(a => a.Parent == this):
-                sensorValues.Keys.Select(a => _sensorByName[a]);
+                sensorValues.Keys.Where(a=> _sensorByName.ContainsKey(a)).Select(a => _sensorByName[a]);
             Use<IReactionService>()
                 .Check(sensors.ToArray());
         }

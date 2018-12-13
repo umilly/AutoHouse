@@ -7,32 +7,41 @@ Adafruit_MCP23008 mcp;
 const char* ssid = "AI_Zabava";
 const char* password = "9052203377";
 IPAddress ipServidor(192, 168, 1, 1);        //Адрес шлюза (в моем случае роутера)
-IPAddress ipCliente(192, 168, 1, 151);       //Адрес нашего устройства
+IPAddress ipCliente(192, 168, 1, 154);       //Адрес нашего устройства
 IPAddress Subnet(255, 255, 255, 0);          //Подсеть
 ESP8266WebServer server(80);
 String webString=""; 
 const char* host = "192.168.1.100";
+const char* contrip = "192.168.1.154";
+unsigned long heartbeat = 0UL;
 
 //SENSOR SETTINGS
 const int SensorCount=3;                      //количество кнопок
-String SensorNames[SensorCount]={"27","28","29"};  //номер параметра
+String SensorNames[SensorCount]={"36","35","34"};  //номер параметра
 int SensorPins[SensorCount]={0,1,2};            //пины на контроллере
 int SensorValues[SensorCount]={1,1,1};          //значения
-int SensorTimers[SensorCount]{0,0,0};
-int SensorCoolDown=300;
+unsigned long SensorTimers[SensorCount]={0,0,0};
+int SensorCoolDown=3000;
 
 //RELE SETTINGS
 const int ReleCount=4;
-String devices[ReleCount]={"_rele_clim_d_","_rele_clim_d_","_rele_clim_d_","_rele_clim_d_"};
+String devices[ReleCount]={"ch1","ch2","ch3","ch4"};
 int pins[ReleCount]={3,4,5,6};
 int values[ReleCount]={0,0,0,0};
-int heartBeat=20000;
-long ms=0;
 //END RELE SETTINGS
 
+void handle_root() 
+{
+  webString="";
+  for(int i=0; i<ReleCount;i++)
+  { 
+    webString+=String(i+1)+devices[i]+String(values[i])+"<br>";
+  }
+  server.send(200, "text/plain", webString);
+  delay(100);
+}
 void switchRele()
 {
-  
   int rele=-1;
   int value=-1;
   bool needSend=false;
@@ -47,12 +56,11 @@ void switchRele()
   {
     values[rele]=value;
     needSend=true;
-  }  
+  }
   server.send(200, "text/plain", webString);
   delay(100);
   if(needSend)
   {     
-    ms=millis();
     sendSensorsInfo();
   }
 } 
@@ -67,7 +75,8 @@ void sendSensorsInfo()
       return;
     }
     String url = "/SetSensorsValues?"; //команда
-    url += "ip=192.168.1.151";// айпи контроллера    
+    url += "ip=";// айпи контроллера    
+    url += contrip;
     for(int i=0;i<ReleCount;i++)
     {
         url +="&"+devices[i]+"="+values[i];
@@ -110,6 +119,7 @@ void setup(void)
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
   
+  server.on("/", handle_root); 
   server.on("/switchRele", switchRele); 
   server.begin();
   Serial.println("HTTP server started");
@@ -117,13 +127,18 @@ void setup(void)
 
 void CheckSensors()
 {
-  int currentTime=millis();
   for(int i=0;i<SensorCount;i++)
   {
-     if(currentTime-SensorTimers[i]<SensorCoolDown)
+     
+     if(!_isTimer(SensorTimers[i],SensorCoolDown))
         continue;
      if(CheckSensorChanged(i));
-        SensorTimers[i]=currentTime;
+     {
+       Serial.print("sensor      : "+i);       
+       Serial.print("current time: "+millis());  
+       Serial.print("sensor  time: "+SensorTimers[i]);  
+       SensorTimers[i]=millis();
+     }
   }
 }
 bool CheckSensorChanged(int i)
@@ -156,31 +171,15 @@ bool CheckSensorChanged(int i)
   }
   return false;
 }
-void CheckHearBeat()
-{
-  bool needSend=false;
-  long curMs=millis();
-  if(curMs<ms)
-  {
-    ms=curMs;
-    needSend=true;
-  }
-  if(curMs<ms+heartBeat)
-  {
-    needSend=true;
-  } 
-  server.send(200, "text/plain", webString);
-  delay(100);
-  if(needSend)
-  {     
-    ms=millis();
-    sendSensorsInfo();
-  }
-}
 void loop(void)
 {  
+  if(_isTimer(heartbeat, 30000)) 
+  {
+   heartbeat = millis(); 
+   sendSensorsInfo();
+  }
+  
   CheckSensors();
-  CheckHearBeat();
   
   for(int i=0;i<ReleCount;i++)
   {
@@ -189,3 +188,16 @@ void loop(void)
   
   server.handleClient();
 } 
+bool _isTimer(unsigned long startTime, unsigned long period )
+{
+    unsigned long currentTime;
+    currentTime = millis();
+    if (currentTime>= startTime) 
+    {
+       return (currentTime>=(startTime + period));
+    }
+    else 
+    {
+       return (currentTime >=(4294967295-startTime+period));
+    }
+}

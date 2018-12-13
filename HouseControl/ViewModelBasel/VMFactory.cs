@@ -79,7 +79,8 @@ namespace ViewModelBase
         {
             if (!_poolDbVm.ContainsKey(type))
             {
-                return AddEntityFromDB(type, id).First();
+                TryRegisterType(type);
+                //return AddEntityFromDB(type, id).First();
             }
 
             IEntityObjectVM res = null;
