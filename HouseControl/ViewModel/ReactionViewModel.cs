@@ -95,7 +95,7 @@ namespace ViewModel
 
         public override string Value
         {
-            get { return string.Empty; }
+            get { return IsActive ? string.Empty : "Disabled"; }
             set { }
         }
 
@@ -104,11 +104,26 @@ namespace ViewModel
             get => VMState.Default;
         }
 
+        public bool IsActive
+        {
+            get { return Model.IsActive; }
+            set
+            {
+                Model.IsActive = value; 
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(LastUpdateMs));
+                OnPropertyChanged(nameof(Value));
+                Use<IReactionService>().Check(this);
+            }
+        }
+
         public void Link(Scenario model)
         {
             Model.Scenario = model;
         }
 
+        public override int LastUpdateMs { get { return IsActive ? base.LastUpdateMs : -1; } }
+        
         public void Check()
         {
             var conditions = Use<IPool>()

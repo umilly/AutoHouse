@@ -254,6 +254,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" DefaultValue="" />
     <Property Name="ScenarioId" Type="int" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" DefaultValue="true" />
   </EntityType>
   <EntityType Name="Conditions">
     <Key>
@@ -1127,6 +1128,7 @@
           <Property Name="ScenarioId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Commands" Relationship="ApplicationModel.ReactionCommand" FromRole="Reaction" ToRole="Command" />
           <NavigationProperty Name="ParametrSetCommands" Relationship="ApplicationModel.ParametrSetCommandReaction" FromRole="Reaction" ToRole="ParametrSetCommand" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" DefaultValue="True" />
         </EntityType>
         <EntityType Name="Condition">
           <Key>
@@ -1525,6 +1527,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="ScenarioId" ColumnName="ScenarioId" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

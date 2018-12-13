@@ -35,6 +35,10 @@
             <Label Grid.Row="1" Grid.Column="1" Content="Настройки реакции:" HorizontalAlignment="Left" VerticalAlignment="Stretch" Grid.ColumnSpan="3"/>
             <Label Grid.Row="3" Grid.Column="1" Content="Имя реакции" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Mode=TwoWay, Path=ViewModel.Name }" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
+            <Label Grid.Row="5" Grid.Column="1" Content="Включена:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <CheckBox Grid.Row="5" Grid.Column="3" IsChecked="{Binding Mode=TwoWay, Path=ViewModel.IsActive }" HorizontalAlignment="Stretch" VerticalAlignment="Center"></CheckBox>
+
+
         </Grid>
     </Border>
 </vmBase:CustomViewBase>

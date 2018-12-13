@@ -54,7 +54,7 @@ namespace ViewModel
             var mode = Use<IPool>().GetViewModels<ModeViewModel>().SingleOrDefault(a => a.IsSelected);
             if (mode!=null)
             {
-                reacts = reacts.Where(a => a.Scenario.Parent.ID == mode.ID);
+                reacts = reacts.Where(a =>a.IsActive&&a.Scenario.Parent.ID == mode.ID);
                 reacts.ForEach(a => a.Check());
             }
         }
@@ -102,7 +102,7 @@ namespace ViewModel
             }
             var mode = Use<IPool>().GetViewModels<ModeViewModel>().SingleOrDefault(a => a.IsSelected);
 
-            reacts.Where(a=>a.Scenario.Parent==mode).Distinct().ForEach(a => a.Check());
+            reacts.Where(a=>a.IsActive && a.Scenario.Parent==mode).Distinct().ForEach(a => a.Check());
         }
     }
 }

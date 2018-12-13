@@ -82,7 +82,15 @@ namespace Model
                 RegiterUpdate(Guid.Parse("5E2E511F-36A7-4394-A02F-ECE1869DCA74"), CreateParamButtonDescription);
                 RegiterUpdate(Guid.Parse("F439FC8D-C225-4A0A-8910-CA588A3C48F1"), CreateCustomSensors);
                 RegiterUpdate(Guid.Parse("DE4F8F87-CD5C-4115-92A0-19E10AAA9AFF"), CustomSensorInnerName);
+                RegiterUpdate(Guid.Parse("0788A4B6-7E6C-4C41-BE04-15913AF16644"), IsActiveForReactions);
             }
+
+          
+
+            public string IsActiveForReactions = @"
+ALTER TABLE [dbo].[Reactions]
+ADD [IsActive] bit  NOT NULL DEFAULT(1);
+";
 
             public const string CustomSensorInnerName = @"
 ALTER TABLE [dbo].[Devices_CustomSensor]
