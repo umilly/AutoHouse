@@ -119,6 +119,7 @@ namespace WpfApplication
             Application.Current.Shutdown();
             _container.Use<ITimerSerivce>().Dispose();
             _container.Use < IUpdateTimer>().Dispose();
+            _container.UnRegisterAll();
         }
 
         private void ShowCategoryList(object sender, RoutedEventArgs e)

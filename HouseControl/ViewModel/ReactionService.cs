@@ -13,10 +13,12 @@ namespace ViewModel
     public class ReactionService : ServiceBase, IReactionService
     {
         private readonly Queue<IViewModel> _checkQueue =new Queue<IViewModel>();
+        private Thread _thread;
         public ReactionService() : base()
         {
             var timerThread = new Thread(CheckTasks);
             timerThread.Start();
+            _thread = timerThread;
         }
 
         private void CheckTasks()
@@ -46,6 +48,12 @@ namespace ViewModel
                     Use<ILog>().LogNetException(e,"reaction check error");
                 }
             }
+        }
+
+        protected override void OnDispose()
+        {
+            _thread?.Abort();
+            base.OnDispose();
         }
 
         public void Check()
