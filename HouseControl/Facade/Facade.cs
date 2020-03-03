@@ -54,7 +54,7 @@ namespace Facade
         void SetContainer(IServiceContainer container);
     }
 
-    public interface IServiceContainer
+    public interface IServiceContainer:IDisposable
     {
         void RegisterType<TInterface, TImplementation>();
 
