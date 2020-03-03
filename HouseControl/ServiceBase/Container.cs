@@ -177,6 +177,21 @@ public class Container : IServiceContainer
 
 
     }
+
+    public void Dispose()
+    {
+        lock (this)
+        {
+            _registredTypes.Clear();
+            foreach (var registredInstance in _registredInstances.Keys.ToList())
+            {
+                if (_registredInstances[registredInstance] == this)
+                    continue;
+                InternalUnregister(registredInstance);
+                _registredInstances.Remove(registredInstance);
+            }
+        }
+    }
 }
 
 internal class InjectAttribute : Attribute
