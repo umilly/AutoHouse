@@ -15,8 +15,8 @@ namespace Model
     
     public partial class Models : DbContext
     {
-        public Models(string s)
-            : base(s)
+        public Models()
+            : base("name=Models")
         {
         }
     
@@ -44,5 +44,9 @@ namespace Model
         public virtual DbSet<DeviceParameterTypeLink> DeviceParameterTypeLinks { get; set; }
         public virtual DbSet<ParameterCategory> ParameterCategories { get; set; }
         public virtual DbSet<ParametrSetCommand> ParametrSetCommands { get; set; }
+        public virtual DbSet<Template> Templates { get; set; }
+        public virtual DbSet<TemplateSensor> TemplateSensors { get; set; }
+        public virtual DbSet<TemplateParameter> TemplateParameters { get; set; }
+        public virtual DbSet<TemplatedDevicePair> TemplatedDevicePairs { get; set; }
     }
 }

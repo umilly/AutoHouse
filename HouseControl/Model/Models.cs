@@ -11,7 +11,7 @@ namespace Model
     
     public partial class Models:IInitable
     {
-        public Models() : base(BuildEntityConnectionStringFromAppSettings())
+        public Models(int arg) : base(BuildEntityConnectionStringFromAppSettings())
         {
             var migration = new MigrationService(this);
             migration.Migrate();
@@ -85,7 +85,11 @@ namespace Model
                 RegiterUpdate(Guid.Parse("0788A4B6-7E6C-4C41-BE04-15913AF16644"), IsActiveForReactions);
                 RegiterUpdate(Guid.Parse("FB075722-67F9-492C-AA35-259E3AEF34F0"),ConditionControllerAssociation);
                 RegiterUpdate(Guid.Parse("BE05A3FA-E483-44E4-8D58-A985978B4ACF"), CreateControllerActivityTime);
-                    
+                RegiterUpdate(Guid.Parse("DCDF2154-9636-4483-B534-4EA154290128"), AddTemplate);
+
+
+
+
             }
 
             public const string CreateControllerActivityTime= @"
@@ -375,6 +379,192 @@ ON [dbo].[ParametrSetCommands]
 
 ";
 
+
+            public const string AddTemplate = @"
+
+-- Creating table 'Templates'
+CREATE TABLE [dbo].[Templates] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [TemplateType] int  NOT NULL,
+    [TemplateMode] int  NOT NULL,
+    [IsActive] bit  NOT NULL,
+    [Scenario_Id] int  NOT NULL
+);
+
+
+-- Creating table 'TemplateSensors'
+CREATE TABLE [dbo].[TemplateSensors] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Order] int  NOT NULL,
+    [Sensor_Id] int  NOT NULL,
+    [Template_Id] int  NOT NULL
+);
+
+
+-- Creating table 'TemplateParameters'
+CREATE TABLE [dbo].[TemplateParameters] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Order] int  NOT NULL,
+    [Parameter_Id] int  NOT NULL,
+    [Template_Id] int  NOT NULL
+);
+
+
+-- Creating table 'TemplatedDevicePairs'
+CREATE TABLE [dbo].[TemplatedDevicePairs] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Order] int  NOT NULL,
+    [Device_Id] int  NOT NULL,
+    [Sensor_Id] int  NOT NULL,
+    [Template_Id] int  NOT NULL
+);
+
+-- Creating primary key on [Id] in table 'Templates'
+ALTER TABLE [dbo].[Templates]
+ADD CONSTRAINT [PK_Templates]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+
+
+-- Creating primary key on [Id] in table 'TemplateSensors'
+ALTER TABLE [dbo].[TemplateSensors]
+ADD CONSTRAINT [PK_TemplateSensors]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+
+
+-- Creating primary key on [Id] in table 'TemplateParameters'
+ALTER TABLE [dbo].[TemplateParameters]
+ADD CONSTRAINT [PK_TemplateParameters]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+
+
+-- Creating primary key on [Id] in table 'TemplatedDevicePairs'
+ALTER TABLE [dbo].[TemplatedDevicePairs]
+ADD CONSTRAINT [PK_TemplatedDevicePairs]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+
+
+-- Creating foreign key on [Sensor_Id] in table 'TemplateSensors'
+ALTER TABLE [dbo].[TemplateSensors]
+ADD CONSTRAINT [FK_TemplateSensorSensor]
+    FOREIGN KEY ([Sensor_Id])
+    REFERENCES [dbo].[Devices_Sensor]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplateSensorSensor'
+CREATE INDEX [IX_FK_TemplateSensorSensor]
+ON [dbo].[TemplateSensors]
+    ([Sensor_Id]);
+
+
+-- Creating foreign key on [Parameter_Id] in table 'TemplateParameters'
+ALTER TABLE [dbo].[TemplateParameters]
+ADD CONSTRAINT [FK_TemplateParameterParameter]
+    FOREIGN KEY ([Parameter_Id])
+    REFERENCES [dbo].[Parameter]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplateParameterParameter'
+CREATE INDEX [IX_FK_TemplateParameterParameter]
+ON [dbo].[TemplateParameters]
+    ([Parameter_Id]);
+
+
+-- Creating foreign key on [Device_Id] in table 'TemplatedDevicePairs'
+ALTER TABLE [dbo].[TemplatedDevicePairs]
+ADD CONSTRAINT [FK_TemplatedDevicePairDevice]
+    FOREIGN KEY ([Device_Id])
+    REFERENCES [dbo].[Devices]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplatedDevicePairDevice'
+CREATE INDEX [IX_FK_TemplatedDevicePairDevice]
+ON [dbo].[TemplatedDevicePairs]
+    ([Device_Id]);
+
+
+-- Creating foreign key on [Sensor_Id] in table 'TemplatedDevicePairs'
+ALTER TABLE [dbo].[TemplatedDevicePairs]
+ADD CONSTRAINT [FK_SensorTemplatedDevicePair]
+    FOREIGN KEY ([Sensor_Id])
+    REFERENCES [dbo].[Devices_Sensor]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SensorTemplatedDevicePair'
+CREATE INDEX [IX_FK_SensorTemplatedDevicePair]
+ON [dbo].[TemplatedDevicePairs]
+    ([Sensor_Id]);
+
+
+-- Creating foreign key on [Scenario_Id] in table 'Templates'
+ALTER TABLE [dbo].[Templates]
+ADD CONSTRAINT [FK_TemplateScenario]
+    FOREIGN KEY ([Scenario_Id])
+    REFERENCES [dbo].[Scenarios]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplateScenario'
+CREATE INDEX [IX_FK_TemplateScenario]
+ON [dbo].[Templates]
+    ([Scenario_Id]);
+
+
+-- Creating foreign key on [Template_Id] in table 'TemplateParameters'
+ALTER TABLE [dbo].[TemplateParameters]
+ADD CONSTRAINT [FK_TemplateParameterTemplate]
+    FOREIGN KEY ([Template_Id])
+    REFERENCES [dbo].[Templates]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplateParameterTemplate'
+CREATE INDEX [IX_FK_TemplateParameterTemplate]
+ON [dbo].[TemplateParameters]
+    ([Template_Id]);
+
+
+-- Creating foreign key on [Template_Id] in table 'TemplateSensors'
+ALTER TABLE [dbo].[TemplateSensors]
+ADD CONSTRAINT [FK_TemplateSensorTemplate]
+    FOREIGN KEY ([Template_Id])
+    REFERENCES [dbo].[Templates]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplateSensorTemplate'
+CREATE INDEX [IX_FK_TemplateSensorTemplate]
+ON [dbo].[TemplateSensors]
+    ([Template_Id]);
+
+
+-- Creating foreign key on [Template_Id] in table 'TemplatedDevicePairs'
+ALTER TABLE [dbo].[TemplatedDevicePairs]
+ADD CONSTRAINT [FK_TemplatedDevicePairTemplate]
+    FOREIGN KEY ([Template_Id])
+    REFERENCES [dbo].[Templates]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplatedDevicePairTemplate'
+CREATE INDEX [IX_FK_TemplatedDevicePairTemplate]
+ON [dbo].[TemplatedDevicePairs]
+    ([Template_Id]);
+
+";
+           
             private void FillParameters()
             {
                 _context.ParameterTypes.Add(new ParameterType() { Id = (int)ParameterTypeValue.Time, Name = "Время" });

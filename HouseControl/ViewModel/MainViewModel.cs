@@ -59,8 +59,10 @@ namespace ViewModel
             Use<IPool>().PrepareModels<ParameterSetCommandVm, ParametrSetCommand>(commandParams);
             var sensorTypes = await Context.QueryModels<SensorType>(pt => true);
             Use<IPool>().PrepareModels<SensorTypeViewModel, SensorType>(sensorTypes);
+            var templates= await Context.QueryModels<Template>(pt => true);
+            Use<IPool>().PrepareModels<TemplateViewModel, Template>(templates);
 
-            
+
             Use<IWebServer>().Start();
             Use<IReactionService>().Check();
 

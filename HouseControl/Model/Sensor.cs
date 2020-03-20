@@ -20,6 +20,8 @@ namespace Model
             this.ContollerSlot = 0;
             this.Conditions = new HashSet<Condition>();
             this.Parameters = new HashSet<Parameter>();
+            this.TemplateSensors = new HashSet<TemplateSensor>();
+            this.TemplatedDevicePairs1 = new HashSet<TemplatedDevicePair>();
         }
     
         public int ContollerSlot { get; set; }
@@ -32,5 +34,9 @@ namespace Model
         public virtual Zone Zone { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Parameter> Parameters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TemplateSensor> TemplateSensors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TemplatedDevicePair> TemplatedDevicePairs1 { get; set; }
     }
 }

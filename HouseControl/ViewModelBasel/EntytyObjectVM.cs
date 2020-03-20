@@ -15,7 +15,7 @@ namespace ViewModelBase
 
         public bool IsFake => Model == null;
         
-        protected T Model { get; private set; }
+        public T Model { get; private set; }
 
         protected EntityObjectVm(IServiceContainer container,T model) : base(container)
         {

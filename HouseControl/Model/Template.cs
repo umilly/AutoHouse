@@ -12,28 +12,28 @@ namespace Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Scenario
+    public partial class Template
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Scenario()
+        public Template()
         {
-            this.Name = "";
-            this.Description = "";
-            this.Reactions = new HashSet<Reaction>();
-            this.Zones = new HashSet<Zone>();
-            this.Templates = new HashSet<Template>();
+            this.TemplateParameters = new HashSet<TemplateParameter>();
+            this.TemplateSensors = new HashSet<TemplateSensor>();
+            this.TemplatedDevicePairs = new HashSet<TemplatedDevicePair>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
+        public int TemplateType { get; set; }
+        public int TemplateMode { get; set; }
+        public bool IsActive { get; set; }
     
-        public virtual Mode Mode { get; set; }
+        public virtual Scenario Scenario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reaction> Reactions { get; set; }
+        public virtual ICollection<TemplateParameter> TemplateParameters { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Zone> Zones { get; set; }
+        public virtual ICollection<TemplateSensor> TemplateSensors { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Template> Templates { get; set; }
+        public virtual ICollection<TemplatedDevicePair> TemplatedDevicePairs { get; set; }
     }
 }

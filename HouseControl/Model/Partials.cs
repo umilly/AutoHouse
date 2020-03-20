@@ -22,7 +22,27 @@ namespace Model
             get { return this.Id; }
         }
     }
-
+    public partial class TemplateSensor : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
+    public partial class TemplateParameter : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
+    public partial class TemplatedDevicePair : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
     public partial class DeviceParameterTypeLink : IHaveID
     {
         public int ID
@@ -50,6 +70,13 @@ namespace Model
         }
     }
     public partial class Zone : IHaveID
+    {
+        public int ID
+        {
+            get { return this.Id; }
+        }
+    }
+    public partial class Template : IHaveID
     {
         public int ID
         {

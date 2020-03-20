@@ -15,6 +15,15 @@ namespace ViewModel
             : base(container, model)
         {
             _contextMenu.Add(new CustomContextMenuItem("Добавить реакцию", new CommandHandler(AddReaction)));
+            _contextMenu.Add(new CustomContextMenuItem("Добавить шаблон", new CommandHandler(AddTemplate)));
+        }
+
+        private void AddTemplate(bool obj)
+        {
+            var newReaction = Use<IPool>().CreateDBObject<TemplateViewModel>();
+            newReaction.Name = "Шаблон управления климатом";
+            newReaction.Link(Model);
+            OnPropertyChanged(() => Children);
         }
 
         public override void LinklToParent(ITreeNode newParent)
@@ -29,7 +38,8 @@ namespace ViewModel
             => Model.Mode == null ? null : Use<IPool>().GetOrCreateDBVM<ModeViewModel>(Model.Mode);
 
         public override IEnumerable<ITreeNode> Children
-            => Use<IPool>().GetViewModels<ReactionViewModel>().Where(a => a.Scenario == this);
+            => Use<IPool>().GetViewModels<ReactionViewModel>().Where(a => a.Scenario == this).Cast<ITreeNode>()
+                .Union(Use<IPool>().GetViewModels<TemplateViewModel>().Where(a => a.Scenario == this));
 
         public override string Value
         {
@@ -127,6 +137,13 @@ namespace ViewModel
 
         public void LinkChildReaction(Reaction model)
         {
+            model.Scenario = Model;
+            OnPropertyChanged(()=>Children);
+        }
+
+        public void LinkTemplate(Template model)
+        {
+            Model.Templates.Add(model);
             model.Scenario = Model;
             OnPropertyChanged(()=>Children);
         }

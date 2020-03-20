@@ -156,6 +156,18 @@
     <Compile Include="SensorType.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Template.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TemplatedDevicePair.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateParameter.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateSensor.cs">
+      <DependentUpon>ApplicationDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>ApplicationDB.tt</DependentUpon>
     </Compile>

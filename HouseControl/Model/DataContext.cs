@@ -5,6 +5,7 @@ using System.Data.Entity.Core;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -371,7 +372,7 @@ namespace Model
 
         private void InitDb()
         {
-            _db = Activator.CreateInstance<TDb>();
+            _db =(TDb) Activator.CreateInstance(typeof(TDb),1);
             _db.Configuration.LazyLoadingEnabled = true;
             _db.Configuration.ProxyCreationEnabled = true;
             _db.Configuration.AutoDetectChangesEnabled = false;

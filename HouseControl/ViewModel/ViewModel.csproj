@@ -99,6 +99,7 @@
     <Compile Include="SensorViewModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SystemViewModel.cs" />
+    <Compile Include="TemplateViewModel.cs" />
     <Compile Include="TimerService.cs" />
     <Compile Include="ParametersListViewModel.cs" />
     <Compile Include="TimerTask.cs" />

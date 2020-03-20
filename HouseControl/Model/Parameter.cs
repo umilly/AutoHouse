@@ -19,6 +19,7 @@ namespace Model
         {
             this.Name = "";
             this.ComandParameterLinks = new HashSet<ComandParameterLink>();
+            this.TemplateParameters = new HashSet<TemplateParameter>();
         }
     
         public int Id { get; set; }
@@ -37,5 +38,7 @@ namespace Model
         public virtual ParameterCategory ParameterCategory { get; set; }
         public virtual Sensor Sensor { get; set; }
         public virtual Parameter NextParameter { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TemplateParameter> TemplateParameters { get; set; }
     }
 }

@@ -120,6 +120,7 @@ namespace ViewModel
             {
                 source.Delete();
             }
+            Model.DeviceParameterTypeLinks.Clear();
             OnPropertyChanged(() => ParameterTypes);
         }
 

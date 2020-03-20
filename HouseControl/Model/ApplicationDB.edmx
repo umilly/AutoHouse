@@ -25,6 +25,10 @@
     <EntitySet Name="DeviceParameterTypeLinks" EntityType="ApplicationModel.Store.DeviceParameterTypeLinks" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ParameterCategories" EntityType="ApplicationModel.Store.ParameterCategories" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ParametrSetCommands" EntityType="ApplicationModel.Store.ParametrSetCommands" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Templates" EntityType="ApplicationModel.Store.Templates" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TemplateSensors" EntityType="ApplicationModel.Store.TemplateSensors" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TemplateParameters" EntityType="ApplicationModel.Store.TemplateParameters" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TemplatedDevicePairs" EntityType="ApplicationModel.Store.TemplatedDevicePairs" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_Sensor" EntityType="ApplicationModel.Store.Devices_Sensor" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_Controller" EntityType="ApplicationModel.Store.Devices_Controller" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Devices_CustomDevice" EntityType="ApplicationModel.Store.Devices_CustomDevice" store:Type="Tables" Schema="dbo" />
@@ -159,6 +163,38 @@
     <AssociationSet Name="ControllerCondition" Association="ApplicationModel.Store.ControllerCondition">
       <End Role="Controller" EntitySet="Devices_Controller" />
       <End Role="Condition" EntitySet="Conditions" />
+    </AssociationSet>
+    <AssociationSet Name="TemplateSensorSensor" Association="ApplicationModel.Store.TemplateSensorSensor">
+      <End Role="TemplateSensor" EntitySet="TemplateSensors" />
+      <End Role="Sensor" EntitySet="Devices_Sensor" />
+    </AssociationSet>
+    <AssociationSet Name="TemplateParameterParameter" Association="ApplicationModel.Store.TemplateParameterParameter">
+      <End Role="TemplateParameter" EntitySet="TemplateParameters" />
+      <End Role="Parameter" EntitySet="Parameter" />
+    </AssociationSet>
+    <AssociationSet Name="TemplatedDevicePairDevice" Association="ApplicationModel.Store.TemplatedDevicePairDevice">
+      <End Role="TemplatedDevicePair" EntitySet="TemplatedDevicePairs" />
+      <End Role="Device" EntitySet="Devices" />
+    </AssociationSet>
+    <AssociationSet Name="SensorTemplatedDevicePair" Association="ApplicationModel.Store.SensorTemplatedDevicePair">
+      <End Role="TemplatedDevicePair" EntitySet="TemplatedDevicePairs" />
+      <End Role="Sensor" EntitySet="Devices_Sensor" />
+    </AssociationSet>
+    <AssociationSet Name="TemplateScenario" Association="ApplicationModel.Store.TemplateScenario">
+      <End Role="Template" EntitySet="Templates" />
+      <End Role="Scenario" EntitySet="Scenarios" />
+    </AssociationSet>
+    <AssociationSet Name="TemplateParameterTemplate" Association="ApplicationModel.Store.TemplateParameterTemplate">
+      <End Role="TemplateParameter" EntitySet="TemplateParameters" />
+      <End Role="Template" EntitySet="Templates" />
+    </AssociationSet>
+    <AssociationSet Name="TemplateSensorTemplate" Association="ApplicationModel.Store.TemplateSensorTemplate">
+      <End Role="TemplateSensor" EntitySet="TemplateSensors" />
+      <End Role="Template" EntitySet="Templates" />
+    </AssociationSet>
+    <AssociationSet Name="TemplatedDevicePairTemplate" Association="ApplicationModel.Store.TemplatedDevicePairTemplate">
+      <End Role="TemplatedDevicePair" EntitySet="TemplatedDevicePairs" />
+      <End Role="Template" EntitySet="Templates" />
     </AssociationSet>
     <AssociationSet Name="FK_Sensor_inherits_Device" Association="ApplicationModel.Store.FK_Sensor_inherits_Device">
       <End Role="Device" EntitySet="Devices" />
@@ -360,6 +396,45 @@
     <Property Name="Sensor_Id" Type="int" Nullable="true" />
     <Property Name="SrcParameter2_Id" Type="int" Nullable="true" />
     <Property Name="Reaction_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Templates">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="TemplateType" Type="int" Nullable="false" />
+    <Property Name="TemplateMode" Type="int" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="Scenario_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TemplateSensors">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Order" Type="int" Nullable="false" />
+    <Property Name="Sensor_Id" Type="int" Nullable="false" />
+    <Property Name="Template_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TemplateParameters">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Order" Type="int" Nullable="false" />
+    <Property Name="Parameter_Id" Type="int" Nullable="false" />
+    <Property Name="Template_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TemplatedDevicePairs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Order" Type="int" Nullable="false" />
+    <Property Name="Device_Id" Type="int" Nullable="false" />
+    <Property Name="Sensor_Id" Type="int" Nullable="false" />
+    <Property Name="Template_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Devices_Sensor">
     <Key>
@@ -781,6 +856,102 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="TemplateSensorSensor">
+    <End Role="TemplateSensor" Type="ApplicationModel.Store.TemplateSensors" Multiplicity="*" />
+    <End Role="Sensor" Type="ApplicationModel.Store.Devices_Sensor" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Sensor">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TemplateSensor">
+        <PropertyRef Name="Sensor_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TemplateParameterParameter">
+    <End Role="TemplateParameter" Type="ApplicationModel.Store.TemplateParameters" Multiplicity="*" />
+    <End Role="Parameter" Type="ApplicationModel.Store.Parameter" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Parameter">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TemplateParameter">
+        <PropertyRef Name="Parameter_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TemplatedDevicePairDevice">
+    <End Role="TemplatedDevicePair" Type="ApplicationModel.Store.TemplatedDevicePairs" Multiplicity="*" />
+    <End Role="Device" Type="ApplicationModel.Store.Devices" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Device">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TemplatedDevicePair">
+        <PropertyRef Name="Device_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SensorTemplatedDevicePair">
+    <End Role="TemplatedDevicePair" Type="ApplicationModel.Store.TemplatedDevicePairs" Multiplicity="*" />
+    <End Role="Sensor" Type="ApplicationModel.Store.Devices_Sensor" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Sensor">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TemplatedDevicePair">
+        <PropertyRef Name="Sensor_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TemplateScenario">
+    <End Role="Template" Type="ApplicationModel.Store.Templates" Multiplicity="*" />
+    <End Role="Scenario" Type="ApplicationModel.Store.Scenarios" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Scenario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Template">
+        <PropertyRef Name="Scenario_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TemplateParameterTemplate">
+    <End Role="TemplateParameter" Type="ApplicationModel.Store.TemplateParameters" Multiplicity="*" />
+    <End Role="Template" Type="ApplicationModel.Store.Templates" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Template">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TemplateParameter">
+        <PropertyRef Name="Template_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TemplateSensorTemplate">
+    <End Role="TemplateSensor" Type="ApplicationModel.Store.TemplateSensors" Multiplicity="*" />
+    <End Role="Template" Type="ApplicationModel.Store.Templates" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Template">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TemplateSensor">
+        <PropertyRef Name="Template_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TemplatedDevicePairTemplate">
+    <End Role="TemplatedDevicePair" Type="ApplicationModel.Store.TemplatedDevicePairs" Multiplicity="*" />
+    <End Role="Template" Type="ApplicationModel.Store.Templates" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Template">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TemplatedDevicePair">
+        <PropertyRef Name="Template_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_ZoneScenario_Zone">
     <End Role="Zone" Type="ApplicationModel.Store.Zones" Multiplicity="1" />
     <End Role="ZoneScenario" Type="ApplicationModel.Store.ZoneScenario" Multiplicity="*" />
@@ -1074,6 +1245,42 @@
             <End Role="Controller" EntitySet="Devices" />
             <End Role="Condition" EntitySet="Conditions" />
           </AssociationSet>
+          <EntitySet Name="Templates" EntityType="ApplicationModel.Template" />
+          <EntitySet Name="TemplateSensors" EntityType="ApplicationModel.TemplateSensor" />
+          <AssociationSet Name="TemplateSensorSensor" Association="ApplicationModel.TemplateSensorSensor">
+            <End Role="TemplateSensor" EntitySet="TemplateSensors" />
+            <End Role="Sensor" EntitySet="Devices" />
+          </AssociationSet>
+          <EntitySet Name="TemplateParameters" EntityType="ApplicationModel.TemplateParameter" />
+          <AssociationSet Name="TemplateParameterParameter" Association="ApplicationModel.TemplateParameterParameter">
+            <End Role="TemplateParameter" EntitySet="TemplateParameters" />
+            <End Role="Parameter" EntitySet="Parameter" />
+          </AssociationSet>
+          <EntitySet Name="TemplatedDevicePairs" EntityType="ApplicationModel.TemplatedDevicePair" />
+          <AssociationSet Name="TemplatedDevicePairDevice" Association="ApplicationModel.TemplatedDevicePairDevice">
+            <End Role="TemplatedDevicePair" EntitySet="TemplatedDevicePairs" />
+            <End Role="Device" EntitySet="Devices" />
+          </AssociationSet>
+          <AssociationSet Name="SensorTemplatedDevicePair" Association="ApplicationModel.SensorTemplatedDevicePair">
+            <End Role="TemplatedDevicePair" EntitySet="TemplatedDevicePairs" />
+            <End Role="Sensor" EntitySet="Devices" />
+          </AssociationSet>
+          <AssociationSet Name="TemplateScenario" Association="ApplicationModel.TemplateScenario">
+            <End Role="Template" EntitySet="Templates" />
+            <End Role="Scenario" EntitySet="Scenarios" />
+          </AssociationSet>
+          <AssociationSet Name="TemplateParameterTemplate" Association="ApplicationModel.TemplateParameterTemplate">
+            <End Role="TemplateParameter" EntitySet="TemplateParameters" />
+            <End Role="Template" EntitySet="Templates" />
+          </AssociationSet>
+          <AssociationSet Name="TemplateSensorTemplate" Association="ApplicationModel.TemplateSensorTemplate">
+            <End Role="TemplateSensor" EntitySet="TemplateSensors" />
+            <End Role="Template" EntitySet="Templates" />
+          </AssociationSet>
+          <AssociationSet Name="TemplatedDevicePairTemplate" Association="ApplicationModel.TemplatedDevicePairTemplate">
+            <End Role="TemplatedDevicePair" EntitySet="TemplatedDevicePairs" />
+            <End Role="Template" EntitySet="Templates" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Controller" BaseType="ApplicationModel.Device">
           <Property Name="IP" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -1091,6 +1298,8 @@
           <NavigationProperty Name="Conditions" Relationship="ApplicationModel.ConditionSensor" FromRole="Sensor" ToRole="Condition" />
           <NavigationProperty Name="Zone" Relationship="ApplicationModel.SensorZone" FromRole="Sensor" ToRole="Zone" />
           <NavigationProperty Name="Parameters" Relationship="ApplicationModel.SensorParameter" FromRole="Sensor" ToRole="Parameter" />
+          <NavigationProperty Name="TemplateSensors" Relationship="ApplicationModel.TemplateSensorSensor" FromRole="Sensor" ToRole="TemplateSensor" />
+          <NavigationProperty Name="TemplatedDevicePairs1" Relationship="ApplicationModel.SensorTemplatedDevicePair" FromRole="Sensor" ToRole="TemplatedDevicePair" />
         </EntityType>
         <EntityType Name="SensorType">
           <Key>
@@ -1130,6 +1339,7 @@
           <NavigationProperty Name="Mode" Relationship="ApplicationModel.ScenarioMode" FromRole="Scenario" ToRole="Mode" />
           <NavigationProperty Name="Reactions" Relationship="ApplicationModel.ScenarioReaction" FromRole="Scenario" ToRole="Reaction" />
           <NavigationProperty Name="Zones" Relationship="ApplicationModel.ZoneScenario" FromRole="Scenario" ToRole="Zone" />
+          <NavigationProperty Name="Templates" Relationship="ApplicationModel.TemplateScenario" FromRole="Scenario" ToRole="Template" />
         </EntityType>
         <EntityType Name="Zone">
           <Key>
@@ -1223,6 +1433,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" DefaultValue="" />
+          <NavigationProperty Name="TemplatedDevicePairs" Relationship="ApplicationModel.TemplatedDevicePairDevice" FromRole="Device" ToRole="TemplatedDevicePair" />
         </EntityType>
         <EntityType Name="Parameter">
           <Key>
@@ -1242,6 +1453,7 @@
           <Property Name="NextParameterId" Type="Int32" Nullable="true" />
           <Property Name="Description" Type="String" Nullable="true" />
           <Property Name="ButtonDescription" Type="String" Nullable="true" />
+          <NavigationProperty Name="TemplateParameters" Relationship="ApplicationModel.TemplateParameterParameter" FromRole="Parameter" ToRole="TemplateParameter" />
         </EntityType>
         <EntityType Name="ParameterType">
           <Key>
@@ -1480,6 +1692,80 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Template">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="TemplateType" Nullable="false" Type="Int32" />
+          <Property Name="TemplateMode" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Scenario" Relationship="ApplicationModel.TemplateScenario" FromRole="Template" ToRole="Scenario" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TemplateParameters" Relationship="ApplicationModel.TemplateParameterTemplate" FromRole="Template" ToRole="TemplateParameter" />
+          <NavigationProperty Name="TemplateSensors" Relationship="ApplicationModel.TemplateSensorTemplate" FromRole="Template" ToRole="TemplateSensor" />
+          <NavigationProperty Name="TemplatedDevicePairs" Relationship="ApplicationModel.TemplatedDevicePairTemplate" FromRole="Template" ToRole="TemplatedDevicePair" />
+        </EntityType>
+        <EntityType Name="TemplateSensor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Sensor" Relationship="ApplicationModel.TemplateSensorSensor" FromRole="TemplateSensor" ToRole="Sensor" />
+          <NavigationProperty Name="Template" Relationship="ApplicationModel.TemplateSensorTemplate" FromRole="TemplateSensor" ToRole="Template" />
+        </EntityType>
+        <Association Name="TemplateSensorSensor">
+          <End Type="ApplicationModel.TemplateSensor" Role="TemplateSensor" Multiplicity="*" />
+          <End Type="ApplicationModel.Sensor" Role="Sensor" Multiplicity="1" />
+        </Association>
+        <EntityType Name="TemplateParameter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Parameter" Relationship="ApplicationModel.TemplateParameterParameter" FromRole="TemplateParameter" ToRole="Parameter" />
+          <NavigationProperty Name="Template" Relationship="ApplicationModel.TemplateParameterTemplate" FromRole="TemplateParameter" ToRole="Template" />
+        </EntityType>
+        <Association Name="TemplateParameterParameter">
+          <End Type="ApplicationModel.TemplateParameter" Role="TemplateParameter" Multiplicity="*" />
+          <End Type="ApplicationModel.Parameter" Role="Parameter" Multiplicity="1" />
+        </Association>
+        <EntityType Name="TemplatedDevicePair">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Device" Relationship="ApplicationModel.TemplatedDevicePairDevice" FromRole="TemplatedDevicePair" ToRole="Device" />
+          <NavigationProperty Name="Sensor" Relationship="ApplicationModel.SensorTemplatedDevicePair" FromRole="TemplatedDevicePair" ToRole="Sensor" />
+          <NavigationProperty Name="Template" Relationship="ApplicationModel.TemplatedDevicePairTemplate" FromRole="TemplatedDevicePair" ToRole="Template" />
+        </EntityType>
+        <Association Name="TemplatedDevicePairDevice">
+          <End Type="ApplicationModel.TemplatedDevicePair" Role="TemplatedDevicePair" Multiplicity="*" />
+          <End Type="ApplicationModel.Device" Role="Device" Multiplicity="1" />
+        </Association>
+        <Association Name="SensorTemplatedDevicePair">
+          <End Type="ApplicationModel.TemplatedDevicePair" Role="TemplatedDevicePair" Multiplicity="*" />
+          <End Type="ApplicationModel.Sensor" Role="Sensor" Multiplicity="1" />
+        </Association>
+        <Association Name="TemplateScenario">
+          <End Type="ApplicationModel.Template" Role="Template" Multiplicity="*" />
+          <End Type="ApplicationModel.Scenario" Role="Scenario" Multiplicity="1" />
+        </Association>
+        <Association Name="TemplateParameterTemplate">
+          <End Type="ApplicationModel.TemplateParameter" Role="TemplateParameter" Multiplicity="*" />
+          <End Type="ApplicationModel.Template" Role="Template" Multiplicity="1" />
+        </Association>
+        <Association Name="TemplateSensorTemplate">
+          <End Type="ApplicationModel.TemplateSensor" Role="TemplateSensor" Multiplicity="*" />
+          <End Type="ApplicationModel.Template" Role="Template" Multiplicity="1" />
+        </Association>
+        <Association Name="TemplatedDevicePairTemplate">
+          <End Type="ApplicationModel.TemplatedDevicePair" Role="TemplatedDevicePair" Multiplicity="*" />
+          <End Type="ApplicationModel.Template" Role="Template" Multiplicity="1" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1707,6 +1993,41 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Templates">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.Template)">
+        <MappingFragment StoreEntitySet="Templates">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="TemplateType" ColumnName="TemplateType" />
+          <ScalarProperty Name="TemplateMode" ColumnName="TemplateMode" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TemplateSensors">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.TemplateSensor)">
+        <MappingFragment StoreEntitySet="TemplateSensors">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Order" ColumnName="Order" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TemplateParameters">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.TemplateParameter)">
+        <MappingFragment StoreEntitySet="TemplateParameters">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Order" ColumnName="Order" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TemplatedDevicePairs">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationModel.TemplatedDevicePair)">
+        <MappingFragment StoreEntitySet="TemplatedDevicePairs">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Order" ColumnName="Order" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="SensorController" TypeName="ApplicationModel.SensorController" StoreEntitySet="Devices_Sensor">
       <EndProperty Name="Controller">
         <ScalarProperty Name="Id" ColumnName="Controller_Id" />
@@ -1880,6 +2201,70 @@
         <ScalarProperty Name="Id" ColumnName="Reaction_Id" />
       </EndProperty>
       <EndProperty Name="ParametrSetCommand">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TemplateSensorSensor" TypeName="ApplicationModel.TemplateSensorSensor" StoreEntitySet="TemplateSensors">
+      <EndProperty Name="Sensor">
+        <ScalarProperty Name="Id" ColumnName="Sensor_Id" />
+      </EndProperty>
+      <EndProperty Name="TemplateSensor">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TemplateParameterParameter" TypeName="ApplicationModel.TemplateParameterParameter" StoreEntitySet="TemplateParameters">
+      <EndProperty Name="Parameter">
+        <ScalarProperty Name="Id" ColumnName="Parameter_Id" />
+      </EndProperty>
+      <EndProperty Name="TemplateParameter">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TemplatedDevicePairDevice" TypeName="ApplicationModel.TemplatedDevicePairDevice" StoreEntitySet="TemplatedDevicePairs">
+      <EndProperty Name="Device">
+        <ScalarProperty Name="Id" ColumnName="Device_Id" />
+      </EndProperty>
+      <EndProperty Name="TemplatedDevicePair">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SensorTemplatedDevicePair" TypeName="ApplicationModel.SensorTemplatedDevicePair" StoreEntitySet="TemplatedDevicePairs">
+      <EndProperty Name="Sensor">
+        <ScalarProperty Name="Id" ColumnName="Sensor_Id" />
+      </EndProperty>
+      <EndProperty Name="TemplatedDevicePair">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TemplateScenario" TypeName="ApplicationModel.TemplateScenario" StoreEntitySet="Templates">
+      <EndProperty Name="Scenario">
+        <ScalarProperty Name="Id" ColumnName="Scenario_Id" />
+      </EndProperty>
+      <EndProperty Name="Template">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TemplateParameterTemplate" TypeName="ApplicationModel.TemplateParameterTemplate" StoreEntitySet="TemplateParameters">
+      <EndProperty Name="Template">
+        <ScalarProperty Name="Id" ColumnName="Template_Id" />
+      </EndProperty>
+      <EndProperty Name="TemplateParameter">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TemplateSensorTemplate" TypeName="ApplicationModel.TemplateSensorTemplate" StoreEntitySet="TemplateSensors">
+      <EndProperty Name="Template">
+        <ScalarProperty Name="Id" ColumnName="Template_Id" />
+      </EndProperty>
+      <EndProperty Name="TemplateSensor">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TemplatedDevicePairTemplate" TypeName="ApplicationModel.TemplatedDevicePairTemplate" StoreEntitySet="TemplatedDevicePairs">
+      <EndProperty Name="Template">
+        <ScalarProperty Name="Id" ColumnName="Template_Id" />
+      </EndProperty>
+      <EndProperty Name="TemplatedDevicePair">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>

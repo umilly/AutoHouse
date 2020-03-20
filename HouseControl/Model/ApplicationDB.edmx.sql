@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 12/13/2018 17:12:05
--- Generated from EDMX file: F:\work\#repo\HouseControl\Model\ApplicationDB.edmx
+-- Date Created: 03/17/2020 14:12:20
+-- Generated from EDMX file: D:\work\repo\AutoHouse\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -113,6 +113,33 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ControllerCondition]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Conditions] DROP CONSTRAINT [FK_ControllerCondition];
 GO
+IF OBJECT_ID(N'[dbo].[FK_TemplateSensorSensor]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TemplateSensors] DROP CONSTRAINT [FK_TemplateSensorSensor];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TemplateParameterParameter]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TemplateParameters] DROP CONSTRAINT [FK_TemplateParameterParameter];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TemplatedDevicePairDevice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TemplatedDevicePairs] DROP CONSTRAINT [FK_TemplatedDevicePairDevice];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SensorTemplatedDevicePair]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TemplatedDevicePairs] DROP CONSTRAINT [FK_SensorTemplatedDevicePair];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TemplateZone]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Templates] DROP CONSTRAINT [FK_TemplateZone];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TemplateScenario]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Templates] DROP CONSTRAINT [FK_TemplateScenario];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TemplateParameterTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TemplateParameters] DROP CONSTRAINT [FK_TemplateParameterTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TemplateSensorTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TemplateSensors] DROP CONSTRAINT [FK_TemplateSensorTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TemplatedDevicePairTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TemplatedDevicePairs] DROP CONSTRAINT [FK_TemplatedDevicePairTemplate];
+GO
 IF OBJECT_ID(N'[dbo].[FK_Sensor_inherits_Device]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Devices_Sensor] DROP CONSTRAINT [FK_Sensor_inherits_Device];
 GO
@@ -192,6 +219,18 @@ IF OBJECT_ID(N'[dbo].[ParameterCategories]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[ParametrSetCommands]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ParametrSetCommands];
+GO
+IF OBJECT_ID(N'[dbo].[Templates]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Templates];
+GO
+IF OBJECT_ID(N'[dbo].[TemplateSensors]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TemplateSensors];
+GO
+IF OBJECT_ID(N'[dbo].[TemplateParameters]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TemplateParameters];
+GO
+IF OBJECT_ID(N'[dbo].[TemplatedDevicePairs]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TemplatedDevicePairs];
 GO
 IF OBJECT_ID(N'[dbo].[Devices_Sensor]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Devices_Sensor];
@@ -395,6 +434,45 @@ CREATE TABLE [dbo].[ParametrSetCommands] (
 );
 GO
 
+-- Creating table 'Templates'
+CREATE TABLE [dbo].[Templates] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [TemplateType] int  NOT NULL,
+    [TemplateMode] int  NOT NULL,
+    [IsActive] bit  NOT NULL,
+    [Scenario_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'TemplateSensors'
+CREATE TABLE [dbo].[TemplateSensors] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Order] int  NOT NULL,
+    [Sensor_Id] int  NOT NULL,
+    [Template_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'TemplateParameters'
+CREATE TABLE [dbo].[TemplateParameters] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Order] int  NOT NULL,
+    [Parameter_Id] int  NOT NULL,
+    [Template_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'TemplatedDevicePairs'
+CREATE TABLE [dbo].[TemplatedDevicePairs] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Order] int  NOT NULL,
+    [Device_Id] int  NOT NULL,
+    [Sensor_Id] int  NOT NULL,
+    [Template_Id] int  NOT NULL
+);
+GO
+
 -- Creating table 'Devices_Sensor'
 CREATE TABLE [dbo].[Devices_Sensor] (
     [ContollerSlot] int  NOT NULL,
@@ -569,6 +647,30 @@ GO
 -- Creating primary key on [Id] in table 'ParametrSetCommands'
 ALTER TABLE [dbo].[ParametrSetCommands]
 ADD CONSTRAINT [PK_ParametrSetCommands]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Templates'
+ALTER TABLE [dbo].[Templates]
+ADD CONSTRAINT [PK_Templates]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'TemplateSensors'
+ALTER TABLE [dbo].[TemplateSensors]
+ADD CONSTRAINT [PK_TemplateSensors]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'TemplateParameters'
+ALTER TABLE [dbo].[TemplateParameters]
+ADD CONSTRAINT [PK_TemplateParameters]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'TemplatedDevicePairs'
+ALTER TABLE [dbo].[TemplatedDevicePairs]
+ADD CONSTRAINT [PK_TemplatedDevicePairs]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1090,6 +1192,126 @@ GO
 CREATE INDEX [IX_FK_ControllerCondition]
 ON [dbo].[Conditions]
     ([ControllerId]);
+GO
+
+-- Creating foreign key on [Sensor_Id] in table 'TemplateSensors'
+ALTER TABLE [dbo].[TemplateSensors]
+ADD CONSTRAINT [FK_TemplateSensorSensor]
+    FOREIGN KEY ([Sensor_Id])
+    REFERENCES [dbo].[Devices_Sensor]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplateSensorSensor'
+CREATE INDEX [IX_FK_TemplateSensorSensor]
+ON [dbo].[TemplateSensors]
+    ([Sensor_Id]);
+GO
+
+-- Creating foreign key on [Parameter_Id] in table 'TemplateParameters'
+ALTER TABLE [dbo].[TemplateParameters]
+ADD CONSTRAINT [FK_TemplateParameterParameter]
+    FOREIGN KEY ([Parameter_Id])
+    REFERENCES [dbo].[Parameter]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplateParameterParameter'
+CREATE INDEX [IX_FK_TemplateParameterParameter]
+ON [dbo].[TemplateParameters]
+    ([Parameter_Id]);
+GO
+
+-- Creating foreign key on [Device_Id] in table 'TemplatedDevicePairs'
+ALTER TABLE [dbo].[TemplatedDevicePairs]
+ADD CONSTRAINT [FK_TemplatedDevicePairDevice]
+    FOREIGN KEY ([Device_Id])
+    REFERENCES [dbo].[Devices]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplatedDevicePairDevice'
+CREATE INDEX [IX_FK_TemplatedDevicePairDevice]
+ON [dbo].[TemplatedDevicePairs]
+    ([Device_Id]);
+GO
+
+-- Creating foreign key on [Sensor_Id] in table 'TemplatedDevicePairs'
+ALTER TABLE [dbo].[TemplatedDevicePairs]
+ADD CONSTRAINT [FK_SensorTemplatedDevicePair]
+    FOREIGN KEY ([Sensor_Id])
+    REFERENCES [dbo].[Devices_Sensor]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SensorTemplatedDevicePair'
+CREATE INDEX [IX_FK_SensorTemplatedDevicePair]
+ON [dbo].[TemplatedDevicePairs]
+    ([Sensor_Id]);
+GO
+
+-- Creating foreign key on [Scenario_Id] in table 'Templates'
+ALTER TABLE [dbo].[Templates]
+ADD CONSTRAINT [FK_TemplateScenario]
+    FOREIGN KEY ([Scenario_Id])
+    REFERENCES [dbo].[Scenarios]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplateScenario'
+CREATE INDEX [IX_FK_TemplateScenario]
+ON [dbo].[Templates]
+    ([Scenario_Id]);
+GO
+
+-- Creating foreign key on [Template_Id] in table 'TemplateParameters'
+ALTER TABLE [dbo].[TemplateParameters]
+ADD CONSTRAINT [FK_TemplateParameterTemplate]
+    FOREIGN KEY ([Template_Id])
+    REFERENCES [dbo].[Templates]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplateParameterTemplate'
+CREATE INDEX [IX_FK_TemplateParameterTemplate]
+ON [dbo].[TemplateParameters]
+    ([Template_Id]);
+GO
+
+-- Creating foreign key on [Template_Id] in table 'TemplateSensors'
+ALTER TABLE [dbo].[TemplateSensors]
+ADD CONSTRAINT [FK_TemplateSensorTemplate]
+    FOREIGN KEY ([Template_Id])
+    REFERENCES [dbo].[Templates]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplateSensorTemplate'
+CREATE INDEX [IX_FK_TemplateSensorTemplate]
+ON [dbo].[TemplateSensors]
+    ([Template_Id]);
+GO
+
+-- Creating foreign key on [Template_Id] in table 'TemplatedDevicePairs'
+ALTER TABLE [dbo].[TemplatedDevicePairs]
+ADD CONSTRAINT [FK_TemplatedDevicePairTemplate]
+    FOREIGN KEY ([Template_Id])
+    REFERENCES [dbo].[Templates]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TemplatedDevicePairTemplate'
+CREATE INDEX [IX_FK_TemplatedDevicePairTemplate]
+ON [dbo].[TemplatedDevicePairs]
+    ([Template_Id]);
 GO
 
 -- Creating foreign key on [Id] in table 'Devices_Sensor'

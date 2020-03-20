@@ -17,6 +17,8 @@ namespace ViewModel
             Children = Enumerable.Empty<ITreeNode>();
         }
 
+        IHaveID ISensorVM.Model { get=>Model; }
+
         public override bool Validate()
         {
             return Model.Controller != null
@@ -126,6 +128,7 @@ namespace ViewModel
 
     public interface ISensorVM: IConditionSource, IEntityObjectVM
     {
+        IHaveID Model { get; }
         bool Validate();
         void LinklToParent(ITreeNode Parent);
         Type ParentType { get; }
