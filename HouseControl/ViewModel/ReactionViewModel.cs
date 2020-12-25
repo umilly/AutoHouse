@@ -9,7 +9,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class ReactionViewModel : LinkedObjectVm<Reaction>, ITreeNode, IConditionParent
+    public class ReactionViewModel : LinkedObjectVm<Reaction>, ITreeNode, IConditionParent,IReaction
     {
         public ReactionViewModel(IServiceContainer container, Reaction model)
             : base(container,  model)

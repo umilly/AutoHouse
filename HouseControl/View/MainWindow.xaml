@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="1200"
-        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Icon="icon.png"
         >
     <Window.Resources>
         <Style TargetType="TreeViewItem"

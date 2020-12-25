@@ -78,7 +78,7 @@ namespace ViewModel
 
         private void CheckInternal(IViewModel[] parametersViewModel)
         {
-            List<ReactionViewModel> reacts = new List<ReactionViewModel>();
+            List<IReaction> reacts = new List<IReaction>();
             foreach (var parameterViewModel in parametersViewModel)
             {
                 if (parameterViewModel is ConditionViewModel condition)
@@ -103,7 +103,7 @@ namespace ViewModel
                     reacts.AddRange(sensorReacts);
                 }
 
-                if (parameterViewModel is ReactionViewModel react)
+                if (parameterViewModel is IReaction react)
                 {
                     reacts.Add(react);
                 }

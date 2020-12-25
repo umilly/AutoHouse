@@ -62,6 +62,7 @@
     <Compile Include="ControllerBase.cs" />
     <Compile Include="EmptyValue.cs" />
     <Compile Include="FirstTypeSensor.cs" />
+    <Compile Include="IReaction.cs" />
     <Compile Include="ModbusControllerViewModel.cs" />
     <Compile Include="ClientModesViewModel.cs" />
     <Compile Include="ClientModeViewModel.cs" />

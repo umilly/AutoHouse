@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/17/2020 14:12:20
--- Generated from EDMX file: D:\work\repo\AutoHouse\HouseControl\Model\ApplicationDB.edmx
+-- Date Created: 12/25/2020 17:41:26
+-- Generated from EDMX file: F:\work\repo\autohouse\HouseControl\Model\ApplicationDB.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -124,9 +124,6 @@ IF OBJECT_ID(N'[dbo].[FK_TemplatedDevicePairDevice]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_SensorTemplatedDevicePair]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[TemplatedDevicePairs] DROP CONSTRAINT [FK_SensorTemplatedDevicePair];
-GO
-IF OBJECT_ID(N'[dbo].[FK_TemplateZone]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Templates] DROP CONSTRAINT [FK_TemplateZone];
 GO
 IF OBJECT_ID(N'[dbo].[FK_TemplateScenario]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Templates] DROP CONSTRAINT [FK_TemplateScenario];

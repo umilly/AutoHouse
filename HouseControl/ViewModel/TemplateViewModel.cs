@@ -8,7 +8,7 @@ using ViewModelBase;
 
 namespace ViewModel
 {
-    public class TemplateViewModel : LinkedObjectVm<Template>, IConditionParent
+    public class TemplateViewModel : LinkedObjectVm<Template>, IConditionParent,IReaction
     {
         public TemplateViewModel(IServiceContainer container, Template model)
             : base(container, model)
