@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,12 @@ namespace WpfApplication
         private MainViewModel MainVM { get; set; }
         public MainWindow()
         {
+            var thisprocessname = Process.GetCurrentProcess().ProcessName;
+            if (Process.GetProcesses().Count(p => p.ProcessName == thisprocessname) > 1)
+            {
+                Application.Current.Shutdown();
+                return;
+            };
             InitContainer();
             MainVM = new MainViewModel(_container);
             MainVM.InitSettings();

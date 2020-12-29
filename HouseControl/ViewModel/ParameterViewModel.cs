@@ -24,7 +24,7 @@ namespace ViewModel
         public void TimerLogic()
         {
             Use<ITimerSerivce>().UnSubsctibe(this);
-            if (ParamType.ParameterTypeValue == ParameterTypeValue.Time)
+            if (ParamType?.ParameterTypeValue == ParameterTypeValue.Time)
             {
                 DateTime.TryParse(Value, CultureInfo.InvariantCulture.NumberFormat,DateTimeStyles.AllowInnerWhite,out var time);
                 var ts = (time.TimeOfDay-DateTime.Now.TimeOfDay);
