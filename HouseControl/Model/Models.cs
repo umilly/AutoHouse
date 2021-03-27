@@ -20,7 +20,7 @@ namespace Model
         public static string BuildEntityConnectionStringFromAppSettings()
         {
             var ensureDLLIsCopied = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
-            var dbFile = @"F:\work\repo\autohouse\db\house.mdf";
+            var dbFile = @"f:\work\repo\autohouse\db\house.mdf";
             string shortConnectionString=string.Empty;
             if (File.Exists("constr"))
                 shortConnectionString = File.ReadAllText("constr");

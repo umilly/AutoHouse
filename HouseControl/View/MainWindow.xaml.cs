@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Common;
 using Facade;
 using View;
 using ViewModel;
@@ -27,13 +28,21 @@ namespace WpfApplication
                 Application.Current.Shutdown();
                 return;
             };
-            InitContainer();
-            MainVM = new MainViewModel(_container);
-            MainVM.InitSettings();
-            InitializeComponent();
-            CommandBindings.Add(new CommandBinding(ShowNextViewCommand.Instance, OnNextView));
-            ShowDevicesClick(null,null);
-            Closed += (sender, args) => ShutDown(false);
+            try
+            {
+                InitContainer();
+                MainVM = new MainViewModel(_container);
+                MainVM.InitSettings();
+                InitializeComponent();
+                CommandBindings.Add(new CommandBinding(ShowNextViewCommand.Instance, OnNextView));
+                ShowDevicesClick(null, null);
+                Closed += (sender, args) => ShutDown(false);
+            }
+            catch(Exception ex) 
+            {
+                MessageBox.Show(ex.ToLog(1));
+                throw ex;
+            }
         }
 
         

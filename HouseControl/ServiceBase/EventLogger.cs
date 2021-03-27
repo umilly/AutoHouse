@@ -38,25 +38,11 @@ namespace Common
         public void Log(LogCategory network, Exception e, bool showMesageBox = false)
         {
             var excep = e;
-            var str =
-                "\r\n__________________________________________________________________________________________________________________\r\n";
-            while (e != null)
-            {
-                str += $"{e.Message}\r\n";
-                if (Use<IGlobalParams>().LogLevel < 1)
-                    break;
-                if (Use<IGlobalParams>().LogLevel > 1)
-                    str += $"{e.StackTrace}";
-                e = e.InnerException;
-                if (e != null)
-                    str += "<<<<<<<<<<<<<<<<<\r\n ";
-            }
-            str +=
-                "__________________________________________________________________________________________________________________\r\n";
+            
 
-            Log(network, str, showMesageBox);
+            Log(network, e.ToLog(Use<IGlobalParams>().LogLevel), showMesageBox);
         }
-
+        
         public void LogNetException(Exception e, string prefix)
         {
             if (e is AggregateException && e.InnerException is WebException &&
@@ -67,6 +53,28 @@ namespace Common
             Log(LogCategory.Network, prefix);
             if(Use<IGlobalParams>().LogLevel>1)
                 Log(LogCategory.Network, e);
+        }
+    }
+    public static class ExceptionExtension
+    {
+        public static string ToLog(this Exception ex, int logLevel)
+        {
+            var str =
+                "\r\n__________________________________________________________________________________________________________________\r\n";
+            while (ex != null)
+            {
+                str += $"{ex.Message}\r\n";
+                if (logLevel< 1)
+                    break;
+                if (logLevel > 1)
+                    str += $"{ex.StackTrace}";
+                ex = ex.InnerException;
+                if (ex != null)
+                    str += "<<<<<<<<<<<<<<<<<\r\n ";
+            }
+            str +=
+                "__________________________________________________________________________________________________________________\r\n";
+            return str;
         }
     }
 }
