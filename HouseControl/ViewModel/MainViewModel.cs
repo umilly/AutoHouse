@@ -73,7 +73,7 @@ namespace ViewModel
 
         private void UpdateControllers()
         {
-            Use<IPool>().GetViewModels<ControllerVM>().ForEach(a=>a.Update());
+            //Use<IPool>().GetViewModels<ControllerVM>().ForEach(a=>a.Update());
             Use<IPool>().GetViewModels<FirstTypeSensor>().ForEach(a => a.UpdateValue());
             //Use<IReactionService>().Check();
         }
