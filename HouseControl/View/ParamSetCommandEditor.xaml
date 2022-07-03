@@ -34,9 +34,9 @@
                 <ColumnDefinition Width="20"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="10"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="20"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="20"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="1" Grid.Column="1" Content="Настройки команды:" HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.ColumnSpan="3"/>

@@ -30,7 +30,7 @@
                 <ColumnDefinition Width="20"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="10"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="20"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="1" Grid.Column="1" Content="Настройки команды:" HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.ColumnSpan="3"/>
@@ -45,10 +45,10 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <TextBlock VerticalAlignment="Bottom" Text="{Binding DeviceParamType.Name}"></TextBlock>
-                            <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableParameters}" SelectedValue="{Binding Parameter}" DisplayMemberPath="SourceName"></ComboBox>
+                            <ComboBox Grid.Column="1"   ItemsSource="{Binding AvailableParameters}" SelectedValue="{Binding Parameter}" DisplayMemberPath="SourceName"></ComboBox>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
